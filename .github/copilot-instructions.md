@@ -21,11 +21,12 @@ For each feature:
 ```
 1. Update FEATURES.md: Change status to 🟡
 2. Implement the feature completely
-3. Test the feature works
-4. Update FEATURES.md: Change status to 🟢
-5. Update PROGRESS.md: Add completion entry
-6. Commit with proper format
-7. Move to next feature
+3. Ensure it builds successfully
+4. Test the feature works
+5. Update FEATURES.md: Change status to 🟢
+6. Update PROGRESS.md: Add completion entry
+7. Commit with proper format
+8. Move to next feature
 ```
 
 ### 4. Commit Format

@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { routes } from './app/routes'
 import { AppProviders } from './app/providers'
 import { Header } from './shared/components/Header'
+import { Footer } from './shared/components/Footer'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           ))}
         </Routes>
       </main>
+      <Footer />
     </AppProviders>
   )
 }
