@@ -8,19 +8,40 @@
 
 ## Session Log
 
-### [Date] - Session 1
+### 2025-11-19 - Session 1
 **Completed**:
-- None yet
+- F001: Project initialization and structure
 
 **In Progress**:
-- F001: Project initialization
+- None
 
 **Blockers**:
 - None
 
+**Details**:
+- Created scaffold directories under src/app, src/shared, src/features
+- Added placeholder exports and types
+- Added constants and route interface for future routing
+
+**Files Created/Modified**:
+- src/app/config/constants.ts
+- src/app/routes/index.ts
+- src/app/providers/index.ts
+- src/app/store/index.ts
+- src/app/index.ts
+- src/shared/components/Placeholder.tsx
+- src/shared/hooks/usePlaceholder.ts
+- src/shared/utils/index.ts
+- src/shared/types/index.ts
+- src/features/timeseries/index.ts
+- docs/FEATURES.md
+
+**Next Feature**: F002
+
 **Next Steps**:
-1. Complete F001
-2. Begin F002
+1. Implement basic routing (F002)
+2. Add initial pages and integrate routes in App.tsx
+3. Prepare for state management (F003)
 
 ---
 
