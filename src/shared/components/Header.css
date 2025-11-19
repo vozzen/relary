@@ -1,4 +1,4 @@
-.app-header { display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1rem; background:#1e293b; color:#fff; }
+.app-header { display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1rem; background:#1e293b; color:#fff; position:sticky; top:0; z-index:100; }
 .app-header__title { font-size:1.1rem; font-weight:600; text-decoration:none; color:#fff; }
 .app-header__title:hover { text-decoration:underline; }
 .app-header__nav { margin-left:2rem; font-size:0.85rem; opacity:0.8; }

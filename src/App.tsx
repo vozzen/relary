@@ -8,15 +8,17 @@ import { Footer } from './shared/components/Footer'
 function App() {
   return (
     <AppProviders>
-      <Header />
-      <main>
-        <Routes>
-          {routes.map((r) => (
-            <Route key={r.path} path={r.path} element={r.element} />
-          ))}
-        </Routes>
-      </main>
-      <Footer />
+      <div className="app-container">
+        <Header />
+        <main className="app-main" role="main">
+          <Routes>
+            {routes.map((r) => (
+              <Route key={r.path} path={r.path} element={r.element} />
+            ))}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </AppProviders>
   )
 }

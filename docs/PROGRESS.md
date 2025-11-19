@@ -2,7 +2,7 @@
 
 ## Current Sprint
 **Focus**: Phase 2 - UI Components
-**Next Feature**: F007
+**Next Feature**: F008
 
 ---
 
@@ -204,6 +204,42 @@
 - docs/PROGRESS.md
 
 **Next Feature**: F007
+
+### 2025-11-19 - Session 7
+**Completed**:
+- F007: Home page layout
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Added flex column app container with full-height layout
+- Implemented sticky header (top) and sticky footer (bottom)
+- Created centered chart placeholder at 80vw width
+- Added multiline timeseries editor with validation (green/red states)
+- Added utility functions for date validation & parsing user input
+- Dispatches valid parsed points to global store via actions.setUserSeries
+
+**Files Created/Modified**:
+- src/App.tsx
+- src/App.css
+- src/shared/components/Header.css
+- src/shared/components/Footer.css
+- src/features/timeseries/pages/HomePage.tsx
+- src/features/timeseries/pages/HomePage.css
+- src/shared/utils/index.ts
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F008
+
+**Next Steps**:
+1. Implement loading/error visual states (header or dedicated component)
+2. Show feedback during remote timeseries fetch (status & error)
+3. Prepare for chart rendering (F009)
 
 **Next Steps**:
 1. Implement Home page layout (structure for chart + editor)

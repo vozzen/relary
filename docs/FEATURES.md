@@ -27,7 +27,7 @@ For the interval user provided, other time series data should be shown on same c
 ### Phase 2: UI Components
 - 🟢 F005: Header/Navigation component
 - 🟢 F006: Footer component
-- 🔴 F007: Home page layout: 
+ - 🟢 F007: Home page layout: 
     - Ensure Header sticks to top of the page
     - Ensure Footer sticks to bottom of the page.
     - The chart should be in the middle of the page, centered horizontally, covering 80% of window width
