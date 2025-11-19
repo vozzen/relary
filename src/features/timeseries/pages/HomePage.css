@@ -8,3 +8,23 @@
 .timeseries-editor.is-valid { border-color:#22c55e; box-shadow:0 0 0 2px rgba(34,197,94,0.25); }
 .timeseries-editor.is-invalid { border-color:#ef4444; box-shadow:0 0 0 2px rgba(239,68,68,0.25); }
 .editor-help { margin-top:0.5rem; font-size:0.65rem; color:#64748b; text-align:left; }
+
+/* Tablet responsive adjustments */
+@media (max-width: 768px) {
+  .home-page { gap:1.5rem; padding:0.75rem 0 1.5rem; }
+  .chart-section { width:90vw; }
+  .chart-placeholder { width:90vw; max-width:90vw; min-height:200px; font-size:0.85rem; }
+  .editor-section { width:90vw; max-width:90vw; }
+  .timeseries-editor { min-height:140px; font-size:0.7rem; }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .home-page { gap:1rem; padding:0.5rem 0 1rem; }
+  .chart-section { width:95vw; }
+  .chart-placeholder { width:95vw; max-width:95vw; min-height:180px; font-size:0.75rem; border-width:1px; }
+  .editor-section { width:95vw; max-width:95vw; }
+  .editor-section label { font-size:0.75rem; }
+  .timeseries-editor { min-height:120px; padding:0.5rem; font-size:0.65rem; }
+  .editor-help { font-size:0.6rem; }
+}
