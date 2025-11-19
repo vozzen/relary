@@ -21,7 +21,7 @@ For the interval user provided, other time series data should be shown on same c
 ### Phase 1: Core Setup
 - 🟢 F001: Project initialization and structure
 - 🟢 F002: Basic routing setup
-- 🔴 F003: State management configuration
+- 🟢 F003: State management configuration
 - 🔴 F004: API service layer
 
 ### Phase 2: UI Components

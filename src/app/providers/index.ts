@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'
+import { AppStoreProvider } from '../store'
 
 /**
  * Wraps the application with global providers (router, error boundary).
@@ -8,7 +9,9 @@ import { ErrorBoundary } from './ErrorBoundary'
 export const AppProviders = ({ children }: { children: ReactNode }) => {
 	return (
 		<ErrorBoundary>
-			<BrowserRouter>{children}</BrowserRouter>
+			<AppStoreProvider>
+				<BrowserRouter>{children}</BrowserRouter>
+			</AppStoreProvider>
 		</ErrorBoundary>
 	)
 }
