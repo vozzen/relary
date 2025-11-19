@@ -27,12 +27,19 @@ For the interval user provided, other time series data should be shown on same c
 ### Phase 2: UI Components
 - 🟢 F005: Header/Navigation component
 - 🟢 F006: Footer component
-- 🔴 F007: Home page layout
-- 🔴 F008: Loading/Error states
+- 🔴 F007: Home page layout: 
+    - Ensure Header sticks to top of the page
+    - Ensure Footer sticks to bottom of the page.
+    - The chart should be in the middle of the page, centered horizontally, covering 80% of window width
+    - Data entry field should be below the chart.
+    - If data user entered is not valid higlight the text box with red.
+    - If data user entered is valid, then highlight the text with green.
+
+- 🔴 F008: Loading/Error states:
 
 ### Phase 3: Features
 - 🔴 F009: Show empty chart
-- 🔴 F010: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated
+- 🔴 F010: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated for the series related to user data.
 
 ### Phase 4: Polish
 - 🔴 F013: Responsive design
