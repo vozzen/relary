@@ -2,7 +2,7 @@
 
 ## Current Sprint
 **Focus**: Phase 1 - Core Setup
-**Next Feature**: F001
+**Next Feature**: F003
 
 ---
 
@@ -38,10 +38,47 @@
 
 **Next Feature**: F002
 
-**Next Steps**:
+**Next Steps (originally planned)**:
 1. Implement basic routing (F002)
 2. Add initial pages and integrate routes in App.tsx
 3. Prepare for state management (F003)
+
+---
+
+### 2025-11-19 - Session 2
+**Completed**:
+- F002: Basic routing setup
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Added react-router-dom dependency
+- Implemented AppProviders wrapping BrowserRouter and ErrorBoundary
+- Created HomePage component and exported via timeseries feature index
+- Populated routes array with root path
+- Refactored App.tsx to render header with APP_NAME and route content
+
+**Files Created/Modified**:
+- package.json
+- src/app/providers/index.ts
+- src/app/providers/ErrorBoundary.tsx
+- src/features/timeseries/pages/HomePage.tsx
+- src/features/timeseries/index.ts
+- src/app/routes/index.ts
+- src/App.tsx
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F003
+
+**Next Steps**:
+1. Implement state management scaffold (Context + reducer) (F003)
+2. Provide initial global store/provider
+3. Define types for timeseries state
 
 ---
 
