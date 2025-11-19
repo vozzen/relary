@@ -43,5 +43,5 @@ For the interval user provided, other time series data should be shown on same c
 
 ### Phase 4: Polish
 - 🟢 F013: Responsive design
-- 🔴 F014: Error handling
+- 🟢 F014: Error handling
 - 🔴 F015: Testing setup

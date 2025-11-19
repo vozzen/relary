@@ -24,10 +24,26 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
           ...options.headers,
       },
       signal: controller.signal,
+    }).catch((err) => {
+      if (err.name === 'AbortError') {
+        throw new Error('İstek zaman aşımına uğradı')
+      }
+      throw new Error('Bağlantı hatası oluştu')
     })
 
     if (!res.ok) {
-      const err: ApiError = new Error(`Request failed: ${res.status}`)
+      let message = 'İstek başarısız oldu'
+      if (res.status === 404) {
+        message = 'İstenen kaynak bulunamadı'
+      } else if (res.status === 500) {
+        message = 'Sunucu hatası oluştu'
+      } else if (res.status >= 400 && res.status < 500) {
+        message = 'Geçersiz istek'
+      } else if (res.status >= 500) {
+        message = 'Sunucu yanıt vermiyor'
+      }
+      
+      const err: ApiError = new Error(`${message} (${res.status})`)
       err.status = res.status
       try {
         err.data = await res.json()

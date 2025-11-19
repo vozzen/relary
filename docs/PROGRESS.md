@@ -70,7 +70,45 @@
 
 ## Current Sprint
 **Focus**: Phase 4 - Polish
-**Next Feature**: F014
+**Next Feature**: F015
+
+### 2025-11-19 - Session 13
+**Completed**:
+- F014: Error handling
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Enhanced ErrorBoundary component with better UI and page reload capability
+- Created ErrorMessage component for inline error display with retry action
+- Added user-friendly Turkish error messages throughout the app
+- Updated API client with localized error messages for different HTTP status codes
+- Added timeout error handling with "Bağlantı hatası oluştu" message
+- Integrated error display in HomePage with retry functionality
+- HomePage now loads remote timeseries on mount and displays errors if loading fails
+- All errors displayed in user-friendly Turkish language
+- Verified successful production build
+
+**Files Created/Modified**:
+- src/app/providers/ErrorBoundary.tsx
+- src/shared/components/ErrorMessage.tsx
+- src/shared/components/ErrorMessage.css
+- src/app/config/client.ts
+- src/features/timeseries/pages/HomePage.tsx
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F015
+
+**Next Steps**:
+1. Set up testing framework (Vitest)
+2. Add unit tests for utility functions
+3. Add component tests for key features
+4. Configure test coverage reporting
 
 ### 2025-11-19 - Session 12
 **Completed**:

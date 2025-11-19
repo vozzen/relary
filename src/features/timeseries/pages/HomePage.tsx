@@ -1,8 +1,10 @@
 import type { FC } from 'react'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Placeholder } from '../../../shared/components/Placeholder'
+import { ErrorMessage } from '../../../shared/components/ErrorMessage'
 import { parseTimeseriesInput, interpolateMonthlyTimeseries } from '../../../shared/utils'
-import { useAppDispatch, actions } from '../../../app/store'
+import { useAppDispatch, useAppState, actions } from '../../../app/store'
+import { loadRemoteTimeseries } from '../api/service'
 import './HomePage.css'
 import { Chart } from '../components/Chart'
 
@@ -10,11 +12,21 @@ import { Chart } from '../components/Chart'
  * HomePage (F007) layout with chart placeholder and timeseries editor.
  * Valid input updates global userSeries; invalid input visually highlighted.
  * User data is automatically interpolated to fill monthly gaps (F012).
+ * Enhanced with error handling (F014).
  */
 export const HomePage: FC = () => {
   const dispatch = useAppDispatch()
+  const state = useAppState()
   const [raw, setRaw] = useState('')
   const [valid, setValid] = useState<boolean | null>(null)
+
+  // Load remote data on mount (example key - would be configurable in production)
+  useEffect(() => {
+    loadRemoteTimeseries(dispatch, 'example').catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to load remote timeseries:', err)
+    })
+  }, [dispatch])
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -31,8 +43,22 @@ export const HomePage: FC = () => {
     [dispatch]
   )
 
+  const handleRetry = useCallback(() => {
+    actions.setError(dispatch, null)
+    loadRemoteTimeseries(dispatch, 'example').catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to load remote timeseries:', err)
+    })
+  }, [dispatch])
+
   return (
     <section className="home-page">
+      {state.timeseries.error && (
+        <ErrorMessage
+          message={`Uzak veri yüklenemedi: ${state.timeseries.error}`}
+          onRetry={handleRetry}
+        />
+      )}
       <div className="chart-section">
         <Chart />
       </div>
