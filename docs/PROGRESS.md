@@ -2,7 +2,7 @@
 
 ## Current Sprint
 **Focus**: Phase 2 - UI Components
-**Next Feature**: F009
+**Next Feature**: F010
 ### 2025-11-19 - Session 8
 **Completed**:
 - F009: Show empty chart
