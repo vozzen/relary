@@ -2,7 +2,7 @@
 
 ## Current Sprint
 **Focus**: Phase 2 - UI Components
-**Next Feature**: F013
+**Next Feature**: F012
 ### 2025-11-19 - Session 9
 **Completed**:
 - F010: Recharts integration replacing static SVG chart
@@ -30,12 +30,10 @@
 - docs/FEATURES.md
 - docs/PROGRESS.md
 
-**Next Feature**: F013
+**Next Feature**: F012
 
 **Next Steps**:
-1. Implement responsive adjustments (mobile layout refinements)
-2. Ensure chart and editor scale below 640px width
-3. Add accessibility enhancements (focus outlines, aria roles)
+1. Implement F012
 ### 2025-11-19 - Session 8
 **Completed**:
 - F009: Show empty chart

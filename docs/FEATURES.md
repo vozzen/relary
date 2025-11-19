@@ -39,6 +39,7 @@ For the interval user provided, other time series data should be shown on same c
  - 🟢 F009: Show empty chart
  - 🟢 F010: Install and use Rechart library to render the main chart instead of current rendering.
  - 🟢 F011: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated for the series related to user data.
+ - 🟢 F012: Convert user entered data into a timeseries where there is an entry for each month between earliest and latest user data. For that ensure that user data is sorted by timestamp first and fill the gaps in interval of 2 entries so that for each month inbetween there is an entry with value of earlier timestamp. For example if user has entered 2 etries such as (01.2024, 100) and (04.2024, 123); convert it to (01.2024, 100), (02.2024, 100), (03.2024, 100), (04.2024, 123)
 
 ### Phase 4: Polish
 - 🔴 F013: Responsive design
