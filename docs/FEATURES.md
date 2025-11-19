@@ -6,6 +6,16 @@
 - 🟢 Completed
 - ⚪ Blocked
 
+## Overview
+This is a single page application that would show a chart of several timeseries.
+
+There should be a header section with app name "Relative Salary". There should be a footer section too with a text saying "Hiçbir veri sunuculara gönderilmez"
+
+One of the time series should be entered by user. Others are fetched from backend. User should be given an text editor where he can enter/edit timeseries as key value pair where key is a date in format DD.MM.YYYY or MM.YYYY or MM-YYYY and value is a number.
+
+For the interval user provided, other time series data should be shown on same chart with proper a legend and a separate Y axis (X axis is time and shared by all series)
+
+
 ## Features
 
 ### Phase 1: Core Setup
@@ -21,13 +31,10 @@
 - 🔴 F008: Loading/Error states
 
 ### Phase 3: Features
-- 🔴 F009: User authentication flow
-- 🔴 F010: Data fetching and display
-- 🔴 F011: Form handling
-- 🔴 F012: Search/Filter functionality
+- 🔴 F009: Show empty chart
+- 🔴 F010: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated
 
 ### Phase 4: Polish
 - 🔴 F013: Responsive design
 - 🔴 F014: Error handling
 - 🔴 F015: Testing setup
-- 🔴 F016: Performance optimization
