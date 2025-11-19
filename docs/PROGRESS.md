@@ -2,7 +2,36 @@
 
 ## Current Sprint
 **Focus**: Phase 2 - UI Components
-**Next Feature**: F008
+**Next Feature**: F009
+### 2025-11-19 - Session 8
+**Completed**:
+- F009: Show empty chart
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Implemented `Chart` component with SVG axes-only frame
+- Integrated chart into `HomePage` replacing placeholder
+- Added basic ticks and figcaption for empty state visibility
+- Accessible labels added for future screen reader enhancements
+
+**Files Created/Modified**:
+- src/features/timeseries/components/Chart.tsx
+- src/features/timeseries/components/Chart.css
+- src/features/timeseries/pages/HomePage.tsx
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F010
+
+**Next Steps**:
+1. Implement user data entry → live chart update (F010)
+2. Plot user series line when data valid
+3. Prepare multi-series layering for remote data
 
 ---
 

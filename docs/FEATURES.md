@@ -35,10 +35,8 @@ For the interval user provided, other time series data should be shown on same c
     - If data user entered is not valid higlight the text box with red.
     - If data user entered is valid, then highlight the text with green.
 
-- 🔴 F008: Loading/Error states:
-
 ### Phase 3: Features
-- 🔴 F009: Show empty chart
+ - 🟢 F009: Show empty chart
 - 🔴 F010: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated for the series related to user data.
 
 ### Phase 4: Polish

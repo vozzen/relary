@@ -4,6 +4,7 @@ import { Placeholder } from '../../../shared/components/Placeholder'
 import { parseTimeseriesInput } from '../../../shared/utils'
 import { useAppDispatch, actions } from '../../../app/store'
 import './HomePage.css'
+import { Chart } from '../components/Chart'
 
 /**
  * HomePage (F007) layout with chart placeholder and timeseries editor.
@@ -28,9 +29,7 @@ export const HomePage: FC = () => {
   return (
     <section className="home-page">
       <div className="chart-section">
-        <div className="chart-placeholder" aria-label="Zaman serisi grafiği placeholder">
-          Chart Placeholder (F009 planlanıyor)
-        </div>
+        <Chart />
       </div>
       <div className="editor-section">
         <label htmlFor="timeseries-editor">Veri Girişi</label>
