@@ -2,14 +2,12 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { routes } from './app/routes'
 import { AppProviders } from './app/providers'
-import { APP_NAME } from './app/config/constants'
+import { Header } from './shared/components/Header'
 
 function App() {
   return (
     <AppProviders>
-      <header>
-        <h1>{APP_NAME}</h1>
-      </header>
+      <Header />
       <main>
         <Routes>
           {routes.map((r) => (

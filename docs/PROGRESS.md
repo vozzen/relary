@@ -1,8 +1,8 @@
 # Development Progress Log
 
 ## Current Sprint
-**Focus**: Phase 1 - Core Setup
-**Next Feature**: F005
+**Focus**: Phase 2 - UI Components
+**Next Feature**: F006
 
 ---
 
@@ -145,6 +145,38 @@
 1. Implement header/navigation component
 2. Display app name and nav placeholders
 3. Prepare layout for future pages
+
+---
+
+### 2025-11-19 - Session 5
+**Completed**:
+- F005: Header/Navigation component
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Added `Header` component with brand and nav placeholder
+- Integrated `Header` into `App.tsx` replacing static header markup
+- Added basic styling in `Header.css`
+- Documented future enhancements (dynamic nav, status indicators)
+
+**Files Created/Modified**:
+- src/shared/components/Header.tsx
+- src/shared/components/Header.css
+- src/App.tsx
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F006
+
+**Next Steps**:
+1. Implement footer component with required static text
+2. Place footer below main content
+3. Prepare for responsive layout (F013)
 
 ---
 

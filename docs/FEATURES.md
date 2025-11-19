@@ -25,7 +25,7 @@ For the interval user provided, other time series data should be shown on same c
 - 🟢 F004: API service layer
 
 ### Phase 2: UI Components
-- 🔴 F005: Header/Navigation component
+- 🟢 F005: Header/Navigation component
 - 🔴 F006: Footer component
 - 🔴 F007: Home page layout
 - 🔴 F008: Loading/Error states
