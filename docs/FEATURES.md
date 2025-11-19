@@ -37,8 +37,8 @@ For the interval user provided, other time series data should be shown on same c
 
 ### Phase 3: Features
  - 🟢 F009: Show empty chart
- - 🔴 F010: Install and use Rechart library to render the main chart instead of current rendering.
- - 🔴 F011: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated for the series related to user data.
+ - 🟢 F010: Install and use Rechart library to render the main chart instead of current rendering.
+ - 🟢 F011: User data entry component with a text box that user can enter data. When user edits data, chart gets automatically updated for the series related to user data.
 
 ### Phase 4: Polish
 - 🔴 F013: Responsive design

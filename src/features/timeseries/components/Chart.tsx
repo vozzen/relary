@@ -1,35 +1,84 @@
 import type { FC } from 'react'
 import { useAppState } from '../../../app/store'
+import { buildTimeseriesChartData } from '../../../shared/utils'
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts'
 import './Chart.css'
 
 /**
- * Empty chart frame (F009).
- * Renders axes-only SVG. Future features will plot series lines.
+ * Timeseries chart using Recharts (F010/F011).
+ * Renders user series and remote series with shared X axis.
  */
 export const Chart: FC = () => {
   const state = useAppState()
-  const hasData = state.timeseries.userSeries.length > 0 || Object.values(state.timeseries.remoteSeries).some(s => s.length > 0)
+  const { userSeries, remoteSeries } = state.timeseries
+  const data = buildTimeseriesChartData(userSeries, remoteSeries)
+  const hasData = data.length > 0
+  const remoteKeys = Object.keys(remoteSeries)
+
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
-      <svg className="timeseries-chart" viewBox="0 0 800 240" preserveAspectRatio="none" aria-label="Boş zaman serisi grafiği">
-        <rect x="0" y="0" width="800" height="240" className="chart-frame" />
-        {/* Y axis */}
-        <line x1="50" y1="10" x2="50" y2="230" className="axis" />
-        {/* X axis */}
-        <line x1="50" y1="230" x2="790" y2="230" className="axis" />
-        {/* Placeholder ticks (few) */}
-        {Array.from({ length: 5 }).map((_, i) => {
-          const y = 230 - i * 50
-          return <line key={y} x1="48" y1={y} x2="52" y2={y} className="tick" />
-        })}
-        {Array.from({ length: 6 }).map((_, i) => {
-          const x = 50 + i * 124
-          return <line key={x} x1={x} y1="228" x2={x} y2="232" className="tick" />
-        })}
-      </svg>
+      <div className="chart-wrapper">
+        <ResponsiveContainer width="100%" height={240}>
+          <LineChart data={data} margin={{ left: 8, right: 24, top: 10, bottom: 10 }}>
+            <CartesianGrid stroke="#334155" strokeDasharray="4 4" />
+            <XAxis
+              dataKey="dateLabel"
+              tick={{ fontSize: 11, fill: '#94a3b8' }}
+              stroke="#64748b"
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: '#94a3b8' }}
+              stroke="#64748b"
+              width={50}
+              allowDecimals={false}
+            />
+            <Tooltip
+              contentStyle={{ background: '#1e293b', border: '1px solid #334155', fontSize: 12 }}
+            />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
+            {hasData && (
+              <Line
+                type="monotone"
+                dataKey="user"
+                stroke="#22c55e"
+                strokeWidth={2}
+                dot={{ r: 2 }}
+                isAnimationActive={false}
+                name="Kullanıcı"
+              />
+            )}
+            {remoteKeys.map((k, i) => (
+              <Line
+                key={k}
+                type="monotone"
+                dataKey={k}
+                strokeWidth={2}
+                stroke={remoteColor(i)}
+                dot={false}
+                isAnimationActive={false}
+                name={k}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
       {!hasData && <figcaption className="chart-empty">Henüz veri yok</figcaption>}
     </figure>
   )
+}
+
+function remoteColor(i: number): string {
+  const palette = ['#3b82f6', '#a855f7', '#ec4899', '#f59e0b', '#06b6d4', '#ef4444']
+  return palette[i % palette.length]
 }
 
 export default Chart
