@@ -2,7 +2,7 @@
 
 ## Current Sprint
 **Focus**: Phase 1 - Core Setup
-**Next Feature**: F004
+**Next Feature**: F005
 
 ---
 
@@ -112,6 +112,39 @@
 1. Implement API service layer (basic fetch wrapper)
 2. Define service for remote timeseries retrieval
 3. Integrate status/error handling with store actions
+
+---
+
+### 2025-11-19 - Session 4
+**Completed**:
+- F004: API service layer
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Added API config constants (`API_BASE_URL`, `API_REQUEST_TIMEOUT_MS`)
+- Implemented generic `request` helper with timeout and error normalization
+- Created timeseries service (`getRemoteTimeseries`, `loadRemoteTimeseries`, `createRemoteLoader`) with stub fallback
+- Integrated service loader with global store actions
+- Added JSDoc documentation for clarity
+
+**Files Created/Modified**:
+- src/app/config/constants.ts
+- src/app/config/client.ts
+- src/features/timeseries/api/service.ts
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F005
+
+**Next Steps**:
+1. Implement header/navigation component
+2. Display app name and nav placeholders
+3. Prepare layout for future pages
 
 ---
 
