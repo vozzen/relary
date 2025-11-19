@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { useState, useCallback } from 'react'
 import { Placeholder } from '../../../shared/components/Placeholder'
-import { parseTimeseriesInput } from '../../../shared/utils'
+import { parseTimeseriesInput, interpolateMonthlyTimeseries } from '../../../shared/utils'
 import { useAppDispatch, actions } from '../../../app/store'
 import './HomePage.css'
 import { Chart } from '../components/Chart'
@@ -9,6 +9,7 @@ import { Chart } from '../components/Chart'
 /**
  * HomePage (F007) layout with chart placeholder and timeseries editor.
  * Valid input updates global userSeries; invalid input visually highlighted.
+ * User data is automatically interpolated to fill monthly gaps (F012).
  */
 export const HomePage: FC = () => {
   const dispatch = useAppDispatch()
@@ -21,7 +22,11 @@ export const HomePage: FC = () => {
       setRaw(value)
       const { points, valid } = parseTimeseriesInput(value)
       setValid(value.trim() ? valid : null)
-      if (valid) actions.setUserSeries(dispatch, points)
+      if (valid) {
+        // Interpolate to fill monthly gaps before dispatching
+        const interpolated = interpolateMonthlyTimeseries(points)
+        actions.setUserSeries(dispatch, interpolated)
+      }
     },
     [dispatch]
   )
