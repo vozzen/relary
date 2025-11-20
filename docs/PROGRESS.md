@@ -8,6 +8,7 @@
 - F0608: Chart interval always ends at current month
 - F0609: Derived series visible on page load without user data
 - F0610: Renamed user series and derived series
+- F0611: Save/load datasets to local storage
 
 **In Progress**:
 - None
@@ -16,6 +17,26 @@
 - None
 
 **Details**:
+
+**F0611: Save/Load Datasets to Local Storage**
+- Created storage utility module with saveDataset, loadDataset, listDatasets, deleteDataset functions
+- Added UI toggle button to show/hide save/load panel
+- Added input field for dataset name and save button
+- Added list of saved datasets with load and delete buttons
+- Datasets stored in browser localStorage with timestamp for sorting
+- Most recent datasets shown first
+- Load immediately updates textarea and triggers chart refresh
+- Confirmation dialog before deleting datasets
+- Added comprehensive CSS styling for all new UI elements
+- All 53 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/storage.ts (created - localStorage utilities)
+- src/features/timeseries/pages/HomePage.tsx (updated - save/load UI and handlers)
+- src/features/timeseries/pages/HomePage.css (updated - styling for new controls)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0610: Renamed User Series and Derived Series**
 - Changed user data series name from "Kullanıcı" to "Gelir(₺)" in Chart component

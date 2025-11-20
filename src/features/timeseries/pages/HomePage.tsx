@@ -5,6 +5,7 @@ import { ErrorMessage } from '../../../shared/components/ErrorMessage'
 import { parseTimeseriesInput, interpolateMonthlyTimeseries, getSeriesFriendlyName } from '../../../shared/utils'
 import { useAppDispatch, useAppState, actions } from '../../../app/store'
 import { loadSeriesData } from '../api/seriesLoader'
+import { saveDataset, loadDataset, listDatasets, deleteDataset } from '../../../shared/utils/storage'
 import './HomePage.css'
 import { Chart } from '../components/Chart'
 
@@ -19,10 +20,14 @@ export const HomePage: FC = () => {
   const state = useAppState()
   const [raw, setRaw] = useState('')
   const [valid, setValid] = useState<boolean | null>(null)
+  const [savedDatasets, setSavedDatasets] = useState<string[]>([])
+  const [datasetName, setDatasetName] = useState('')
+  const [showSaveLoad, setShowSaveLoad] = useState(false)
 
-  // Load series data on mount
+  // Load series data on mount and refresh saved datasets list
   useEffect(() => {
     loadSeriesData(dispatch)
+    setSavedDatasets(listDatasets())
   }, [dispatch])
 
   const handleChange = useCallback(
@@ -62,6 +67,62 @@ export const HomePage: FC = () => {
     loadSeriesData(dispatch)
   }, [dispatch])
 
+  const handleSave = useCallback(() => {
+    if (!datasetName.trim()) {
+      alert('Lütfen bir isim girin')
+      return
+    }
+    if (!raw.trim()) {
+      alert('Kaydedilecek veri yok')
+      return
+    }
+    try {
+      saveDataset(datasetName.trim(), raw)
+      setSavedDatasets(listDatasets())
+      setDatasetName('')
+      alert(`"${datasetName.trim()}" kaydedildi`)
+    } catch (err) {
+      alert(`Kaydetme hatası: ${err instanceof Error ? err.message : String(err)}`)
+    }
+  }, [datasetName, raw])
+
+  const handleLoad = useCallback((name: string) => {
+    const data = loadDataset(name)
+    if (data) {
+      setRaw(data)
+      // Trigger the change handler to update the chart
+      const { points, valid } = parseTimeseriesInput(data)
+      setValid(data.trim() ? valid : null)
+      if (valid) {
+        const interpolated = interpolateMonthlyTimeseries(points)
+        actions.setUserSeries(dispatch, interpolated)
+        
+        const derivedCodes = Object.keys(state.timeseries.remoteSeries)
+          .filter(code => code.startsWith('TP.DK.'))
+          .map(code => `Gelir(${getSeriesFriendlyName(code)})`)
+        
+        const allCodes = [...state.timeseries.availableSeries, ...derivedCodes]
+        const uniqueCodes = Array.from(new Set(allCodes))
+        actions.setAvailableSeries(dispatch, uniqueCodes)
+        
+        for (const code of derivedCodes) {
+          if (state.timeseries.selectedSeries[code] === undefined) {
+            actions.setSeriesSelection(dispatch, code, true)
+          }
+        }
+      }
+    } else {
+      alert(`"${name}" yüklenemedi`)
+    }
+  }, [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries, state.timeseries.selectedSeries])
+
+  const handleDelete = useCallback((name: string) => {
+    if (confirm(`"${name}" silinsin mi?`)) {
+      deleteDataset(name)
+      setSavedDatasets(listDatasets())
+    }
+  }, [])
+
   return (
     <section className="home-page">
       {state.timeseries.error && (
@@ -95,6 +156,61 @@ export const HomePage: FC = () => {
         <small className="editor-help">
           Formatlar: DD.MM.YYYY | MM.YYYY | MM-YYYY — Her satır: tarih değer
         </small>
+        
+        <div className="dataset-controls">
+          <button 
+            type="button" 
+            onClick={() => setShowSaveLoad(!showSaveLoad)}
+            className="toggle-saveload"
+          >
+            {showSaveLoad ? 'Gizle' : 'Kaydet/Yükle'}
+          </button>
+          
+          {showSaveLoad && (
+            <div className="saveload-panel">
+              <div className="save-section">
+                <input
+                  type="text"
+                  placeholder="Veri seti adı"
+                  value={datasetName}
+                  onChange={(e) => setDatasetName(e.target.value)}
+                  className="dataset-name-input"
+                />
+                <button type="button" onClick={handleSave} className="save-button">
+                  Kaydet
+                </button>
+              </div>
+              
+              {savedDatasets.length > 0 && (
+                <div className="load-section">
+                  <h4>Kaydedilmiş Veriler:</h4>
+                  <ul className="dataset-list">
+                    {savedDatasets.map(name => (
+                      <li key={name} className="dataset-item">
+                        <button 
+                          type="button" 
+                          onClick={() => handleLoad(name)}
+                          className="load-button"
+                        >
+                          {name}
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => handleDelete(name)}
+                          className="delete-button"
+                          aria-label={`${name} sil`}
+                        >
+                          ×
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        
         <Placeholder label="Timeseries Module Placeholder" />
       </div>
     </section>

@@ -76,5 +76,5 @@ For the interval user provided, other time series data should be shown on same c
 - 🟢 F0610:
     - Rename user data series to "Gelir(₺)".
     - Rename user data derived series to "Gelir(<series-friendly-name>)".
-- 🔴 F0611:
+- 🟢 F0611:
     - Let user to save currently entered user data to browser local storage by providing a name. Also let use to list saved data sets' names and load one of them which should immediatly replace currently entered data.
