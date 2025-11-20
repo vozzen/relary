@@ -55,6 +55,7 @@ For the interval user provided, other time series data should be shown on same c
 - 🟢 F0601: 
     - Application should fetch series data from a file located at a URL in web. However for now, it should import sample data from `data/series.json` and keep in memory at startup. Adapt the interfaces, DTOs etc to comply with that file content.
     - For each loaded series, there should be a checkbox like component with series' code as label which controles whether the series is rendered in chart or not.
-- 🔴 F0602: 
+- 🟢 F0602: 
     - When user enters a valid data, update the chart's begin and end dates so only the interval of user data is shown on chart.
     - If no data entered, default range should be from 01.2006 to today.
+- 🔴 F0602: 

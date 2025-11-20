@@ -5,6 +5,7 @@ import {
   normalizeTimeseriesDate,
   interpolateMonthlyTimeseries,
   buildTimeseriesChartData,
+  calculateChartDateRange,
 } from './index'
 
 describe('isValidTimeseriesDate', () => {
@@ -196,5 +197,47 @@ describe('buildTimeseriesChartData', () => {
     expect(result).toHaveLength(2)
     expect(result[0]).toMatchObject({ user: 100 })
     expect(result[1]).toMatchObject({ series1: 50 })
+  })
+})
+
+describe('calculateChartDateRange', () => {
+  it('should return user data range when user has valid data', () => {
+    const userSeries = [
+      { date: '01.2024', value: 100 },
+      { date: '06.2024', value: 200 },
+    ]
+    
+    const { minDate, maxDate } = calculateChartDateRange(userSeries)
+    
+    expect(minDate).toBe(Date.UTC(2024, 0, 1))
+    expect(maxDate).toBe(Date.UTC(2024, 5, 1))
+  })
+
+  it('should return default range (01.2006 to today) when no user data', () => {
+    const { minDate, maxDate } = calculateChartDateRange([])
+    
+    expect(minDate).toBe(Date.UTC(2006, 0, 1))
+    expect(maxDate).toBeLessThanOrEqual(Date.now())
+    expect(maxDate).toBeGreaterThan(Date.UTC(2025, 0, 1))
+  })
+
+  it('should handle single data point', () => {
+    const userSeries = [{ date: '03.2024', value: 150 }]
+    
+    const { minDate, maxDate } = calculateChartDateRange(userSeries)
+    
+    expect(minDate).toBe(Date.UTC(2024, 2, 1))
+    expect(maxDate).toBe(Date.UTC(2024, 2, 1))
+  })
+
+  it('should fallback to default when user data has invalid dates', () => {
+    const userSeries = [
+      { date: 'invalid', value: 100 },
+    ]
+    
+    const { minDate, maxDate } = calculateChartDateRange(userSeries)
+    
+    expect(minDate).toBe(Date.UTC(2006, 0, 1))
+    expect(maxDate).toBeLessThanOrEqual(Date.now())
   })
 })

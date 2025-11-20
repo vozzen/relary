@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useAppState } from '../../../app/store'
-import { buildTimeseriesChartData } from '../../../shared/utils'
+import { buildTimeseriesChartData, calculateChartDateRange } from '../../../shared/utils'
 import {
   ResponsiveContainer,
   LineChart,
@@ -17,6 +17,7 @@ import './Chart.css'
  * Timeseries chart using Recharts (F010/F011).
  * Renders user series and remote series with shared X axis.
  * Only displays selected series (F0601).
+ * Filters data by date range based on user input (F0602).
  */
 export const Chart: FC = () => {
   const state = useAppState()
@@ -33,7 +34,16 @@ export const Chart: FC = () => {
     {} as Record<string, typeof remoteSeries[string]>
   )
   
-  const data = buildTimeseriesChartData(userSeries, filteredRemoteSeries)
+  // Calculate date range based on user data (F0602)
+  const { minDate, maxDate } = calculateChartDateRange(userSeries)
+  
+  const allData = buildTimeseriesChartData(userSeries, filteredRemoteSeries)
+  
+  // Filter data to only show the calculated date range (F0602)
+  const data = allData.filter((row) => {
+    const ts = row.ts as number
+    return ts >= minDate && ts <= maxDate
+  })
   const hasData = data.length > 0
   const remoteKeys = Object.keys(filteredRemoteSeries)
 

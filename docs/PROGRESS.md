@@ -6,6 +6,7 @@
 ### 2025-11-20 - Session 11
 **Completed**:
 - F0601: Series loading and selection
+- F0602: Dynamic date range filtering
 
 **In Progress**:
 - None
@@ -14,6 +15,23 @@
 - None
 
 **Details**:
+
+**F0602: Dynamic Date Range Filtering**
+- Created calculateChartDateRange utility function
+- Chart now filters data based on user input date range
+- When user has valid data: displays only the interval of user data
+- When no user data: defaults to showing from 01.2006 to today
+- Updated Chart component to apply date range filtering
+- Added comprehensive tests for calculateChartDateRange (4 new tests)
+- All 37 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - added calculateChartDateRange)
+- src/shared/utils/index.test.ts (updated - added tests)
+- src/features/timeseries/components/Chart.tsx (updated - applied filtering)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0601: Series Loading and Selection**
 - Created series type definitions (SeriesDataPoint, SeriesData, CombinedSeriesData)

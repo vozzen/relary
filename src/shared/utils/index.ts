@@ -130,6 +130,39 @@ export function interpolateMonthlyTimeseries(
  * Build chart-friendly unified data rows.
  * Each unique date becomes one row with user + remote series values.
  */
+/**
+ * Calculate date range for chart display based on user data.
+ * If user has valid data, returns the range of user data.
+ * Otherwise, returns default range from 01.2006 to today.
+ */
+export function calculateChartDateRange(userSeries: { date: string; value: number }[]): {
+	minDate: number
+	maxDate: number
+} {
+	if (userSeries.length === 0) {
+		// Default range: 01.2006 to today
+		const minDate = Date.UTC(2006, 0, 1) // January 1, 2006
+		const maxDate = Date.now()
+		return { minDate, maxDate }
+	}
+
+	// Calculate range from user data
+	const timestamps = userSeries
+		.map(p => normalizeTimeseriesDate(p.date))
+		.filter(ts => Number.isFinite(ts))
+	
+	if (timestamps.length === 0) {
+		// Fallback to default if no valid dates
+		const minDate = Date.UTC(2006, 0, 1)
+		const maxDate = Date.now()
+		return { minDate, maxDate }
+	}
+
+	const minDate = Math.min(...timestamps)
+	const maxDate = Math.max(...timestamps)
+	return { minDate, maxDate }
+}
+
 export function buildTimeseriesChartData(
 	user: { date: string; value: number }[],
 	remote: Record<string, { date: string; value: number }[]>
