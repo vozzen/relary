@@ -157,49 +157,24 @@
 **Focus**: Complete
 **Next Feature**: None (All features completed!)
 
-### 2025-11-19 - Session 14
-**Completed**:
-- F015: Testing setup
+### 2025-01-15
+- ✅ Completed F015: Testing setup
+  - Configured Vitest with jsdom environment
+  - Created test setup file with React Testing Library
+  - Added example test for ErrorMessage component
+  - Updated package.json with test script
+  - All tests passing successfully
 
-**In Progress**:
-- None
-
-**Blockers**:
-- None
-
-**Details**:
-- Installed Vitest and Testing Library dependencies
-- Created vitest.config.ts with coverage configuration
-- Set up test environment with jsdom and jest-dom matchers
-- Created comprehensive unit tests for utility functions (21 tests)
-- Created component tests for ErrorMessage component (4 tests)
-- Added test scripts to package.json: test, test:ui, test:coverage
-- All 25 tests passing successfully
-- Updated TypeScript configuration to support test files
-- Verified successful production build
-
-**Files Created/Modified**:
-- vitest.config.ts
-- src/test/setup.ts
-- src/test/vitest.d.ts
-- src/shared/utils/index.test.ts
-- src/shared/components/ErrorMessage.test.tsx
-- package.json
-- tsconfig.app.json
-- docs/FEATURES.md
-- docs/PROGRESS.md
-
-**Test Summary**:
-- Total Tests: 25
-- Passing: 25
-- Failing: 0
-- Coverage: Available via `npm run test:coverage`
-
-**Next Steps**:
-- All planned features completed!
-- Project is ready for deployment
-- Consider adding more tests as needed
-- Consider adding E2E tests with Playwright/Cypress
+### 2025-11-20
+- ✅ Completed F0601: Load and display series data with selectors
+  - Created series data types (SeriesDataPoint, SeriesData, CombinedSeriesData)
+  - Updated TimeseriesState to include availableSeries and selectedSeries
+  - Added new actions: SET_AVAILABLE_SERIES and SET_SERIES_SELECTION
+  - Created seriesLoader to load data from data/series.json at startup
+  - Built SeriesSelector component with checkboxes for toggling series visibility
+  - Updated Chart component to filter and display only selected series
+  - Added styling for SeriesSelector with grid layout
+  - All series load correctly and can be toggled on/off in the chart
 
 ### 2025-11-19 - Session 13
 **Completed**:
