@@ -49,3 +49,9 @@ For the interval user provided, other time series data should be shown on same c
 ### Phase 5: A library for fetching raw series data
 - 🟢 F0500: Inspect the file "EVDS_Web_Servis_Kullanim_Kilavuzu.txt" in workspace to understand the remote API serving series data. Create a module that includes a client library to consume the service using typescript. Client should be simply a wrapper, but uses typescript structs and types (Date for dates and type/enums for parameters etc.). 
 - 🟢 F0501: Create a service which fetches a configured set of series. It should fetch the series monthly, from configured start date to current month with averaging aggregation. Later, for each series, it should fetch today's value and overwrite this months value with today's value. Each series should be written to a file named as "<series-code>.json" after replacing `<series-code>` with actual series code value. It should be a JSON file. Content should be like `{ "code": "<series-code>, items: [{"date": "2025.03.01", value: "132.14"}] }`. Notice that dates are set to first day of month. Finally create a file named "series.json" to combine all files into one, where struct is like `{ series: [{ "code": "<series-code>, items: [{"date": "2025.03.01", value: "132.14"}] }] }`. Include a README.md describing the tool and how to run it as a standalone tool. Start date and series to fetch should be configurable via env vars. 
+
+### Phase 6: Loading and displaying series
+
+- 🟢 F0601: 
+    - Application should fetch series data from a file located at a URL in web. However for now, it should import sample data from `data/series.json` and keep in memory at startup. Adapt the interfaces, DTOs etc to comply with that file content.
+    - For each loaded series, there should be a checkbox like component with series' code as label which controles whether the series is rendered in chart or not.
