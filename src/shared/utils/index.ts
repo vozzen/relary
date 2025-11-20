@@ -248,6 +248,47 @@ export function generateDerivedSeries(
 }
 
 /**
+ * Generate inflation series from TP.FG.J0 (F0612).
+ * Normalizes inflation to 100 at the earliest user data date.
+ * If no user data, returns the raw TP.FG.J0 series unchanged.
+ */
+export function generateInflationSeries(
+	userSeries: { date: string; value: number }[],
+	remoteSeries: Record<string, { date: string; value: number }[]>
+): Record<string, { date: string; value: number }[]> | null {
+	const tpFgJ0 = remoteSeries['TP.FG.J0']
+	if (!tpFgJ0 || tpFgJ0.length === 0) return null
+	
+	// If no user data, return raw series
+	if (userSeries.length === 0) {
+		return { 'Enflasyon': tpFgJ0 }
+	}
+	
+	// Find earliest user data date
+	const timestamps = userSeries
+		.map(p => normalizeTimeseriesDate(p.date))
+		.filter(ts => Number.isFinite(ts))
+	
+	if (timestamps.length === 0) return null
+	
+	const earliestUserDate = Math.min(...timestamps)
+	
+	// Find TP.FG.J0 value at earliest user date
+	const tpFgJ0Map = createTimeseriesMap(tpFgJ0)
+	const baseValue = tpFgJ0Map.get(earliestUserDate)?.value
+	
+	if (!baseValue || baseValue === 0) return null
+	
+	// Normalize inflation series: (value / baseValue) * 100
+	const inflationSeries = tpFgJ0.map(point => ({
+		date: point.date,
+		value: (point.value / baseValue) * 100
+	}))
+	
+	return { 'Enflasyon': inflationSeries }
+}
+
+/**
  * Extract friendly name from series code (F0605).
  * For codes starting with "TP.DK.", extracts the term after "TP.DK.".
  * Example: "TP.DK.EUR.A.YTL" -> "EUR"

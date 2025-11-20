@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useAppState, useAppDispatch, actions } from '../../../app/store'
-import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName, generateDerivedSeries } from '../../../shared/utils'
+import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName, generateDerivedSeries, generateInflationSeries } from '../../../shared/utils'
 import {
   ResponsiveContainer,
   LineChart,
@@ -46,8 +46,18 @@ export const Chart: FC = () => {
   // Generate derived series (Gelir(<currency>)) from TP.DK.* series (F0606, F0610)
   const derivedSeries = generateDerivedSeries(userSeries, remoteSeries)
   
-  // Merge remote and derived series
-  const allRemoteSeries = { ...remoteSeries, ...derivedSeries }
+  // Generate inflation series from TP.FG.J0 (F0612)
+  const inflationSeries = generateInflationSeries(userSeries, remoteSeries)
+  
+  // Filter out TP.FG.J0 from remote series (F0612)
+  const { 'TP.FG.J0': _removed, ...filteredRemoteSeries } = remoteSeries
+  
+  // Merge filtered remote, derived, and inflation series
+  const allRemoteSeries = { 
+    ...filteredRemoteSeries, 
+    ...derivedSeries,
+    ...(inflationSeries ?? {})
+  }
   
   // Calculate date range based on user data (F0602)
   const { minDate, maxDate } = calculateChartDateRange(userSeries)

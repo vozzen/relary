@@ -9,6 +9,7 @@
 - F0609: Derived series visible on page load without user data
 - F0610: Renamed user series and derived series
 - F0611: Save/load datasets to local storage
+- F0612: Inflation series normalization
 
 **In Progress**:
 - None
@@ -17,6 +18,24 @@
 - None
 
 **Details**:
+
+**F0612: Inflation Series Normalization**
+- Created generateInflationSeries function to normalize TP.FG.J0 inflation data
+- Filters out raw TP.FG.J0 from chart display
+- Generates "Enflasyon" series normalized to 100 at earliest user data date
+- When user data exists: finds base value at earliest date and normalizes all values
+- When no user data: shows raw TP.FG.J0 values as-is
+- Returns null if TP.FG.J0 not found or base value is zero
+- Added 4 comprehensive unit tests for all scenarios
+- All 57 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - generateInflationSeries function)
+- src/features/timeseries/components/Chart.tsx (updated - filter TP.FG.J0, add Enflasyon)
+- src/shared/utils/index.test.ts (updated - 4 new tests for generateInflationSeries)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0611: Save/Load Datasets to Local Storage**
 - Created storage utility module with saveDataset, loadDataset, listDatasets, deleteDataset functions

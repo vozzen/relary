@@ -78,7 +78,7 @@ For the interval user provided, other time series data should be shown on same c
     - Rename user data derived series to "Gelir(<series-friendly-name>)".
 - 🟢 F0611:
     - Let user to save currently entered user data to browser local storage by providing a name. Also let use to list saved data sets' names and load one of them which should immediatly replace currently entered data.
-- 🔴 F0612:
+- 🟢 F0612:
     - For series "TP.FG.J0", do not display its raw form. Instead, 
         - Create another series on load with label "Enflasyon"
         - Whenever user updates data, find the value of "TP.FG.J0" on earliest user data date, and update "Enflasyon" series by dividing "TP.FG.J0" series by that value and multiplying by 100. That will make first visible value of "Enflasyon" always to be 100.

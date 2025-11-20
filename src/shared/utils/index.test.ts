@@ -8,6 +8,7 @@ import {
   calculateChartDateRange,
   getSeriesFriendlyName,
   generateDerivedSeries,
+  generateInflationSeries,
 } from './index'
 
 describe('isValidTimeseriesDate', () => {
@@ -456,3 +457,65 @@ describe('generateDerivedSeries', () => {
     expect(derived['Gelir(USD)'][0].date).toBe('01.2024')
   })
 })
+
+describe('generateInflationSeries', () => {
+  it('should normalize inflation to 100 at earliest user data date (F0612)', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '03.2024', value: 1200 },
+    ]
+    const remoteSeries = {
+      'TP.FG.J0': [
+        { date: '01.2024', value: 800 },
+        { date: '02.2024', value: 850 },
+        { date: '03.2024', value: 880 },
+      ],
+    }
+    
+    const inflation = generateInflationSeries(userSeries, remoteSeries)
+    
+    expect(inflation).not.toBeNull()
+    expect(inflation!['Enflasyon']).toBeDefined()
+    expect(inflation!['Enflasyon']).toHaveLength(3)
+    expect(inflation!['Enflasyon'][0].value).toBe(100) // 800/800 * 100
+    expect(inflation!['Enflasyon'][1].value).toBeCloseTo(106.25) // 850/800 * 100
+    expect(inflation!['Enflasyon'][2].value).toBeCloseTo(110) // 880/800 * 100
+  })
+
+  it('should return raw series when no user data (F0612)', () => {
+    const remoteSeries = {
+      'TP.FG.J0': [
+        { date: '01.2024', value: 800 },
+        { date: '02.2024', value: 850 },
+      ],
+    }
+    
+    const inflation = generateInflationSeries([], remoteSeries)
+    
+    expect(inflation).not.toBeNull()
+    expect(inflation!['Enflasyon']).toEqual(remoteSeries['TP.FG.J0'])
+  })
+
+  it('should return null if TP.FG.J0 not found', () => {
+    const userSeries = [{ date: '01.2024', value: 1000 }]
+    const remoteSeries = {
+      'TP.DK.USD.A.YTL': [{ date: '01.2024', value: 20 }],
+    }
+    
+    const inflation = generateInflationSeries(userSeries, remoteSeries)
+    
+    expect(inflation).toBeNull()
+  })
+
+  it('should return null if base value is zero', () => {
+    const userSeries = [{ date: '01.2024', value: 1000 }]
+    const remoteSeries = {
+      'TP.FG.J0': [{ date: '01.2024', value: 0 }],
+    }
+    
+    const inflation = generateInflationSeries(userSeries, remoteSeries)
+    
+    expect(inflation).toBeNull()
+  })
+})
+
