@@ -1,8 +1,46 @@
 # Development Progress Log
 
 ## Current Sprint
-**Focus**: Phase 5: A library for fetching raw series data
-**Status**: ✅ Phase Complete
+**Focus**: Phase 6: Loading and displaying series
+**Status**: 🔄 In Progress
+### 2025-11-20 - Session 11
+**Completed**:
+- F0601: Series loading and selection
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0601: Series Loading and Selection**
+- Created series type definitions (SeriesDataPoint, SeriesData, CombinedSeriesData)
+- Extended TimeseriesState with availableSeries and selectedSeries tracking
+- Added new actions: SET_AVAILABLE_SERIES, SET_SERIES_SELECTION
+- Updated store reducer to handle series loading and selection
+- Created seriesLoader service to load data from series.json
+- Implemented SeriesSelector component with checkboxes for each series
+- Integrated series loading in HomePage on mount
+- Updated Chart component to filter and display only selected series
+- All series selected by default on initial load
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/types/series.ts (new)
+- src/shared/types/index.ts (updated)
+- src/app/store/index.tsx (updated)
+- src/features/timeseries/api/seriesLoader.ts (new)
+- src/features/timeseries/components/SeriesSelector.tsx (new)
+- src/features/timeseries/components/SeriesSelector.css (new)
+- src/features/timeseries/pages/HomePage.tsx (updated)
+- src/features/timeseries/components/Chart.tsx (updated)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
+
+---
+
 ### 2025-11-20 - Session 10
 **Completed**:
 - F0500: EVDS API client library

@@ -5,6 +5,8 @@ import type { AppState, TimeseriesAction, TimeseriesState, TimeseriesPoint } fro
 const initialTimeseriesState: TimeseriesState = {
   userSeries: [],
   remoteSeries: {},
+  availableSeries: [],
+  selectedSeries: {},
   status: 'idle',
   error: null,
 }
@@ -24,6 +26,13 @@ function timeseriesReducer(state: TimeseriesState, action: TimeseriesAction): Ti
       return {
         ...state,
         remoteSeries: { ...state.remoteSeries, [action.payload.key]: action.payload.series },
+      }
+    case 'SET_AVAILABLE_SERIES':
+      return { ...state, availableSeries: action.payload }
+    case 'SET_SERIES_SELECTION':
+      return {
+        ...state,
+        selectedSeries: { ...state.selectedSeries, [action.payload.code]: action.payload.selected },
       }
     case 'SET_STATUS':
       return { ...state, status: action.payload }
@@ -87,6 +96,10 @@ export const actions = {
     key: string,
     series: TimeseriesPoint[]
   ) => dispatch({ type: 'SET_REMOTE_SERIES', payload: { key, series } }),
+  setAvailableSeries: (dispatch: Dispatch<TimeseriesAction>, codes: string[]) =>
+    dispatch({ type: 'SET_AVAILABLE_SERIES', payload: codes }),
+  setSeriesSelection: (dispatch: Dispatch<TimeseriesAction>, code: string, selected: boolean) =>
+    dispatch({ type: 'SET_SERIES_SELECTION', payload: { code, selected } }),
   setStatus: (dispatch: Dispatch<TimeseriesAction>, status: TimeseriesState['status']) =>
     dispatch({ type: 'SET_STATUS', payload: status }),
   setError: (dispatch: Dispatch<TimeseriesAction>, error: string | null) =>

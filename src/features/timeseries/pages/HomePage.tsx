@@ -5,8 +5,10 @@ import { ErrorMessage } from '../../../shared/components/ErrorMessage'
 import { parseTimeseriesInput, interpolateMonthlyTimeseries } from '../../../shared/utils'
 import { useAppDispatch, useAppState, actions } from '../../../app/store'
 import { loadRemoteTimeseries } from '../api/service'
+import { loadSeriesData } from '../api/seriesLoader'
 import './HomePage.css'
 import { Chart } from '../components/Chart'
+import { SeriesSelector } from '../components/SeriesSelector'
 
 /**
  * HomePage (F007) layout with chart placeholder and timeseries editor.
@@ -20,8 +22,9 @@ export const HomePage: FC = () => {
   const [raw, setRaw] = useState('')
   const [valid, setValid] = useState<boolean | null>(null)
 
-  // Load remote data on mount (example key - would be configurable in production)
+  // Load series data on mount
   useEffect(() => {
+    loadSeriesData(dispatch)
     loadRemoteTimeseries(dispatch, 'example').catch((err) => {
       // eslint-disable-next-line no-console
       console.error('Failed to load remote timeseries:', err)
@@ -62,6 +65,7 @@ export const HomePage: FC = () => {
       <div className="chart-section">
         <Chart />
       </div>
+      <SeriesSelector />
       <div className="editor-section">
         <label htmlFor="timeseries-editor">Veri Girişi</label>
         {(() => {

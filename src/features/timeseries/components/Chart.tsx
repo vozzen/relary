@@ -16,13 +16,26 @@ import './Chart.css'
 /**
  * Timeseries chart using Recharts (F010/F011).
  * Renders user series and remote series with shared X axis.
+ * Only displays selected series (F0601).
  */
 export const Chart: FC = () => {
   const state = useAppState()
-  const { userSeries, remoteSeries } = state.timeseries
-  const data = buildTimeseriesChartData(userSeries, remoteSeries)
+  const { userSeries, remoteSeries, selectedSeries } = state.timeseries
+  
+  // Filter remote series to only include selected ones
+  const filteredRemoteSeries = Object.keys(remoteSeries).reduce(
+    (acc, key) => {
+      if (selectedSeries[key]) {
+        acc[key] = remoteSeries[key]
+      }
+      return acc
+    },
+    {} as Record<string, typeof remoteSeries[string]>
+  )
+  
+  const data = buildTimeseriesChartData(userSeries, filteredRemoteSeries)
   const hasData = data.length > 0
-  const remoteKeys = Object.keys(remoteSeries)
+  const remoteKeys = Object.keys(filteredRemoteSeries)
 
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">

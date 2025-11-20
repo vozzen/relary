@@ -52,6 +52,6 @@ For the interval user provided, other time series data should be shown on same c
 
 ### Phase 6: Loading and displaying series
 
-- 🔴 F0601: 
+- 🟢 F0601: 
     - Application should fetch series data from a file located at a URL in web. However for now, it should import sample data from `data/series.json` and keep in memory at startup. Adapt the interfaces, DTOs etc to comply with that file content.
     - For each loaded series, there should be a checkbox like component with series' code as label which controles whether the series is rendered in chart or not.
