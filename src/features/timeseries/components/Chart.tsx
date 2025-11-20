@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useAppState, useAppDispatch, actions } from '../../../app/store'
-import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName, generateDerivedSeries, generateInflationSeries } from '../../../shared/utils'
+import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName, generateDerivedSeries, generateInflationSeries, generatePurchasingPowerSeries } from '../../../shared/utils'
 import {
   ResponsiveContainer,
   LineChart,
@@ -49,14 +49,21 @@ export const Chart: FC = () => {
   // Generate inflation series from TP.FG.J0 (F0612)
   const inflationSeries = generateInflationSeries(userSeries, remoteSeries)
   
+  // Generate purchasing power series from user data and inflation (F0613)
+  const purchasingPowerSeries = generatePurchasingPowerSeries(
+    userSeries, 
+    inflationSeries?.['Enflasyon'] ?? null
+  )
+  
   // Filter out TP.FG.J0 from remote series (F0612)
   const { 'TP.FG.J0': _removed, ...filteredRemoteSeries } = remoteSeries
   
-  // Merge filtered remote, derived, and inflation series
+  // Merge filtered remote, derived, inflation, and purchasing power series
   const allRemoteSeries = { 
     ...filteredRemoteSeries, 
     ...derivedSeries,
-    ...(inflationSeries ?? {})
+    ...(inflationSeries || {}),
+    ...(purchasingPowerSeries || {})
   }
   
   // Calculate date range based on user data (F0602)

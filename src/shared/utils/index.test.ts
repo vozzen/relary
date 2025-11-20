@@ -9,6 +9,7 @@ import {
   getSeriesFriendlyName,
   generateDerivedSeries,
   generateInflationSeries,
+  generatePurchasingPowerSeries,
 } from './index'
 
 describe('isValidTimeseriesDate', () => {
@@ -516,6 +517,101 @@ describe('generateInflationSeries', () => {
     const inflation = generateInflationSeries(userSeries, remoteSeries)
     
     expect(inflation).toBeNull()
+  })
+})
+
+describe('generatePurchasingPowerSeries', () => {
+  it('should calculate purchasing power correctly (F0613)', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '02.2024', value: 1200 },
+      { date: '03.2024', value: 1500 },
+    ]
+    const inflationSeries = [
+      { date: '01.2024', value: 100 }, // Base inflation
+      { date: '02.2024', value: 110 }, // 10% increase
+      { date: '03.2024', value: 120 }, // 20% increase
+    ]
+    
+    const result = generatePurchasingPowerSeries(userSeries, inflationSeries)
+    
+    expect(result).not.toBeNull()
+    expect(result!['Alım gücü']).toBeDefined()
+    expect(result!['Alım gücü']).toHaveLength(3)
+    
+    // First point: (1000/1000)*100 / 100 * 100 = 100
+    expect(result!['Alım gücü'][0].value).toBe(100)
+    
+    // Second point: (1200/1000)*100 / 110 * 100 = 120/110*100 ≈ 109.09
+    expect(result!['Alım gücü'][1].value).toBeCloseTo(109.09, 2)
+    
+    // Third point: (1500/1000)*100 / 120 * 100 = 150/120*100 = 125
+    expect(result!['Alım gücü'][2].value).toBe(125)
+  })
+
+  it('should return null when no user data (F0613)', () => {
+    const inflationSeries = [{ date: '01.2024', value: 100 }]
+    
+    const result = generatePurchasingPowerSeries([], inflationSeries)
+    
+    expect(result).toBeNull()
+  })
+
+  it('should return null when no inflation data (F0613)', () => {
+    const userSeries = [{ date: '01.2024', value: 1000 }]
+    
+    const result = generatePurchasingPowerSeries(userSeries, null)
+    
+    expect(result).toBeNull()
+  })
+
+  it('should return null when first user value is zero (F0613)', () => {
+    const userSeries = [{ date: '01.2024', value: 0 }]
+    const inflationSeries = [{ date: '01.2024', value: 100 }]
+    
+    const result = generatePurchasingPowerSeries(userSeries, inflationSeries)
+    
+    expect(result).toBeNull()
+  })
+
+  it('should skip points where inflation is zero (F0613)', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '02.2024', value: 1200 },
+      { date: '03.2024', value: 1500 },
+    ]
+    const inflationSeries = [
+      { date: '01.2024', value: 100 },
+      { date: '02.2024', value: 0 }, // Zero inflation
+      { date: '03.2024', value: 120 },
+    ]
+    
+    const result = generatePurchasingPowerSeries(userSeries, inflationSeries)
+    
+    expect(result).not.toBeNull()
+    expect(result!['Alım gücü']).toHaveLength(2) // Only 2 points (skip zero)
+    expect(result!['Alım gücü'][0].date).toBe('01.2024')
+    expect(result!['Alım gücü'][1].date).toBe('03.2024')
+  })
+
+  it('should skip points without matching inflation data (F0613)', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '02.2024', value: 1200 },
+      { date: '03.2024', value: 1500 },
+    ]
+    const inflationSeries = [
+      { date: '01.2024', value: 100 },
+      // Missing 02.2024
+      { date: '03.2024', value: 120 },
+    ]
+    
+    const result = generatePurchasingPowerSeries(userSeries, inflationSeries)
+    
+    expect(result).not.toBeNull()
+    expect(result!['Alım gücü']).toHaveLength(2) // Only 2 matching dates
+    expect(result!['Alım gücü'][0].date).toBe('01.2024')
+    expect(result!['Alım gücü'][1].date).toBe('03.2024')
   })
 })
 

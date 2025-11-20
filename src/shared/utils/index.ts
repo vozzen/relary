@@ -289,6 +289,79 @@ export function generateInflationSeries(
 }
 
 /**
+ * Generate "Alım gücü" (Purchasing Power) series from user data and inflation series (F0613).
+ * Steps:
+ * 1. Normalize user data to 100 at first user data value (divide by first value * 100)
+ * 2. Divide normalized user data by Enflasyon series values
+ * 3. Multiply by 100
+ * 
+ * Returns null if:
+ * - User data is empty
+ * - Inflation series is empty
+ * - First user data value is zero
+ * - No matching dates between user data and inflation
+ * 
+ * @param userSeries User-entered income data
+ * @param inflationSeries Normalized inflation series (from generateInflationSeries)
+ * @returns Record with single key "Alım gücü" containing calculated series, or null
+ */
+export function generatePurchasingPowerSeries(
+	userSeries: { date: string; value: number }[],
+	inflationSeries: { date: string; value: number }[] | null
+): Record<string, { date: string; value: number }[]> | null {
+	// Require user data
+	if (userSeries.length === 0) {
+		return null
+	}
+	
+	// Require inflation data
+	if (!inflationSeries || inflationSeries.length === 0) {
+		return null
+	}
+	
+	// Get first user data value as base
+	const firstUserValue = userSeries[0].value
+	if (firstUserValue === 0) {
+		return null
+	}
+	
+	// Create map of inflation values by date for easy lookup
+	const inflationMap = new Map<string, number>()
+	for (const point of inflationSeries) {
+		inflationMap.set(point.date, point.value)
+	}
+	
+	// Calculate purchasing power for each user data point that has matching inflation
+	const purchasingPowerSeries: { date: string; value: number }[] = []
+	
+	for (const userPoint of userSeries) {
+		const inflationValue = inflationMap.get(userPoint.date)
+		
+		// Skip if no matching inflation data or inflation is zero
+		if (inflationValue === undefined || inflationValue === 0) {
+			continue
+		}
+		
+		// Step 1: Normalize user data (userValue / firstUserValue * 100)
+		const normalizedUserValue = (userPoint.value / firstUserValue) * 100
+		
+		// Step 2-3: Divide by inflation and multiply by 100
+		const purchasingPower = (normalizedUserValue / inflationValue) * 100
+		
+		purchasingPowerSeries.push({
+			date: userPoint.date,
+			value: purchasingPower
+		})
+	}
+	
+	if (purchasingPowerSeries.length === 0) {
+		return null
+	}
+	
+	return { 'Alım gücü': purchasingPowerSeries }
+}
+
+/**
  * Extract friendly name from series code (F0605).
  * For codes starting with "TP.DK.", extracts the term after "TP.DK.".
  * Example: "TP.DK.EUR.A.YTL" -> "EUR"

@@ -10,6 +10,7 @@
 - F0610: Renamed user series and derived series
 - F0611: Save/load datasets to local storage
 - F0612: Inflation series normalization
+- F0613: Purchasing power series calculation
 
 **In Progress**:
 - None
@@ -18,6 +19,25 @@
 - None
 
 **Details**:
+
+**F0613: Purchasing Power Series Calculation**
+- Created generatePurchasingPowerSeries function to calculate "Alım gücü" series
+- Takes user data and normalized inflation series as inputs
+- Step 1: Normalizes user data to 100 at first user data value
+- Step 2-3: Divides normalized user data by inflation and multiplies by 100
+- Skips points with zero inflation or missing inflation data
+- Returns null when user data or inflation is empty/invalid
+- Integrated in Chart component to display alongside other series
+- Added 6 comprehensive unit tests covering all scenarios
+- All 63 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - generatePurchasingPowerSeries function)
+- src/features/timeseries/components/Chart.tsx (updated - integrate purchasing power)
+- src/shared/utils/index.test.ts (updated - 6 new tests for generatePurchasingPowerSeries)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0612: Inflation Series Normalization**
 - Created generateInflationSeries function to normalize TP.FG.J0 inflation data
