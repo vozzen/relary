@@ -37,7 +37,8 @@ export const Chart: FC = () => {
   const handleLegendClick = (data: any) => {
     const dataKey = typeof data.dataKey === 'string' ? data.dataKey : String(data.dataKey)
     if (dataKey) {
-      const currentValue = selectedSeries[dataKey] ?? false
+      // Get current value - if undefined, it means it's currently selected (default behavior)
+      const currentValue = selectedSeries[dataKey] ?? true
       actions.setSeriesSelection(dispatch, dataKey, !currentValue)
     }
   }
@@ -48,10 +49,11 @@ export const Chart: FC = () => {
   // Merge remote and derived series
   const allRemoteSeries = { ...remoteSeries, ...derivedSeries }
   
-  // Filter to only include selected ones
+  // Filter to only include selected ones (default to true if not set)
   const filteredRemoteSeries = Object.keys(allRemoteSeries).reduce(
     (acc, key) => {
-      if (selectedSeries[key]) {
+      const isSelected = selectedSeries[key] ?? true
+      if (isSelected) {
         acc[key] = allRemoteSeries[key]
       }
       return acc
@@ -71,6 +73,9 @@ export const Chart: FC = () => {
   })
   const hasData = data.length > 0
   const remoteKeys = Object.keys(filteredRemoteSeries)
+  
+  // Check if user series should be displayed (default to true if not set)
+  const showUserSeries = hasData && (selectedSeries['user'] ?? true)
 
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
@@ -84,7 +89,7 @@ export const Chart: FC = () => {
               stroke="#64748b"
             />
             {/* Y axis for user series (F0604) */}
-            {hasData && (
+            {showUserSeries && (
               <YAxis
                 yAxisId="user"
                 orientation="left"
@@ -119,7 +124,7 @@ export const Chart: FC = () => {
               wrapperStyle={{ fontSize: 12, cursor: 'pointer' }} 
               onClick={handleLegendClick}
             />
-            {hasData && (
+            {showUserSeries && (
               <Line
                 type="monotone"
                 dataKey="user"
