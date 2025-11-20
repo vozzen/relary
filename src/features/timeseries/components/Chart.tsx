@@ -49,22 +49,11 @@ export const Chart: FC = () => {
   // Merge remote and derived series
   const allRemoteSeries = { ...remoteSeries, ...derivedSeries }
   
-  // Filter to only include selected ones (default to true if not set)
-  const filteredRemoteSeries = Object.keys(allRemoteSeries).reduce(
-    (acc, key) => {
-      const isSelected = selectedSeries[key] ?? true
-      if (isSelected) {
-        acc[key] = allRemoteSeries[key]
-      }
-      return acc
-    },
-    {} as Record<string, typeof remoteSeries[string]>
-  )
-  
   // Calculate date range based on user data (F0602)
   const { minDate, maxDate } = calculateChartDateRange(userSeries)
   
-  const allData = buildTimeseriesChartData(userSeries, filteredRemoteSeries)
+  // Build chart data with ALL series (don't filter here, use hide prop on Line instead)
+  const allData = buildTimeseriesChartData(userSeries, allRemoteSeries)
   
   // Filter data to only show the calculated date range (F0602)
   const data = allData.filter((row) => {
@@ -72,10 +61,7 @@ export const Chart: FC = () => {
     return ts >= minDate && ts <= maxDate
   })
   const hasData = data.length > 0
-  const remoteKeys = Object.keys(filteredRemoteSeries)
-  
-  // Check if user series should be displayed (default to true if not set)
-  const showUserSeries = hasData && (selectedSeries['user'] ?? true)
+  const remoteKeys = Object.keys(allRemoteSeries)
 
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
@@ -89,7 +75,7 @@ export const Chart: FC = () => {
               stroke="#64748b"
             />
             {/* Y axis for user series (F0604) */}
-            {showUserSeries && (
+            {hasData && (selectedSeries['user'] ?? true) && (
               <YAxis
                 yAxisId="user"
                 orientation="left"
@@ -101,7 +87,9 @@ export const Chart: FC = () => {
             )}
             {/* Y axes for remote series - alternate left/right (F0604) */}
             {remoteKeys.map((k, i) => {
-              const axisIndex = hasData ? i + 1 : i
+              const isSelected = selectedSeries[k] ?? true
+              if (!isSelected) return null
+              const axisIndex = hasData && (selectedSeries['user'] ?? true) ? i + 1 : i
               const orientation = axisIndex % 2 === 0 ? 'left' : 'right'
               const color = remoteColor(i)
               return (
@@ -124,7 +112,7 @@ export const Chart: FC = () => {
               wrapperStyle={{ fontSize: 12, cursor: 'pointer' }} 
               onClick={handleLegendClick}
             />
-            {showUserSeries && (
+            {hasData && (
               <Line
                 type="monotone"
                 dataKey="user"
@@ -134,21 +122,26 @@ export const Chart: FC = () => {
                 dot={{ r: 2 }}
                 isAnimationActive={false}
                 name="Kullanıcı"
+                hide={!(selectedSeries['user'] ?? true)}
               />
             )}
-            {remoteKeys.map((k, i) => (
-              <Line
-                key={k}
-                type="monotone"
-                dataKey={k}
-                yAxisId={k}
-                strokeWidth={2}
-                stroke={remoteColor(i)}
-                dot={false}
-                isAnimationActive={false}
-                name={getSeriesFriendlyName(k)}
-              />
-            ))}
+            {remoteKeys.map((k, i) => {
+              const isSelected = selectedSeries[k] ?? true
+              return (
+                <Line
+                  key={k}
+                  type="monotone"
+                  dataKey={k}
+                  yAxisId={k}
+                  strokeWidth={2}
+                  stroke={remoteColor(i)}
+                  dot={false}
+                  isAnimationActive={false}
+                  name={getSeriesFriendlyName(k)}
+                  hide={!isSelected}
+                />
+              )
+            })}
           </LineChart>
         </ResponsiveContainer>
       </div>
