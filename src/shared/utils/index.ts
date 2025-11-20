@@ -2,13 +2,18 @@ export function noop() {}
 
 /**
  * Validate allowed timeseries date formats.
- * Formats: DD.MM.YYYY | MM.YYYY | MM-YYYY
+ * Formats: DD.MM.YYYY | D.M.YYYY | MM.YYYY | M.YYYY | MM-YYYY | M-YYYY | D-M-YYYY
  */
 export function isValidTimeseriesDate(raw: string): boolean {
-	const ddmmyyyy = /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/
-	const mmyyyyDot = /^(0[1-9]|1[0-2])\.\d{4}$/
-	const mmyyyyDash = /^(0[1-9]|1[0-2])-\d{4}$/
-	return ddmmyyyy.test(raw) || mmyyyyDot.test(raw) || mmyyyyDash.test(raw)
+	// DD.MM.YYYY or D.M.YYYY (day.month.year with 1-2 digits for day and month)
+	const ddmmyyyyDot = /^([1-9]|0[1-9]|[12]\d|3[01])\.([1-9]|0[1-9]|1[0-2])\.\d{4}$/
+	// MM.YYYY or M.YYYY (month.year with 1-2 digits for month)
+	const mmyyyyDot = /^([1-9]|0[1-9]|1[0-2])\.\d{4}$/
+	// MM-YYYY or M-YYYY (month-year with 1-2 digits for month)
+	const mmyyyyDash = /^([1-9]|0[1-9]|1[0-2])-\d{4}$/
+	// D-M-YYYY (day-month-year with 1-2 digits for day and month)
+	const ddmmyyyyDash = /^([1-9]|0[1-9]|[12]\d|3[01])-([1-9]|0[1-9]|1[0-2])-\d{4}$/
+	return ddmmyyyyDot.test(raw) || mmyyyyDot.test(raw) || mmyyyyDash.test(raw) || ddmmyyyyDash.test(raw)
 }
 
 /**
@@ -47,24 +52,39 @@ export function parseTimeseriesInput(input: string): {
 
 /**
  * Normalize a timeseries date string into a UTC timestamp (ms).
- * - DD.MM.YYYY -> day, month, year
- * - MM.YYYY / MM-YYYY -> first day of month
+ * - DD.MM.YYYY | D.M.YYYY -> day, month, year
+ * - MM.YYYY | M.YYYY -> first day of month
+ * - MM-YYYY | M-YYYY -> first day of month
+ * - D-M-YYYY -> day, month, year
  */
 export function normalizeTimeseriesDate(raw: string): number {
 	if (!isValidTimeseriesDate(raw)) return Number.NaN
 	let day = 1
 	let month: number
 	let year: number
-	if (/^\d{2}\.\d{2}\.\d{4}$/.test(raw)) {
+	
+	// Check if it contains day.month.year pattern (D.M.YYYY or DD.MM.YYYY)
+	if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(raw)) {
 		const [d, m, y] = raw.split('.')
 		day = Number(d)
 		month = Number(m)
 		year = Number(y)
-	} else if (/^\d{2}\.\d{4}$/.test(raw)) {
+	}
+	// Check if it contains day-month-year pattern (D-M-YYYY)
+	else if (/^\d{1,2}-\d{1,2}-\d{4}$/.test(raw)) {
+		const [d, m, y] = raw.split('-')
+		day = Number(d)
+		month = Number(m)
+		year = Number(y)
+	}
+	// Check if it contains month.year pattern (M.YYYY or MM.YYYY)
+	else if (/^\d{1,2}\.\d{4}$/.test(raw)) {
 		const [m, y] = raw.split('.')
 		month = Number(m)
 		year = Number(y)
-	} else {
+	}
+	// Must be month-year pattern (M-YYYY or MM-YYYY)
+	else {
 		const [m, y] = raw.split('-')
 		month = Number(m)
 		year = Number(y)

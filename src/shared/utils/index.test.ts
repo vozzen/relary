@@ -15,14 +15,38 @@ describe('isValidTimeseriesDate', () => {
     expect(isValidTimeseriesDate('15.06.2024')).toBe(true)
   })
 
+  it('should validate D.M.YYYY format (F0603)', () => {
+    expect(isValidTimeseriesDate('1.1.2024')).toBe(true)
+    expect(isValidTimeseriesDate('9.3.2024')).toBe(true)
+    expect(isValidTimeseriesDate('31.12.2024')).toBe(true)
+    expect(isValidTimeseriesDate('5.12.2024')).toBe(true)
+  })
+
   it('should validate MM.YYYY format', () => {
     expect(isValidTimeseriesDate('01.2024')).toBe(true)
     expect(isValidTimeseriesDate('12.2024')).toBe(true)
   })
 
+  it('should validate M.YYYY format (F0603)', () => {
+    expect(isValidTimeseriesDate('1.2024')).toBe(true)
+    expect(isValidTimeseriesDate('9.2024')).toBe(true)
+  })
+
   it('should validate MM-YYYY format', () => {
     expect(isValidTimeseriesDate('01-2024')).toBe(true)
     expect(isValidTimeseriesDate('12-2024')).toBe(true)
+  })
+
+  it('should validate M-YYYY format (F0603)', () => {
+    expect(isValidTimeseriesDate('1-2024')).toBe(true)
+    expect(isValidTimeseriesDate('9-2024')).toBe(true)
+  })
+
+  it('should validate D-M-YYYY format (F0603)', () => {
+    expect(isValidTimeseriesDate('1-1-2024')).toBe(true)
+    expect(isValidTimeseriesDate('9-3-2024')).toBe(true)
+    expect(isValidTimeseriesDate('31-12-2024')).toBe(true)
+    expect(isValidTimeseriesDate('5-12-2024')).toBe(true)
   })
 
   it('should reject invalid formats', () => {
@@ -31,6 +55,8 @@ describe('isValidTimeseriesDate', () => {
     expect(isValidTimeseriesDate('invalid')).toBe(false)
     expect(isValidTimeseriesDate('32.01.2024')).toBe(false)
     expect(isValidTimeseriesDate('01.13.2024')).toBe(false)
+    expect(isValidTimeseriesDate('0.1.2024')).toBe(false) // Day cannot be 0
+    expect(isValidTimeseriesDate('1.0.2024')).toBe(false) // Month cannot be 0
   })
 })
 
@@ -100,6 +126,42 @@ describe('normalizeTimeseriesDate', () => {
     
     expect(date.getUTCFullYear()).toBe(2024)
     expect(date.getUTCMonth()).toBe(5)
+    expect(date.getUTCDate()).toBe(1)
+  })
+
+  it('should normalize D.M.YYYY to timestamp (F0603)', () => {
+    const ts = normalizeTimeseriesDate('5.3.2024')
+    const date = new Date(ts)
+    
+    expect(date.getUTCFullYear()).toBe(2024)
+    expect(date.getUTCMonth()).toBe(2) // March is month 2 (0-indexed)
+    expect(date.getUTCDate()).toBe(5)
+  })
+
+  it('should normalize D-M-YYYY to timestamp (F0603)', () => {
+    const ts = normalizeTimeseriesDate('9-11-2024')
+    const date = new Date(ts)
+    
+    expect(date.getUTCFullYear()).toBe(2024)
+    expect(date.getUTCMonth()).toBe(10) // November is month 10 (0-indexed)
+    expect(date.getUTCDate()).toBe(9)
+  })
+
+  it('should normalize M.YYYY to first day of month (F0603)', () => {
+    const ts = normalizeTimeseriesDate('3.2024')
+    const date = new Date(ts)
+    
+    expect(date.getUTCFullYear()).toBe(2024)
+    expect(date.getUTCMonth()).toBe(2)
+    expect(date.getUTCDate()).toBe(1)
+  })
+
+  it('should normalize M-YYYY to first day of month (F0603)', () => {
+    const ts = normalizeTimeseriesDate('7-2024')
+    const date = new Date(ts)
+    
+    expect(date.getUTCFullYear()).toBe(2024)
+    expect(date.getUTCMonth()).toBe(6)
     expect(date.getUTCDate()).toBe(1)
   })
 

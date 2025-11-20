@@ -58,4 +58,5 @@ For the interval user provided, other time series data should be shown on same c
 - 🟢 F0602: 
     - When user enters a valid data, update the chart's begin and end dates so only the interval of user data is shown on chart.
     - If no data entered, default range should be from 01.2006 to today.
-- 🔴 F0602: 
+- 🟢 F0603:
+    - Accept D.M.YYYY or D-M-YYYY as user data format too

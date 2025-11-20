@@ -7,6 +7,7 @@
 **Completed**:
 - F0601: Series loading and selection
 - F0602: Dynamic date range filtering
+- F0603: Extended date format support
 
 **In Progress**:
 - None
@@ -15,6 +16,20 @@
 - None
 
 **Details**:
+
+**F0603: Extended Date Format Support**
+- Extended isValidTimeseriesDate to accept D.M.YYYY and D-M-YYYY formats
+- Updated normalizeTimeseriesDate to handle single-digit day/month formats
+- Now supports: DD.MM.YYYY, D.M.YYYY, MM.YYYY, M.YYYY, MM-YYYY, M-YYYY, D-M-YYYY
+- Added comprehensive tests for all new formats (8 new validation tests, 4 new normalization tests)
+- All 45 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - enhanced validation and normalization)
+- src/shared/utils/index.test.ts (updated - added 12 new tests)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0602: Dynamic Date Range Filtering**
 - Created calculateChartDateRange utility function
