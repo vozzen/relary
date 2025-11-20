@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useAppState } from '../../../app/store'
+import { useAppState, useAppDispatch, actions } from '../../../app/store'
 import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName, generateDerivedSeries } from '../../../shared/utils'
 import {
   ResponsiveContainer,
@@ -14,15 +14,33 @@ import {
 import './Chart.css'
 
 /**
+ * Custom tooltip formatter to show 2 decimal places (F0607)
+ */
+const formatTooltipValue = (value: number) => {
+  return typeof value === 'number' ? value.toFixed(2) : value
+}
+
+/**
  * Timeseries chart using Recharts (F010/F011).
  * Renders user series and remote series with shared X axis.
  * Only displays selected series (F0601).
  * Filters data by date range based on user input (F0602).
  * Each series has its own Y axis (F0604).
+ * Legend is clickable to toggle series (F0607).
  */
 export const Chart: FC = () => {
   const state = useAppState()
+  const dispatch = useAppDispatch()
   const { userSeries, remoteSeries, selectedSeries } = state.timeseries
+  
+  // Handle legend click to toggle series visibility (F0607)
+  const handleLegendClick = (data: any) => {
+    const dataKey = typeof data.dataKey === 'string' ? data.dataKey : String(data.dataKey)
+    if (dataKey) {
+      const currentValue = selectedSeries[dataKey] ?? false
+      actions.setSeriesSelection(dispatch, dataKey, !currentValue)
+    }
+  }
   
   // Generate derived series (₺/currency) from TP.DK.* series (F0606)
   const derivedSeries = generateDerivedSeries(userSeries, remoteSeries)
@@ -57,7 +75,7 @@ export const Chart: FC = () => {
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
       <div className="chart-wrapper">
-        <ResponsiveContainer width="100%" height={240}>
+        <ResponsiveContainer width="100%" height={400}>
           <LineChart data={data} margin={{ left: 8, right: 24, top: 10, bottom: 10 }}>
             <CartesianGrid stroke="#334155" strokeDasharray="4 4" />
             <XAxis
@@ -95,8 +113,12 @@ export const Chart: FC = () => {
             })}
             <Tooltip
               contentStyle={{ background: '#1e293b', border: '1px solid #334155', fontSize: 12 }}
+              formatter={formatTooltipValue}
             />
-            <Legend wrapperStyle={{ fontSize: 12 }} />
+            <Legend 
+              wrapperStyle={{ fontSize: 12, cursor: 'pointer' }} 
+              onClick={handleLegendClick}
+            />
             {hasData && (
               <Line
                 type="monotone"

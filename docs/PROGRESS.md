@@ -11,6 +11,7 @@
 - F0604: Multiple Y axes for series
 - F0605: Friendly series names for TP.DK.* codes
 - F0606: Auto-generated derived series (₺/currency)
+- F0607: Interactive legend and decimal formatting
 
 **In Progress**:
 - None
@@ -19,6 +20,21 @@
 - None
 
 **Details**:
+
+**F0607: Interactive Legend and Decimal Formatting**
+- Added custom tooltip formatter to display values with 2 decimal places
+- Made chart legend clickable to toggle series visibility
+- Removed separate SeriesSelector checkbox component
+- Increased chart height from 240px to 400px to fill the space
+- Legend now acts as the series selector with visual feedback
+- All 53 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/features/timeseries/components/Chart.tsx (updated - added formatTooltipValue, handleLegendClick, increased height)
+- src/features/timeseries/pages/HomePage.tsx (updated - removed SeriesSelector)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0606: Auto-generated Derived Series (₺/currency)**
 - Created generateDerivedSeries utility function

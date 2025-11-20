@@ -66,4 +66,6 @@ For the interval user provided, other time series data should be shown on same c
     - For each series with code starting with "TP.DK.", use the term after as label name in series selector. e.g. use EUR for "TP.DK.EUR.A.YTL".
 - 🟢 F0606:
     - For any loaded series with code starting "TP.DK.", generate another series with code and name "₺/<series-name>". Series should have a data point for each month that user data has and value should be calculated by dividing user data value for that month to loaded series value for that month. This series should be updated whenever user data series is updated.
-    
+- 🟢 F0607:
+    - Chart should show only 2 decimal digits
+    - Series should be selected directly clicking on the labels on chart instead of a separate set of checkboxes. Let chart to fill that gap of removed checkbox group
