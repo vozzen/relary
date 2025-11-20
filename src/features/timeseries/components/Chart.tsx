@@ -6,6 +6,7 @@ import {
   LineChart,
   Line,
   XAxis,
+  YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
@@ -73,6 +74,36 @@ export const Chart: FC = () => {
               tick={{ fontSize: 11, fill: '#94a3b8' }}
               stroke="#64748b"
             />
+            {/* Y axis for user series (F0604) */}
+            {hasData && (
+              <YAxis
+                yAxisId="user"
+                orientation="left"
+                tick={false}
+                axisLine={false}
+                width={0}
+                allowDecimals={false}
+                hide={!(selectedSeries['user'] ?? true)}
+              />
+            )}
+            {/* Y axes for remote series - alternate left/right (F0604) */}
+            {remoteKeys.map((k, i) => {
+              const isSelected = selectedSeries[k] ?? true
+              const axisIndex = hasData ? i + 1 : i
+              const orientation = axisIndex % 2 === 0 ? 'left' : 'right'
+              return (
+                <YAxis
+                  key={k}
+                  yAxisId={k}
+                  orientation={orientation}
+                  tick={false}
+                  axisLine={false}
+                  width={0}
+                  allowDecimals={false}
+                  hide={!isSelected}
+                />
+              )
+            })}
             <Tooltip
               contentStyle={{ background: '#1e293b', border: '1px solid #334155', fontSize: 12 }}
               formatter={formatTooltipValue}
@@ -85,6 +116,7 @@ export const Chart: FC = () => {
               <Line
                 type="monotone"
                 dataKey="user"
+                yAxisId="user"
                 stroke="#22c55e"
                 strokeWidth={2}
                 dot={{ r: 2 }}
@@ -100,6 +132,7 @@ export const Chart: FC = () => {
                   key={k}
                   type="monotone"
                   dataKey={k}
+                  yAxisId={k}
                   strokeWidth={2}
                   stroke={remoteColor(i)}
                   dot={false}
