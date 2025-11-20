@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 import { useState, useCallback, useEffect } from 'react'
-import { Placeholder } from '../../../shared/components/Placeholder'
 import { ErrorMessage } from '../../../shared/components/ErrorMessage'
 import { parseTimeseriesInput, interpolateMonthlyTimeseries, getSeriesFriendlyName } from '../../../shared/utils'
 import { useAppDispatch, useAppState, actions } from '../../../app/store'
@@ -210,8 +209,6 @@ export const HomePage: FC = () => {
             </div>
           )}
         </div>
-        
-        <Placeholder label="Timeseries Module Placeholder" />
       </div>
     </section>
   )
