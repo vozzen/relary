@@ -2,10 +2,11 @@
 
 ## Current Sprint
 **Focus**: Phase 5: A library for fetching raw series data
-**Next Feature**: F0501
+**Status**: ✅ Phase Complete
 ### 2025-11-20 - Session 10
 **Completed**:
 - F0500: EVDS API client library
+- F0501: Series data fetcher tool
 
 **In Progress**:
 - None
@@ -14,6 +15,8 @@
 - None
 
 **Details**:
+
+**F0500: EVDS API Client Library**
 - Created comprehensive TypeScript types for EVDS API (AggregationType, FormulaType, FrequencyType, etc.)
 - Implemented EVDSClient class with full API coverage:
   - getSeries() - fetch time series data
@@ -26,19 +29,36 @@
 - Comprehensive unit tests with 100% coverage
 - Full documentation in README.md
 
+**F0501: Series Data Fetcher Tool**
+- Created standalone CLI tool to fetch EVDS series data
+- Fetches monthly data with averaging aggregation
+- Updates current month with today's value
+- Saves individual series JSON files (format: `<series-code>.json`)
+- Saves combined series file (`series.json`)
+- Configurable via environment variables (API key, series codes, start date, output dir)
+- Includes comprehensive README with usage examples
+- Added npm script: `npm run fetch-series`
+- Installed tsx for TypeScript execution
+- Created .env.example template
+
 **Files Created/Modified**:
 - src/shared/evds/types.ts
 - src/shared/evds/client.ts
 - src/shared/evds/index.ts
 - src/shared/evds/README.md
 - src/shared/evds/client.test.ts
+- tools/fetch-series.ts
+- tools/README.md
+- .env.example
+- package.json
 - docs/FEATURES.md
 - docs/PROGRESS.md
 
-**Next Feature**: F0501
+**Next Feature**: Phase 5 Complete - All features implemented
 
 **Next Steps**:
-1. Implement F0501 - Service to fetch configured series and save to JSON files
+1. Phase 5 is complete with both F0500 and F0501 implemented
+2. Ready for next phase or additional features
 ### 2025-11-19 - Session 9
 **Completed**:
 - F013: Responsive design
