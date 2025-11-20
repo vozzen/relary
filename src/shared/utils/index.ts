@@ -214,10 +214,10 @@ function calculateDerivedPoints(
 }
 
 /**
- * Generate derived series for TP.DK.* codes (F0606, F0609).
- * For each TP.DK.* series, creates a "₺/<name>" series.
+ * Generate derived series for TP.DK.* codes (F0606, F0609, F0610).
+ * For each TP.DK.* series, creates a "Gelir(<name>)" series.
  * If user data exists, values = userValue / tpDkValue for matching months.
- * If no user data, shows the TP.DK.* series itself as "₺/<name>" (F0609).
+ * If no user data, shows the TP.DK.* series itself as "Gelir(<name>)" (F0609).
  */
 export function generateDerivedSeries(
 	userSeries: { date: string; value: number }[],
@@ -229,7 +229,7 @@ export function generateDerivedSeries(
 		if (!code.startsWith('TP.DK.')) continue
 		
 		const friendlyName = getSeriesFriendlyName(code)
-		const derivedKey = `₺/${friendlyName}`
+		const derivedKey = `Gelir(${friendlyName})`
 		
 		if (userSeries.length === 0) {
 			// No user data: show the exchange rate series itself (F0609)

@@ -43,7 +43,7 @@ export const Chart: FC = () => {
     }
   }
   
-  // Generate derived series (₺/currency) from TP.DK.* series (F0606)
+  // Generate derived series (Gelir(<currency>)) from TP.DK.* series (F0606, F0610)
   const derivedSeries = generateDerivedSeries(userSeries, remoteSeries)
   
   // Merge remote and derived series
@@ -121,7 +121,7 @@ export const Chart: FC = () => {
                 strokeWidth={2}
                 dot={{ r: 2 }}
                 isAnimationActive={false}
-                name="Kullanıcı"
+                name="Gelir(₺)"
                 hide={!(selectedSeries['user'] ?? true)}
               />
             )}

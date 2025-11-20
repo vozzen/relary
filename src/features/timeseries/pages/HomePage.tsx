@@ -36,10 +36,10 @@ export const HomePage: FC = () => {
         const interpolated = interpolateMonthlyTimeseries(points)
         actions.setUserSeries(dispatch, interpolated)
         
-        // Update available series to include derived series (F0606)
+        // Update available series to include derived series (F0606, F0610)
         const derivedCodes = Object.keys(state.timeseries.remoteSeries)
           .filter(code => code.startsWith('TP.DK.'))
-          .map(code => `₺/${getSeriesFriendlyName(code)}`)
+          .map(code => `Gelir(${getSeriesFriendlyName(code)})`)
         
         const allCodes = [...state.timeseries.availableSeries, ...derivedCodes]
         // Remove duplicates

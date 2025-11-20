@@ -7,6 +7,7 @@
 **Completed**:
 - F0608: Chart interval always ends at current month
 - F0609: Derived series visible on page load without user data
+- F0610: Renamed user series and derived series
 
 **In Progress**:
 - None
@@ -15,6 +16,24 @@
 - None
 
 **Details**:
+
+**F0610: Renamed User Series and Derived Series**
+- Changed user data series name from "Kullanıcı" to "Gelir(₺)" in Chart component
+- Changed derived series naming from "₺/<currency>" to "Gelir(<currency>)"
+- Updated generateDerivedSeries to use new naming format
+- Updated HomePage to generate correct derived series keys
+- Updated all test expectations to match new naming convention
+- Updated function documentation and comments
+- All 53 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/features/timeseries/components/Chart.tsx (updated - user series name)
+- src/shared/utils/index.ts (updated - derived series naming)
+- src/features/timeseries/pages/HomePage.tsx (updated - derived codes generation)
+- src/shared/utils/index.test.ts (updated - test expectations)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0609: Derived Series Visible on Page Load Without User Data**
 - Updated generateDerivedSeries to show exchange rates directly when no user data exists

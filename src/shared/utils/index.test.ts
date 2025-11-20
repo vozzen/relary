@@ -377,12 +377,12 @@ describe('generateDerivedSeries', () => {
     
     const derived = generateDerivedSeries(userSeries, remoteSeries)
     
-    expect(Object.keys(derived)).toEqual(['₺/USD', '₺/EUR'])
-    expect(derived['₺/USD']).toHaveLength(2)
-    expect(derived['₺/USD'][0]).toEqual({ date: '01.2024', value: 50 }) // 1000/20
-    expect(derived['₺/USD'][1]).toEqual({ date: '02.2024', value: 50 }) // 1200/24
-    expect(derived['₺/EUR'][0]).toEqual({ date: '01.2024', value: 40 }) // 1000/25
-    expect(derived['₺/EUR'][1]).toEqual({ date: '02.2024', value: 40 }) // 1200/30
+    expect(Object.keys(derived)).toEqual(['Gelir(USD)', 'Gelir(EUR)'])
+    expect(derived['Gelir(USD)']).toHaveLength(2)
+    expect(derived['Gelir(USD)'][0]).toEqual({ date: '01.2024', value: 50 }) // 1000/20
+    expect(derived['Gelir(USD)'][1]).toEqual({ date: '02.2024', value: 50 }) // 1200/24
+    expect(derived['Gelir(EUR)'][0]).toEqual({ date: '01.2024', value: 40 }) // 1000/25
+    expect(derived['Gelir(EUR)'][1]).toEqual({ date: '02.2024', value: 40 }) // 1200/30
   })
 
   it('should not generate derived series for non-TP.DK. codes', () => {
@@ -411,11 +411,11 @@ describe('generateDerivedSeries', () => {
     const derived = generateDerivedSeries([], remoteSeries)
     
     // Should create derived series showing exchange rates
-    expect(Object.keys(derived)).toEqual(['₺/USD', '₺/EUR'])
-    expect(derived['₺/USD']).toHaveLength(2)
-    expect(derived['₺/USD'][0]).toEqual({ date: '01.2024', value: 20 })
-    expect(derived['₺/USD'][1]).toEqual({ date: '02.2024', value: 25 })
-    expect(derived['₺/EUR'][0]).toEqual({ date: '01.2024', value: 30 })
+    expect(Object.keys(derived)).toEqual(['Gelir(USD)', 'Gelir(EUR)'])
+    expect(derived['Gelir(USD)']).toHaveLength(2)
+    expect(derived['Gelir(USD)'][0]).toEqual({ date: '01.2024', value: 20 })
+    expect(derived['Gelir(USD)'][1]).toEqual({ date: '02.2024', value: 25 })
+    expect(derived['Gelir(EUR)'][0]).toEqual({ date: '01.2024', value: 30 })
   })
 
   it('should only include dates that exist in user data', () => {
@@ -433,9 +433,9 @@ describe('generateDerivedSeries', () => {
     
     const derived = generateDerivedSeries(userSeries, remoteSeries)
     
-    expect(derived['₺/USD']).toHaveLength(2)
-    expect(derived['₺/USD'][0].date).toBe('01.2024')
-    expect(derived['₺/USD'][1].date).toBe('03.2024')
+    expect(derived['Gelir(USD)']).toHaveLength(2)
+    expect(derived['Gelir(USD)'][0].date).toBe('01.2024')
+    expect(derived['Gelir(USD)'][1].date).toBe('03.2024')
   })
 
   it('should skip points where remote value is zero', () => {
@@ -452,7 +452,7 @@ describe('generateDerivedSeries', () => {
     
     const derived = generateDerivedSeries(userSeries, remoteSeries)
     
-    expect(derived['₺/USD']).toHaveLength(1)
-    expect(derived['₺/USD'][0].date).toBe('01.2024')
+    expect(derived['Gelir(USD)']).toHaveLength(1)
+    expect(derived['Gelir(USD)'][0].date).toBe('01.2024')
   })
 })
