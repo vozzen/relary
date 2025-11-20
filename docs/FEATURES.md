@@ -82,5 +82,5 @@ For the interval user provided, other time series data should be shown on same c
     - For series "TP.FG.J0", do not display its raw form. Instead, 
         - Create another series on load with label "Enflasyon"
         - Whenever user updates data, find the value of "TP.FG.J0" on earliest user data date, and update "Enflasyon" series by dividing "TP.FG.J0" series by that value and multiplying by 100. That will make first visible value of "Enflasyon" always to be 100.
-- 🔴 F0612:
+- 🔴 F0613:
     - Create another series with friendly name "Alım gücü". Update its data whenever user data changes by dividing user data by first user data value and multiplying with 100; then divide this series by "Enflasyon" series and multiply with 100. 
