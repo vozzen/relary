@@ -214,28 +214,33 @@ function calculateDerivedPoints(
 }
 
 /**
- * Generate derived series for TP.DK.* codes (F0606).
- * For each TP.DK.* series, creates a "₺/<name>" series with values = userValue / tpDkValue.
- * Only generates data points for months that exist in user data.
+ * Generate derived series for TP.DK.* codes (F0606, F0609).
+ * For each TP.DK.* series, creates a "₺/<name>" series.
+ * If user data exists, values = userValue / tpDkValue for matching months.
+ * If no user data, shows the TP.DK.* series itself as "₺/<name>" (F0609).
  */
 export function generateDerivedSeries(
 	userSeries: { date: string; value: number }[],
 	remoteSeries: Record<string, { date: string; value: number }[]>
 ): Record<string, { date: string; value: number }[]> {
-	if (userSeries.length === 0) {
-		return {}
-	}
-	
-	const userMap = createTimeseriesMap(userSeries)
 	const derived: Record<string, { date: string; value: number }[]> = {}
 	
 	for (const [code, series] of Object.entries(remoteSeries)) {
 		if (!code.startsWith('TP.DK.')) continue
 		
-		const derivedPoints = calculateDerivedPoints(userMap, series)
-		if (derivedPoints.length > 0) {
-			const friendlyName = getSeriesFriendlyName(code)
-			derived[`₺/${friendlyName}`] = derivedPoints
+		const friendlyName = getSeriesFriendlyName(code)
+		const derivedKey = `₺/${friendlyName}`
+		
+		if (userSeries.length === 0) {
+			// No user data: show the exchange rate series itself (F0609)
+			derived[derivedKey] = series
+		} else {
+			// User data exists: calculate ratio series (F0606)
+			const userMap = createTimeseriesMap(userSeries)
+			const derivedPoints = calculateDerivedPoints(userMap, series)
+			if (derivedPoints.length > 0) {
+				derived[derivedKey] = derivedPoints
+			}
 		}
 	}
 	

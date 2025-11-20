@@ -397,14 +397,25 @@ describe('generateDerivedSeries', () => {
     expect(Object.keys(derived)).toHaveLength(0)
   })
 
-  it('should return empty object when no user data', () => {
+  it('should show exchange rates directly when no user data (F0609)', () => {
     const remoteSeries = {
-      'TP.DK.USD.A.YTL': [{ date: '01.2024', value: 20 }],
+      'TP.DK.USD.A.YTL': [
+        { date: '01.2024', value: 20 },
+        { date: '02.2024', value: 25 },
+      ],
+      'TP.DK.EUR.A.YTL': [
+        { date: '01.2024', value: 30 },
+      ],
     }
     
     const derived = generateDerivedSeries([], remoteSeries)
     
-    expect(Object.keys(derived)).toHaveLength(0)
+    // Should create derived series showing exchange rates
+    expect(Object.keys(derived)).toEqual(['₺/USD', '₺/EUR'])
+    expect(derived['₺/USD']).toHaveLength(2)
+    expect(derived['₺/USD'][0]).toEqual({ date: '01.2024', value: 20 })
+    expect(derived['₺/USD'][1]).toEqual({ date: '02.2024', value: 25 })
+    expect(derived['₺/EUR'][0]).toEqual({ date: '01.2024', value: 30 })
   })
 
   it('should only include dates that exist in user data', () => {

@@ -6,6 +6,7 @@
 ### 2025-11-21 - Session 12
 **Completed**:
 - F0608: Chart interval always ends at current month
+- F0609: Derived series visible on page load without user data
 
 **In Progress**:
 - None
@@ -14,6 +15,20 @@
 - None
 
 **Details**:
+
+**F0609: Derived Series Visible on Page Load Without User Data**
+- Updated generateDerivedSeries to show exchange rates directly when no user data exists
+- When user data is empty, ₺/USD and ₺/EUR series now display the TP.DK.* values themselves
+- When user data exists, derived series continue to show userValue / exchangeRate ratios
+- Updated test to verify exchange rates are shown directly without user data
+- All 53 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - generateDerivedSeries logic)
+- src/shared/utils/index.test.ts (updated - test for F0609)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0608: Chart Interval Always Ends at Current Month**
 - Updated calculateChartDateRange to always set maxDate to current month (first day)
