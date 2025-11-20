@@ -93,17 +93,64 @@ export function normalizeTimeseriesDate(raw: string): number {
 }
 
 /**
- * Interpolate timeseries to have one entry per month between earliest and latest.
+ * Helper to fill gaps between two points with the first point's value.
+ */
+function fillGapBetweenPoints(
+	result: { date: string; value: number }[],
+	current: { date: string; value: number },
+	nextTs: number
+): void {
+	const currentTs = normalizeTimeseriesDate(current.date)
+	const currentDate = new Date(currentTs)
+	
+	while (true) {
+		currentDate.setUTCMonth(currentDate.getUTCMonth() + 1)
+		const iterTs = currentDate.getTime()
+		if (iterTs >= nextTs) break
+		
+		const year = currentDate.getUTCFullYear()
+		const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
+		result.push({ date: `${month}.${year}`, value: current.value })
+	}
+}
+
+/**
+ * Helper to extend series from last point to current month with last value.
+ */
+function extendToCurrentMonth(
+	result: { date: string; value: number }[],
+	lastPoint: { date: string; value: number }
+): void {
+	const lastTs = normalizeTimeseriesDate(lastPoint.date)
+	const now = new Date()
+	const currentMonthTs = Date.UTC(now.getFullYear(), now.getMonth(), 1)
+	
+	if (lastTs >= currentMonthTs) return
+	
+	const extendDate = new Date(lastTs)
+	while (true) {
+		extendDate.setUTCMonth(extendDate.getUTCMonth() + 1)
+		const iterTs = extendDate.getTime()
+		if (iterTs > currentMonthTs) break
+		
+		const year = extendDate.getUTCFullYear()
+		const month = String(extendDate.getUTCMonth() + 1).padStart(2, '0')
+		result.push({ date: `${month}.${year}`, value: lastPoint.value })
+	}
+}
+
+/**
+ * Interpolate timeseries to have one entry per month between earliest and latest,
+ * and extend from latest to current month.
  * Fills gaps with the value from the most recent previous point.
  * Example: (01.2024, 100), (04.2024, 123) becomes:
- *   (01.2024, 100), (02.2024, 100), (03.2024, 100), (04.2024, 123)
+ *   (01.2024, 100), (02.2024, 100), (03.2024, 100), (04.2024, 123), (05.2024, 123), ...
  */
 export function interpolateMonthlyTimeseries(
 	points: { date: string; value: number }[]
 ): { date: string; value: number }[] {
 	if (points.length === 0) return []
 	
-	// Sort by timestamp
 	const sorted = [...points].sort((a, b) => {
 		return normalizeTimeseriesDate(a.date) - normalizeTimeseriesDate(b.date)
 	})
@@ -114,35 +161,14 @@ export function interpolateMonthlyTimeseries(
 		const current = sorted[i]
 		result.push(current)
 		
-		// If not the last point, fill gaps to next point
 		if (i < sorted.length - 1) {
 			const next = sorted[i + 1]
-			const currentTs = normalizeTimeseriesDate(current.date)
 			const nextTs = normalizeTimeseriesDate(next.date)
-			
-			// Generate all months between current and next
-			let iterTs = currentTs
-			const currentDate = new Date(currentTs)
-			
-			while (true) {
-				// Move to next month
-				currentDate.setUTCMonth(currentDate.getUTCMonth() + 1)
-				iterTs = currentDate.getTime()
-				
-				// Stop if we've reached or passed the next point
-				if (iterTs >= nextTs) break
-				
-				// Add interpolated point with current value
-				const year = currentDate.getUTCFullYear()
-				const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
-				result.push({
-					date: `${month}.${year}`,
-					value: current.value
-				})
-			}
+			fillGapBetweenPoints(result, current, nextTs)
 		}
 	}
 	
+	extendToCurrentMonth(result, sorted.at(-1)!)
 	return result
 }
 

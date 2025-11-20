@@ -173,7 +173,7 @@ describe('normalizeTimeseriesDate', () => {
 })
 
 describe('interpolateMonthlyTimeseries', () => {
-  it('should fill monthly gaps', () => {
+  it('should fill monthly gaps and extend to current month', () => {
     const points = [
       { date: '01.2024', value: 100 },
       { date: '04.2024', value: 123 },
@@ -181,19 +181,35 @@ describe('interpolateMonthlyTimeseries', () => {
     
     const result = interpolateMonthlyTimeseries(points)
     
-    expect(result).toHaveLength(4)
+    // Should have filled gaps between points and extended to current month
+    expect(result.length).toBeGreaterThanOrEqual(4)
     expect(result[0]).toEqual({ date: '01.2024', value: 100 })
     expect(result[1]).toEqual({ date: '02.2024', value: 100 })
     expect(result[2]).toEqual({ date: '03.2024', value: 100 })
     expect(result[3]).toEqual({ date: '04.2024', value: 123 })
+    
+    // Last point should be current month with last value
+    const now = new Date()
+    const expectedLastMonth = String(now.getMonth() + 1).padStart(2, '0')
+    const expectedLastYear = now.getFullYear()
+    expect(result.at(-1)?.date).toBe(`${expectedLastMonth}.${expectedLastYear}`)
+    expect(result.at(-1)?.value).toBe(123)
   })
 
-  it('should handle single point', () => {
+  it('should extend single point to current month', () => {
     const points = [{ date: '01.2024', value: 100 }]
     const result = interpolateMonthlyTimeseries(points)
     
-    expect(result).toHaveLength(1)
+    // Should have extended from 01.2024 to current month
+    expect(result.length).toBeGreaterThanOrEqual(1)
     expect(result[0]).toEqual({ date: '01.2024', value: 100 })
+    
+    // Last point should be current month with same value
+    const now = new Date()
+    const expectedLastMonth = String(now.getMonth() + 1).padStart(2, '0')
+    const expectedLastYear = now.getFullYear()
+    expect(result.at(-1)?.date).toBe(`${expectedLastMonth}.${expectedLastYear}`)
+    expect(result.at(-1)?.value).toBe(100)
   })
 
   it('should handle empty input', () => {
@@ -201,7 +217,7 @@ describe('interpolateMonthlyTimeseries', () => {
     expect(result).toHaveLength(0)
   })
 
-  it('should sort points before interpolation', () => {
+  it('should sort points before interpolation and extend', () => {
     const points = [
       { date: '04.2024', value: 123 },
       { date: '01.2024', value: 100 },
@@ -210,10 +226,14 @@ describe('interpolateMonthlyTimeseries', () => {
     const result = interpolateMonthlyTimeseries(points)
     
     expect(result[0].date).toBe('01.2024')
-    expect(result.at(-1)?.date).toBe('04.2024')
+    // Last point should be current month
+    const now = new Date()
+    const expectedLastMonth = String(now.getMonth() + 1).padStart(2, '0')
+    const expectedLastYear = now.getFullYear()
+    expect(result.at(-1)?.date).toBe(`${expectedLastMonth}.${expectedLastYear}`)
   })
 
-  it('should handle consecutive months', () => {
+  it('should handle consecutive months and extend', () => {
     const points = [
       { date: '01.2024', value: 100 },
       { date: '02.2024', value: 200 },
@@ -221,7 +241,13 @@ describe('interpolateMonthlyTimeseries', () => {
     
     const result = interpolateMonthlyTimeseries(points)
     
-    expect(result).toHaveLength(2)
+    // Should have at least the two original points plus extension
+    expect(result.length).toBeGreaterThanOrEqual(2)
+    expect(result[0]).toEqual({ date: '01.2024', value: 100 })
+    expect(result[1]).toEqual({ date: '02.2024', value: 200 })
+    
+    // Last point should be current month with last value (200)
+    expect(result.at(-1)?.value).toBe(200)
   })
 })
 
