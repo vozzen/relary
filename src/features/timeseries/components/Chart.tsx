@@ -75,7 +75,7 @@ export const Chart: FC = () => {
               stroke="#64748b"
             />
             {/* Y axis for user series (F0604) */}
-            {hasData && (selectedSeries['user'] ?? true) && (
+            {hasData && (
               <YAxis
                 yAxisId="user"
                 orientation="left"
@@ -83,13 +83,13 @@ export const Chart: FC = () => {
                 stroke="#22c55e"
                 width={50}
                 allowDecimals={false}
+                hide={!(selectedSeries['user'] ?? true)}
               />
             )}
             {/* Y axes for remote series - alternate left/right (F0604) */}
             {remoteKeys.map((k, i) => {
               const isSelected = selectedSeries[k] ?? true
-              if (!isSelected) return null
-              const axisIndex = hasData && (selectedSeries['user'] ?? true) ? i + 1 : i
+              const axisIndex = hasData ? i + 1 : i
               const orientation = axisIndex % 2 === 0 ? 'left' : 'right'
               const color = remoteColor(i)
               return (
@@ -101,6 +101,7 @@ export const Chart: FC = () => {
                   stroke={color}
                   width={50}
                   allowDecimals={false}
+                  hide={!isSelected}
                 />
               )
             })}
