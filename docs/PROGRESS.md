@@ -9,6 +9,7 @@
 - F0602: Dynamic date range filtering
 - F0603: Extended date format support
 - F0604: Multiple Y axes for series
+- F0605: Friendly series names for TP.DK.* codes
 
 **In Progress**:
 - None
@@ -17,6 +18,23 @@
 - None
 
 **Details**:
+
+**F0605: Friendly Series Names for TP.DK.* Codes**
+- Created getSeriesFriendlyName utility function
+- Extracts currency code from TP.DK. series (e.g., "TP.DK.EUR.A.YTL" -> "EUR")
+- Updated SeriesSelector to display friendly names for checkboxes
+- Updated Chart legend to show friendly names instead of full codes
+- Added comprehensive tests (3 test cases covering normal, edge, and fallback scenarios)
+- All 48 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - added getSeriesFriendlyName)
+- src/shared/utils/index.test.ts (updated - added 3 tests)
+- src/features/timeseries/components/SeriesSelector.tsx (updated - uses friendly names)
+- src/features/timeseries/components/Chart.tsx (updated - legend uses friendly names)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0604: Multiple Y Axes for Series**
 - Implemented separate Y axis for each series (user + remote)

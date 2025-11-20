@@ -6,6 +6,7 @@ import {
   interpolateMonthlyTimeseries,
   buildTimeseriesChartData,
   calculateChartDateRange,
+  getSeriesFriendlyName,
 } from './index'
 
 describe('isValidTimeseriesDate', () => {
@@ -301,5 +302,25 @@ describe('calculateChartDateRange', () => {
     
     expect(minDate).toBe(Date.UTC(2006, 0, 1))
     expect(maxDate).toBeLessThanOrEqual(Date.now())
+  })
+})
+
+describe('getSeriesFriendlyName', () => {
+  it('should extract term after TP.DK. for matching codes (F0605)', () => {
+    expect(getSeriesFriendlyName('TP.DK.EUR.A.YTL')).toBe('EUR')
+    expect(getSeriesFriendlyName('TP.DK.USD.A.YTL')).toBe('USD')
+    expect(getSeriesFriendlyName('TP.DK.GBP.A.YTL')).toBe('GBP')
+  })
+
+  it('should return full code for non-TP.DK. codes', () => {
+    expect(getSeriesFriendlyName('TP.FG.J0')).toBe('TP.FG.J0')
+    expect(getSeriesFriendlyName('SOME.OTHER.CODE')).toBe('SOME.OTHER.CODE')
+    expect(getSeriesFriendlyName('SIMPLE')).toBe('SIMPLE')
+  })
+
+  it('should handle edge cases', () => {
+    expect(getSeriesFriendlyName('TP.DK.')).toBe('TP.DK.')
+    expect(getSeriesFriendlyName('TP.DK')).toBe('TP.DK')
+    expect(getSeriesFriendlyName('')).toBe('')
   })
 })

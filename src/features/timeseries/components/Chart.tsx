@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useAppState } from '../../../app/store'
-import { buildTimeseriesChartData, calculateChartDateRange } from '../../../shared/utils'
+import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName } from '../../../shared/utils'
 import {
   ResponsiveContainer,
   LineChart,
@@ -113,7 +113,7 @@ export const Chart: FC = () => {
                 stroke={remoteColor(i)}
                 dot={false}
                 isAnimationActive={false}
-                name={k}
+                name={getSeriesFriendlyName(k)}
               />
             ))}
           </LineChart>

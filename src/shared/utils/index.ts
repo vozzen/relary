@@ -151,6 +151,22 @@ export function interpolateMonthlyTimeseries(
  * Each unique date becomes one row with user + remote series values.
  */
 /**
+ * Extract friendly name from series code (F0605).
+ * For codes starting with "TP.DK.", extracts the term after "TP.DK.".
+ * Example: "TP.DK.EUR.A.YTL" -> "EUR"
+ * For other codes, returns the full code.
+ */
+export function getSeriesFriendlyName(code: string): string {
+	if (code.startsWith('TP.DK.')) {
+		const parts = code.split('.')
+		if (parts.length >= 3 && parts[2]) {
+			return parts[2] // Return the term after TP.DK.
+		}
+	}
+	return code
+}
+
+/**
  * Calculate date range for chart display based on user data.
  * If user has valid data, returns the range of user data.
  * Otherwise, returns default range from 01.2006 to today.

@@ -1,8 +1,10 @@
 import { useAppState, useAppDispatch, actions } from '../../../app/store'
+import { getSeriesFriendlyName } from '../../../shared/utils'
 import './SeriesSelector.css'
 
 /**
  * Component for selecting which series to display in the chart
+ * Uses friendly names for TP.DK.* series (F0605)
  */
 export function SeriesSelector() {
   const state = useAppState()
@@ -29,7 +31,7 @@ export function SeriesSelector() {
               checked={selectedSeries[code] ?? false}
               onChange={() => handleToggle(code)}
             />
-            <span>{code}</span>
+            <span>{getSeriesFriendlyName(code)}</span>
           </label>
         ))}
       </div>
