@@ -64,6 +64,6 @@ For the interval user provided, other time series data should be shown on same c
     - Each series should have its own Y axis as their magnitute can vary a lot
 - 🟢 F0605: 
     - For each series with code starting with "TP.DK.", use the term after as label name in series selector. e.g. use EUR for "TP.DK.EUR.A.YTL".
-- 🔴 F0606:
+- 🟢 F0606:
     - For any loaded series with code starting "TP.DK.", generate another series with code and name "₺/<series-name>". Series should have a data point for each month that user data has and value should be calculated by dividing user data value for that month to loaded series value for that month. This series should be updated whenever user data series is updated.
     

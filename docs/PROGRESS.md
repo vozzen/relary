@@ -10,6 +10,7 @@
 - F0603: Extended date format support
 - F0604: Multiple Y axes for series
 - F0605: Friendly series names for TP.DK.* codes
+- F0606: Auto-generated derived series (₺/currency)
 
 **In Progress**:
 - None
@@ -18,6 +19,27 @@
 - None
 
 **Details**:
+
+**F0606: Auto-generated Derived Series (₺/currency)**
+- Created generateDerivedSeries utility function
+- For each TP.DK.* series, generates a "₺/<currency>" series
+- Derived values calculated as userValue / tpDkValue for each month
+- Only generates data points for months present in user data
+- Handles division by zero gracefully
+- Updated Chart component to merge and display derived series
+- Updated HomePage to add derived series to available list when user data changes
+- Auto-selects new derived series by default
+- Added comprehensive tests (5 test cases covering normal, edge, and error scenarios)
+- All 53 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - added generateDerivedSeries and helpers)
+- src/shared/utils/index.test.ts (updated - added 5 tests)
+- src/features/timeseries/components/Chart.tsx (updated - merges derived series)
+- src/features/timeseries/pages/HomePage.tsx (updated - manages derived series availability)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0605: Friendly Series Names for TP.DK.* Codes**
 - Created getSeriesFriendlyName utility function

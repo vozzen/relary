@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { useState, useCallback, useEffect } from 'react'
 import { Placeholder } from '../../../shared/components/Placeholder'
 import { ErrorMessage } from '../../../shared/components/ErrorMessage'
-import { parseTimeseriesInput, interpolateMonthlyTimeseries } from '../../../shared/utils'
+import { parseTimeseriesInput, interpolateMonthlyTimeseries, getSeriesFriendlyName } from '../../../shared/utils'
 import { useAppDispatch, useAppState, actions } from '../../../app/store'
 import { loadRemoteTimeseries } from '../api/service'
 import { loadSeriesData } from '../api/seriesLoader'
@@ -41,9 +41,26 @@ export const HomePage: FC = () => {
         // Interpolate to fill monthly gaps before dispatching
         const interpolated = interpolateMonthlyTimeseries(points)
         actions.setUserSeries(dispatch, interpolated)
+        
+        // Update available series to include derived series (F0606)
+        const derivedCodes = Object.keys(state.timeseries.remoteSeries)
+          .filter(code => code.startsWith('TP.DK.'))
+          .map(code => `₺/${getSeriesFriendlyName(code)}`)
+        
+        const allCodes = [...state.timeseries.availableSeries, ...derivedCodes]
+        // Remove duplicates
+        const uniqueCodes = Array.from(new Set(allCodes))
+        actions.setAvailableSeries(dispatch, uniqueCodes)
+        
+        // Auto-select new derived series
+        for (const code of derivedCodes) {
+          if (state.timeseries.selectedSeries[code] === undefined) {
+            actions.setSeriesSelection(dispatch, code, true)
+          }
+        }
       }
     },
-    [dispatch]
+    [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries, state.timeseries.selectedSeries]
   )
 
   const handleRetry = useCallback(() => {

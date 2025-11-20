@@ -7,6 +7,7 @@ import {
   buildTimeseriesChartData,
   calculateChartDateRange,
   getSeriesFriendlyName,
+  generateDerivedSeries,
 } from './index'
 
 describe('isValidTimeseriesDate', () => {
@@ -322,5 +323,93 @@ describe('getSeriesFriendlyName', () => {
     expect(getSeriesFriendlyName('TP.DK.')).toBe('TP.DK.')
     expect(getSeriesFriendlyName('TP.DK')).toBe('TP.DK')
     expect(getSeriesFriendlyName('')).toBe('')
+  })
+})
+
+describe('generateDerivedSeries', () => {
+  it('should generate derived series for TP.DK.* codes (F0606)', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '02.2024', value: 1200 },
+    ]
+    const remoteSeries = {
+      'TP.DK.USD.A.YTL': [
+        { date: '01.2024', value: 20 },
+        { date: '02.2024', value: 24 },
+      ],
+      'TP.DK.EUR.A.YTL': [
+        { date: '01.2024', value: 25 },
+        { date: '02.2024', value: 30 },
+      ],
+    }
+    
+    const derived = generateDerivedSeries(userSeries, remoteSeries)
+    
+    expect(Object.keys(derived)).toEqual(['₺/USD', '₺/EUR'])
+    expect(derived['₺/USD']).toHaveLength(2)
+    expect(derived['₺/USD'][0]).toEqual({ date: '01.2024', value: 50 }) // 1000/20
+    expect(derived['₺/USD'][1]).toEqual({ date: '02.2024', value: 50 }) // 1200/24
+    expect(derived['₺/EUR'][0]).toEqual({ date: '01.2024', value: 40 }) // 1000/25
+    expect(derived['₺/EUR'][1]).toEqual({ date: '02.2024', value: 40 }) // 1200/30
+  })
+
+  it('should not generate derived series for non-TP.DK. codes', () => {
+    const userSeries = [{ date: '01.2024', value: 100 }]
+    const remoteSeries = {
+      'TP.FG.J0': [{ date: '01.2024', value: 10 }],
+      'SOME.OTHER': [{ date: '01.2024', value: 5 }],
+    }
+    
+    const derived = generateDerivedSeries(userSeries, remoteSeries)
+    
+    expect(Object.keys(derived)).toHaveLength(0)
+  })
+
+  it('should return empty object when no user data', () => {
+    const remoteSeries = {
+      'TP.DK.USD.A.YTL': [{ date: '01.2024', value: 20 }],
+    }
+    
+    const derived = generateDerivedSeries([], remoteSeries)
+    
+    expect(Object.keys(derived)).toHaveLength(0)
+  })
+
+  it('should only include dates that exist in user data', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '03.2024', value: 1500 },
+    ]
+    const remoteSeries = {
+      'TP.DK.USD.A.YTL': [
+        { date: '01.2024', value: 20 },
+        { date: '02.2024', value: 22 },
+        { date: '03.2024', value: 25 },
+      ],
+    }
+    
+    const derived = generateDerivedSeries(userSeries, remoteSeries)
+    
+    expect(derived['₺/USD']).toHaveLength(2)
+    expect(derived['₺/USD'][0].date).toBe('01.2024')
+    expect(derived['₺/USD'][1].date).toBe('03.2024')
+  })
+
+  it('should skip points where remote value is zero', () => {
+    const userSeries = [
+      { date: '01.2024', value: 1000 },
+      { date: '02.2024', value: 1200 },
+    ]
+    const remoteSeries = {
+      'TP.DK.USD.A.YTL': [
+        { date: '01.2024', value: 20 },
+        { date: '02.2024', value: 0 }, // Division by zero
+      ],
+    }
+    
+    const derived = generateDerivedSeries(userSeries, remoteSeries)
+    
+    expect(derived['₺/USD']).toHaveLength(1)
+    expect(derived['₺/USD'][0].date).toBe('01.2024')
   })
 })

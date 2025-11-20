@@ -151,6 +151,72 @@ export function interpolateMonthlyTimeseries(
  * Each unique date becomes one row with user + remote series values.
  */
 /**
+ * Create a map of timeseries data indexed by normalized timestamp.
+ */
+function createTimeseriesMap(series: { date: string; value: number }[]): Map<number, { date: string; value: number }> {
+	const map = new Map<number, { date: string; value: number }>()
+	for (const point of series) {
+		const ts = normalizeTimeseriesDate(point.date)
+		if (Number.isFinite(ts)) {
+			map.set(ts, point)
+		}
+	}
+	return map
+}
+
+/**
+ * Calculate derived series points for a single TP.DK.* series.
+ */
+function calculateDerivedPoints(
+	userMap: Map<number, { date: string; value: number }>,
+	remoteSeries: { date: string; value: number }[]
+): { date: string; value: number }[] {
+	const remoteMap = createTimeseriesMap(remoteSeries)
+	const derivedPoints: { date: string; value: number }[] = []
+	
+	for (const [ts, userPoint] of userMap.entries()) {
+		const remotePoint = remoteMap.get(ts)
+		if (remotePoint && remotePoint.value !== 0) {
+			derivedPoints.push({
+				date: userPoint.date,
+				value: userPoint.value / remotePoint.value
+			})
+		}
+	}
+	
+	return derivedPoints
+}
+
+/**
+ * Generate derived series for TP.DK.* codes (F0606).
+ * For each TP.DK.* series, creates a "₺/<name>" series with values = userValue / tpDkValue.
+ * Only generates data points for months that exist in user data.
+ */
+export function generateDerivedSeries(
+	userSeries: { date: string; value: number }[],
+	remoteSeries: Record<string, { date: string; value: number }[]>
+): Record<string, { date: string; value: number }[]> {
+	if (userSeries.length === 0) {
+		return {}
+	}
+	
+	const userMap = createTimeseriesMap(userSeries)
+	const derived: Record<string, { date: string; value: number }[]> = {}
+	
+	for (const [code, series] of Object.entries(remoteSeries)) {
+		if (!code.startsWith('TP.DK.')) continue
+		
+		const derivedPoints = calculateDerivedPoints(userMap, series)
+		if (derivedPoints.length > 0) {
+			const friendlyName = getSeriesFriendlyName(code)
+			derived[`₺/${friendlyName}`] = derivedPoints
+		}
+	}
+	
+	return derived
+}
+
+/**
  * Extract friendly name from series code (F0605).
  * For codes starting with "TP.DK.", extracts the term after "TP.DK.".
  * Example: "TP.DK.EUR.A.YTL" -> "EUR"

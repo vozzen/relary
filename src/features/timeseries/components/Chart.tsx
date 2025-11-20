@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useAppState } from '../../../app/store'
-import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName } from '../../../shared/utils'
+import { buildTimeseriesChartData, calculateChartDateRange, getSeriesFriendlyName, generateDerivedSeries } from '../../../shared/utils'
 import {
   ResponsiveContainer,
   LineChart,
@@ -24,11 +24,17 @@ export const Chart: FC = () => {
   const state = useAppState()
   const { userSeries, remoteSeries, selectedSeries } = state.timeseries
   
-  // Filter remote series to only include selected ones
-  const filteredRemoteSeries = Object.keys(remoteSeries).reduce(
+  // Generate derived series (₺/currency) from TP.DK.* series (F0606)
+  const derivedSeries = generateDerivedSeries(userSeries, remoteSeries)
+  
+  // Merge remote and derived series
+  const allRemoteSeries = { ...remoteSeries, ...derivedSeries }
+  
+  // Filter to only include selected ones
+  const filteredRemoteSeries = Object.keys(allRemoteSeries).reduce(
     (acc, key) => {
       if (selectedSeries[key]) {
-        acc[key] = remoteSeries[key]
+        acc[key] = allRemoteSeries[key]
       }
       return acc
     },
