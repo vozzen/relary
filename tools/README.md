@@ -98,7 +98,7 @@ Each series is saved as `<series-code>.json`:
 
 ```json
 {
-  "name": "TP.DK.USD.A",
+  "code": "TP.DK.USD.A",
   "items": [
     {
       "date": "2020.01.01",
@@ -120,7 +120,7 @@ All series are combined in `series.json`:
 {
   "series": [
     {
-      "name": "TP.DK.USD.A",
+      "code": "TP.DK.USD.A",
       "items": [
         {
           "date": "2020.01.01",
@@ -129,7 +129,7 @@ All series are combined in `series.json`:
       ]
     },
     {
-      "name": "TP.DK.EUR.A",
+      "code": "TP.DK.EUR.A",
       "items": [
         {
           "date": "2020.01.01",

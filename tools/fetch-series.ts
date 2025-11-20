@@ -32,7 +32,7 @@ interface TimeSeriesItem {
  * Series data structure
  */
 interface SeriesData {
-  name: string;
+  code: string;
   items: TimeSeriesItem[];
 }
 
@@ -98,65 +98,83 @@ function getToday(): Date {
 }
 
 /**
- * Fetch series data with monthly aggregation
+ * Fetch multiple series data with monthly aggregation using the client's getMultiSeries method
  */
-async function fetchMonthlySeries(
+async function fetchMultiSeriesMonthly(
   client: ReturnType<typeof createEVDSClient>,
-  seriesCode: string,
+  seriesCodes: string[],
   startDate: Date,
   endDate: Date
-): Promise<TimeSeriesItem[]> {
-  console.log(`Fetching monthly data for ${seriesCode}...`);
+): Promise<Map<string, TimeSeriesItem[]>> {
+  console.log(`Fetching monthly data for ${seriesCodes.length} series...`);
   
-  const response = await client.getSeries({
-    series: seriesCode,
+  const multiSeriesData = await client.getMultiSeries({
+    series: seriesCodes,
     startDate,
     endDate,
     frequency: FrequencyType.MONTHLY,
-    aggregationTypes: AggregationType.AVERAGE,
+    aggregationTypes: seriesCodes.map(() => AggregationType.AVERAGE),
   });
 
-  const items: TimeSeriesItem[] = [];
-  for (const item of response.items) {
-    const dateStr = item.Tarih as string;
-    const value = item[seriesCode];
-    
-    if (value !== undefined && value !== null) {
-      // Parse the date and format it to first day of month
-      const date = new Date(dateStr);
-      const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-      items.push({
+  // Convert to Map and format dates to first day of month
+  const seriesMap = new Map<string, TimeSeriesItem[]>();
+  
+  for (const seriesData of multiSeriesData.seriesList) {
+    const items: TimeSeriesItem[] = seriesData.items.map(item => {
+      // Set to first day of the month
+      const firstDay = new Date(item.date.getFullYear(), item.date.getMonth(), 1);
+      return {
         date: formatDate(firstDay),
-        value: String(value),
-      });
-    }
+        value: String(item.value),
+      };
+    });
+    seriesMap.set(seriesData.code, items);
   }
 
-  return items;
+  return seriesMap;
 }
 
 /**
- * Fetch today's value for a series
+ * Fetch today's values for multiple series using the client's getMultiSeries method
  */
-async function fetchTodayValue(
+async function fetchMultiSeriesToday(
   client: ReturnType<typeof createEVDSClient>,
-  seriesCode: string
-): Promise<string | null> {
-  console.log(`Fetching today's value for ${seriesCode}...`);
+  seriesCodes: string[]
+): Promise<Map<string, string | null>> {
+  console.log(`Fetching today's values for ${seriesCodes.length} series...`);
   
   const today = getToday();
-  const response = await client.getSeries({
-    series: seriesCode,
-    startDate: today,
-    endDate: today,
-  });
+  
+  try {
+    const multiSeriesData = await client.getMultiSeries({
+      series: seriesCodes,
+      startDate: today,
+      endDate: today,
+    });
 
-  if (response.items.length > 0) {
-    const value = response.items[0][seriesCode];
-    return value !== undefined && value !== null ? String(value) : null;
+    const todayValues = new Map<string, string | null>();
+    
+    for (const seriesData of multiSeriesData.seriesList) {
+      if (seriesData.items.length > 0) {
+        // Get the first (and likely only) item for today
+        const value = seriesData.items[0].value;
+        todayValues.set(seriesData.code, String(value));
+      } else {
+        todayValues.set(seriesData.code, null);
+      }
+    }
+
+    return todayValues;
+  } catch (error) {
+    // If today's data is not available, return null for all series
+    console.log('Today\'s data not available, skipping current month update');
+    console.error('Error details:', error instanceof Error ? error.message : error);
+    const todayValues = new Map<string, string | null>();
+    for (const code of seriesCodes) {
+      todayValues.set(code, null);
+    }
+    return todayValues;
   }
-
-  return null;
 }
 
 /**
@@ -186,7 +204,7 @@ function updateCurrentMonthValue(items: TimeSeriesItem[], todayValue: string): T
  */
 function saveSeriesFile(outputDir: string, seriesCode: string, items: TimeSeriesItem[]): void {
   const seriesData: SeriesData = {
-    name: seriesCode,
+    code: seriesCode,
     items,
   };
 
@@ -233,18 +251,24 @@ async function main() {
     // Create EVDS client
     const client = createEVDSClient({ apiKey: config.apiKey });
 
-    // Fetch data for each series
+    // Fetch data for all series
     const allSeries: SeriesData[] = [];
     const endDate = getToday();
 
-    for (const seriesCode of config.seriesCodes) {
-      try {
-        // Fetch monthly data
-        let items = await fetchMonthlySeries(client, seriesCode, config.startDate, endDate);
+    try {
+      // Fetch monthly data for all series in a single API call
+      const monthlySeriesMap = await fetchMultiSeriesMonthly(client, config.seriesCodes, config.startDate, endDate);
 
-        // Fetch today's value and update current month
-        const todayValue = await fetchTodayValue(client, seriesCode);
-        if (todayValue !== null) {
+      // Fetch today's values for all series in a single API call
+      const todayValuesMap = await fetchMultiSeriesToday(client, config.seriesCodes);
+
+      // Process each series
+      for (const seriesCode of config.seriesCodes) {
+        let items = monthlySeriesMap.get(seriesCode) || [];
+
+        // Update current month with today's value if available
+        const todayValue = todayValuesMap.get(seriesCode);
+        if (todayValue !== null && todayValue !== undefined) {
           items = updateCurrentMonthValue(items, todayValue);
         }
 
@@ -253,19 +277,17 @@ async function main() {
 
         // Add to combined series
         allSeries.push({
-          name: seriesCode,
+          code: seriesCode,
           items,
         });
-
-        // Small delay to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 500));
-      } catch (error) {
-        console.error(`Error fetching ${seriesCode}:`, error instanceof Error ? error.message : error);
       }
-    }
 
-    // Save combined file
-    saveCombinedFile(config.outputDir, allSeries);
+      // Save combined file
+      saveCombinedFile(config.outputDir, allSeries);
+    } catch (error) {
+      console.error('Error fetching series data:', error instanceof Error ? error.message : error);
+      throw error;
+    }
 
     console.log('\n✓ All series data fetched and saved successfully!');
   } catch (error) {

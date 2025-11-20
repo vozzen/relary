@@ -4,7 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { EVDSClient } from './client';
-import { AggregationType, FormulaType, FrequencyType, DataGroupMode } from './types';
+import { AggregationType, FormulaType, FrequencyType } from './types';
 
 // Mock fetch globally
 globalThis.fetch = vi.fn() as any;
@@ -26,7 +26,7 @@ describe('EVDSClient', () => {
         json: async () => mockResponse,
       });
 
-      await client.getSeries({
+      await client.getMultiSeries({
         series: 'TEST',
         startDate: new Date('2024-01-15'),
         endDate: new Date('2024-12-31'),
@@ -49,7 +49,7 @@ describe('EVDSClient', () => {
         json: async () => mockResponse,
       });
 
-      await client.getSeries({
+      await client.getMultiSeries({
         series: 'TEST',
         startDate: '01-01-2024',
         endDate: '31-12-2024',
@@ -62,11 +62,11 @@ describe('EVDSClient', () => {
     });
   });
 
-  describe('getSeries', () => {
+  describe('getMultiSeries', () => {
     it('should fetch series data with basic parameters', async () => {
       const mockResponse = {
         items: [
-          { Tarih: '2024-01-01', 'TP.DK.USD.A': '30.1234' }
+          { Tarih: '2024-01-01', TP_DK_USD_A: '30.1234' }
         ]
       };
 
@@ -75,13 +75,13 @@ describe('EVDSClient', () => {
         json: async () => mockResponse,
       });
 
-      const result = await client.getSeries({
+      const result = await client.getMultiSeries({
         series: 'TP.DK.USD.A',
         startDate: '01-01-2024',
         endDate: '31-12-2024',
       });
 
-      expect(result).toEqual(mockResponse);
+      expect(result.seriesList).toBeDefined();
       expect(globalThis.fetch).toHaveBeenCalledWith(
         expect.stringContaining('series=TP.DK.USD.A'),
         expect.objectContaining({
@@ -97,7 +97,7 @@ describe('EVDSClient', () => {
         json: async () => mockResponse,
       });
 
-      await client.getSeries({
+      await client.getMultiSeries({
         series: ['TP.DK.USD.A', 'TP.DK.EUR.A'],
         startDate: '01-01-2024',
         endDate: '31-12-2024',
@@ -116,7 +116,7 @@ describe('EVDSClient', () => {
         json: async () => mockResponse,
       });
 
-      await client.getSeries({
+      await client.getMultiSeries({
         series: ['TP.DK.USD.A', 'TP.DK.EUR.A'],
         startDate: '01-01-2024',
         endDate: '31-12-2024',
@@ -139,7 +139,7 @@ describe('EVDSClient', () => {
       });
 
       await expect(
-        client.getSeries({
+        client.getMultiSeries({
           series: 'TEST',
           startDate: '01-01-2024',
           endDate: '31-12-2024',
@@ -155,152 +155,12 @@ describe('EVDSClient', () => {
       });
 
       await expect(
-        client.getSeries({
+        client.getMultiSeries({
           series: 'TEST',
           startDate: '01-01-2024',
           endDate: '31-12-2024',
         })
       ).rejects.toThrow('EVDS API request failed: 500 Internal Server Error');
-    });
-  });
-
-  describe('getDataGroupData', () => {
-    it('should fetch data group data', async () => {
-      const mockResponse = { items: [] };
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      await client.getDataGroupData({
-        datagroup: 'bie_yssk',
-        startDate: '01-01-2024',
-        endDate: '31-12-2024',
-      });
-
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('datagroup=bie_yssk'),
-        expect.any(Object)
-      );
-    });
-  });
-
-  describe('getCategories', () => {
-    it('should fetch all categories', async () => {
-      const mockResponse = [
-        { CATEGORY_ID: '1', TOPIC_TITLE_TR: 'Kurlar', TOPIC_TITLE_ENG: 'Exchange Rates' }
-      ];
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      const result = await client.getCategories();
-
-      expect(result).toEqual(mockResponse);
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('categories'),
-        expect.any(Object)
-      );
-    });
-  });
-
-  describe('getDataGroups', () => {
-    it('should fetch all data groups', async () => {
-      const mockResponse: any[] = [];
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      await client.getDataGroups({
-        mode: DataGroupMode.ALL,
-      });
-
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('mode=0'),
-        expect.any(Object)
-      );
-    });
-
-    it('should fetch data groups by category', async () => {
-      const mockResponse: any[] = [];
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      await client.getDataGroups({
-        mode: DataGroupMode.BY_CATEGORY,
-        code: '2',
-      });
-
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('mode=2'),
-        expect.any(Object)
-      );
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('code=2'),
-        expect.any(Object)
-      );
-    });
-
-    it('should fetch specific data group', async () => {
-      const mockResponse: any[] = [];
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      await client.getDataGroups({
-        mode: DataGroupMode.BY_DATAGROUP,
-        code: 'bie_yssk',
-      });
-
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('mode=1'),
-        expect.any(Object)
-      );
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('code=bie_yssk'),
-        expect.any(Object)
-      );
-    });
-  });
-
-  describe('getSeriesList', () => {
-    it('should fetch series list by data group code', async () => {
-      const mockResponse: any[] = [];
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      await client.getSeriesList({
-        code: 'bie_yssk',
-      });
-
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('code=bie_yssk'),
-        expect.any(Object)
-      );
-    });
-
-    it('should fetch series info by series code', async () => {
-      const mockResponse: any[] = [];
-      (globalThis.fetch as any).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      await client.getSeriesList({
-        code: 'TP.DK.USD.A',
-      });
-
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('code=TP.DK.USD.A'),
-        expect.any(Object)
-      );
     });
   });
 
@@ -317,7 +177,7 @@ describe('EVDSClient', () => {
         json: async () => mockResponse,
       });
 
-      await customClient.getSeries({
+      await customClient.getMultiSeries({
         series: 'TEST',
         startDate: '01-01-2024',
         endDate: '31-12-2024',

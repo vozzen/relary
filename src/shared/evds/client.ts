@@ -4,12 +4,8 @@
  */
 
 import type {
-  Category,
-  DataGroup,
-  DataGroupRequest,
-  DataGroupsRequest,
-  SeriesListRequest,
-  SeriesMetadata,
+  MultiSeriesData,
+  SeriesItem,
   SeriesRequest,
   SeriesResponse,
 } from './types';
@@ -80,9 +76,9 @@ export class EVDSClient {
   /**
    * Makes an HTTP request to EVDS API with proper authentication
    */
-  private async request<T>(endpoint: string, params: Record<string, string>): Promise<T> {
+  private async request<T>(params: Record<string, string>): Promise<T> {
     const queryString = new URLSearchParams(params).toString();
-    const url = `${this.baseUrl}/${endpoint}?${queryString}`;
+    const url = `${this.baseUrl}/${queryString}`;
 
     const response = await fetch(url, {
       headers: {
@@ -115,7 +111,7 @@ export class EVDSClient {
    * });
    * ```
    */
-  async getSeries(request: SeriesRequest): Promise<SeriesResponse> {
+  private async getSeries(request: SeriesRequest): Promise<SeriesResponse> {
     const params: Record<string, string> = {
       series: this.joinParameter(request.series),
       startDate: this.formatDate(request.startDate),
@@ -139,113 +135,43 @@ export class EVDSClient {
       params.frequency = request.frequency;
     }
 
-    return this.request<SeriesResponse>('series', params);
+    return this.request<SeriesResponse>(params);
   }
 
-  /**
-   * Fetches all series data for a data group
-   * 
-   * @param request - Data group request parameters
-   * @returns Series data response
-   * 
-   * @example
-   * ```typescript
-   * const data = await client.getDataGroupData({
-   *   datagroup: 'bie_yssk',
-   *   startDate: new Date('2024-01-01'),
-   *   endDate: new Date('2024-12-31')
-   * });
-   * ```
-   */
-  async getDataGroupData(request: DataGroupRequest): Promise<SeriesResponse> {
-    const params: Record<string, string> = {
-      datagroup: request.datagroup,
-      startDate: this.formatDate(request.startDate),
-      endDate: this.formatDate(request.endDate),
-      type: request.type || ResponseType.JSON,
-    };
+    async getMultiSeries(request: SeriesRequest): Promise<MultiSeriesData> {
+        const rawSeriesResponse = await this.getSeries(request);
+        const seriesArray = Array.isArray(request.series) ? request.series : [request.series];
+        const multiSeriesData: MultiSeriesData = { seriesList: [] };
 
-    return this.request<SeriesResponse>('datagroup', params);
-  }
+        const tempSeries: Record<string, SeriesItem[]> = {};
 
-  /**
-   * Fetches all category metadata
-   * 
-   * @returns List of categories
-   * 
-   * @example
-   * ```typescript
-   * const categories = await client.getCategories();
-   * ```
-   */
-  async getCategories(): Promise<Category[]> {
-    const params: Record<string, string> = {
-      type: ResponseType.JSON,
-    };
+        rawSeriesResponse.items.forEach(rawItem => {
+            seriesArray.forEach(seriesCode => {
+                const correctedCode = seriesCode.replaceAll('.', '_');
+                const value = rawItem[correctedCode];
+                if (value !== undefined) {
+                    if (!tempSeries[seriesCode]) {
+                        tempSeries[seriesCode] = [];
+                    }
+                    const date = this.parseDateText(rawItem.Tarih)
+                    tempSeries[seriesCode].push({ date, value: Number.parseFloat(value) });
+                }
+            })
+        });
 
-    return this.request<Category[]>('categories', params);
-  }
-
-  /**
-   * Fetches data group metadata
-   * 
-   * @param request - Data groups request parameters
-   * @returns List of data groups
-   * 
-   * @example
-   * ```typescript
-   * // Get all data groups
-   * const allGroups = await client.getDataGroups({ mode: DataGroupMode.ALL });
-   * 
-   * // Get data groups for a category
-   * const categoryGroups = await client.getDataGroups({
-   *   mode: DataGroupMode.BY_CATEGORY,
-   *   code: '2'
-   * });
-   * 
-   * // Get specific data group
-   * const dataGroup = await client.getDataGroups({
-   *   mode: DataGroupMode.BY_DATAGROUP,
-   *   code: 'bie_yssk'
-   * });
-   * ```
-   */
-  async getDataGroups(request: DataGroupsRequest): Promise<DataGroup[]> {
-    const params: Record<string, string> = {
-      mode: request.mode,
-      type: request.type || ResponseType.JSON,
-    };
-
-    if (request.code) {
-      params.code = request.code;
+        for (const seriesCode of seriesArray) {
+            multiSeriesData.seriesList.push({
+                code: seriesCode,
+                items: tempSeries[seriesCode] || [],
+            });
+        }
+        return multiSeriesData;
     }
 
-    return this.request<DataGroup[]>('datagroups', params);
-  }
-
-  /**
-   * Fetches series metadata
-   * 
-   * @param request - Series list request parameters
-   * @returns List of series metadata
-   * 
-   * @example
-   * ```typescript
-   * // Get series metadata by data group code
-   * const seriesList = await client.getSeriesList({ code: 'bie_yssk' });
-   * 
-   * // Get series metadata by series code
-   * const seriesInfo = await client.getSeriesList({ code: 'TP.DK.USD.A' });
-   * ```
-   */
-  async getSeriesList(request: SeriesListRequest): Promise<SeriesMetadata[]> {
-    const params: Record<string, string> = {
-      code: request.code,
-      type: request.type || ResponseType.JSON,
-    };
-
-    return this.request<SeriesMetadata[]>('serieList', params);
-  }
+    private parseDateText(dateText: string): Date {
+        const [year, month, day] = dateText.split('-').map(part => parseInt(part, 10));
+        return new Date(year, month - 1, day ?? 15);
+    }
 }
 
 /**

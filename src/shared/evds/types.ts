@@ -123,7 +123,7 @@ export interface SeriesDataPoint {
   /** Date in YYYY-MM-DD format */
   Tarih: string;
   /** Series code as key with value */
-  [seriesCode: string]: string | number;
+  [seriesCode: string]: string;
 }
 
 /**
@@ -277,4 +277,17 @@ export interface SeriesListRequest {
   code: string;
   /** Response format (default: json) */
   type?: ResponseType;
+}
+
+export interface SeriesItem {
+  date: Date;
+  value: number;
+}
+
+export interface SeriesData {
+  code: string;
+  items: SeriesItem[];
+}
+export interface MultiSeriesData {
+  seriesList: SeriesData[];
 }
