@@ -594,7 +594,7 @@ describe('generatePurchasingPowerSeries', () => {
     expect(result!['Alım gücü'][1].date).toBe('03.2024')
   })
 
-  it('should skip points without matching inflation data (F0613)', () => {
+  it('should interpolate inflation for dates without exact match (F0613)', () => {
     const userSeries = [
       { date: '01.2024', value: 1000 },
       { date: '02.2024', value: 1200 },
@@ -602,16 +602,21 @@ describe('generatePurchasingPowerSeries', () => {
     ]
     const inflationSeries = [
       { date: '01.2024', value: 100 },
-      // Missing 02.2024
+      // Missing 02.2024 - should use 100 (last known value)
       { date: '03.2024', value: 120 },
     ]
     
     const result = generatePurchasingPowerSeries(userSeries, inflationSeries)
     
     expect(result).not.toBeNull()
-    expect(result!['Alım gücü']).toHaveLength(2) // Only 2 matching dates
+    expect(result!['Alım gücü']).toHaveLength(3) // All 3 dates should be included
     expect(result!['Alım gücü'][0].date).toBe('01.2024')
-    expect(result!['Alım gücü'][1].date).toBe('03.2024')
+    expect(result!['Alım gücü'][1].date).toBe('02.2024')
+    expect(result!['Alım gücü'][2].date).toBe('03.2024')
+    
+    // 02.2024 should use inflation value of 100 (from 01.2024)
+    // (1200/1000)*100 / 100 * 100 = 120
+    expect(result!['Alım gücü'][1].value).toBe(120)
   })
 })
 

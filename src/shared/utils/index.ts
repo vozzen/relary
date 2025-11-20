@@ -295,13 +295,14 @@ export function generateInflationSeries(
  * 2. Divide normalized user data by Enflasyon series values
  * 3. Multiply by 100
  * 
+ * Interpolates inflation data to match all user data dates using the last known inflation value.
+ * 
  * Returns null if:
  * - User data is empty
  * - Inflation series is empty
  * - First user data value is zero
- * - No matching dates between user data and inflation
  * 
- * @param userSeries User-entered income data
+ * @param userSeries User-entered income data (already interpolated)
  * @param inflationSeries Normalized inflation series (from generateInflationSeries)
  * @returns Record with single key "Alım gücü" containing calculated series, or null
  */
@@ -325,19 +326,38 @@ export function generatePurchasingPowerSeries(
 		return null
 	}
 	
-	// Create map of inflation values by date for easy lookup
-	const inflationMap = new Map<string, number>()
-	for (const point of inflationSeries) {
-		inflationMap.set(point.date, point.value)
+	// Create sorted inflation series by timestamp for interpolation
+	const inflationByTimestamp = inflationSeries
+		.map(point => ({
+			ts: normalizeTimeseriesDate(point.date),
+			value: point.value
+		}))
+		.filter(point => Number.isFinite(point.ts))
+		.sort((a, b) => a.ts - b.ts)
+	
+	if (inflationByTimestamp.length === 0) {
+		return null
 	}
 	
-	// Calculate purchasing power for each user data point that has matching inflation
+	// Calculate purchasing power for each user data point
 	const purchasingPowerSeries: { date: string; value: number }[] = []
 	
 	for (const userPoint of userSeries) {
-		const inflationValue = inflationMap.get(userPoint.date)
+		const userTs = normalizeTimeseriesDate(userPoint.date)
+		if (!Number.isFinite(userTs)) continue
 		
-		// Skip if no matching inflation data or inflation is zero
+		// Find inflation value at this timestamp (with interpolation)
+		let inflationValue: number | undefined
+		
+		// Find the inflation value at or before this timestamp
+		for (let i = inflationByTimestamp.length - 1; i >= 0; i--) {
+			if (inflationByTimestamp[i].ts <= userTs) {
+				inflationValue = inflationByTimestamp[i].value
+				break
+			}
+		}
+		
+		// Skip if no inflation data available or inflation is zero
 		if (inflationValue === undefined || inflationValue === 0) {
 			continue
 		}
