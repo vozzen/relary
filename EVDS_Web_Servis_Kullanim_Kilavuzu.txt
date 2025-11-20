@@ -1,0 +1,453 @@
+TÜRKİYE CUMHURİYET
+MERKEZ BANKASI
+
+ELEKTRONİK VERİ DAĞITIM SİSTEMİ
+WEB SERVİS KULLANIM KILAVUZU
+
+Nisan 2024
+
+1. EVDS Veri Web Servisleri Kullanım Kılavuzu
+
+Bu belgede web servis metotlarının parametreleri açıklanmaktadır.
+Farklı işlevdeki parametreler “&” işareti ile ayrılır.
+EVDS’de yer alan veriler en sık olarak günlük frekansta güncellenmektedir. Dolayısıyla Web
+servis yöntemi ile veri alımında günde bir kez veri çekmeniz genel sistem performansı açısından
+önem taşımaktadır. Ayrıca ihtiyaç duyulan, aynı veri grubuna ait serileri birlikte kodlayarak tek
+çağrı ile veri çekilmesi de yararlı olacaktır.
+
+Seri Parametreleri
+Parametre Adı
+series
+
+Açıklama
+Seri kodları gösterilir. Birden fazla seri seçilmesi durumunda, seri sayısı
+kadar parametre alır, seri kodları “-“ işareti ile ayrılır.
+
+Tarih Parametreleri
+Parametre Adı
+startDate
+endDate
+
+Açıklama
+Başlangıç tarihini gösterir.
+Bitiş tarihini gösterir.
+
+Tercih edilen frekansın eksiksiz görüntülenmesi için başlangıç tarihi alanına o frekansa ait ilk gün
+mutlaka gg-aa-yyyy formatında yazılmalıdır.
+Örnek:
+TP.DK.USD.S.YTL kodlu (USD) ABD Doları (Döviz Satış) isimli seri, başlangıç tarihi 01-012005, formül DÜZEY ve frekansı YILLIK seçilerek yıllık ortalama veriler hesaplanmıştır.
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL&startDate=01-012005&endDate=01-02- 2017&type=xml&aggregationTypes=avg&formulas=1&frequency=8
+Bu arama ile yapılan sonuçta 2005 verisi görüntülenebiliyor iken, aynı seri için tüm parametreler
+sabit tutularak başlangıç tarihi 02-01-2005 olarak değiştirildiğinde;
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL&startDate=02-012005&endDate=01-02- 2017&type=xml&aggregationTypes=avg&formulas=1&frequency=8
+listeleme 2006 verisi ile başlar. Bu sebeple, istenilen frekansın görüntülenebilmesi için ilgili
+frekansa ait ilk gün yazılmalıdır.
+1
+
+Bitiş Tarihi gg-aa-yyyy formatında yazılmalıdır.
+Biçim Parametreleri
+Parametre Adı
+type
+decimalSeperator
+
+Açıklama
+Web servislerin dönüş tipi csv, xml ya da json objesi şeklindedir.
+“,”, “.” Varsayılan değer noktadır. Virgül için parametre girilmelidir.
+
+API Anahtarı(Key) Parametreleri
+Parametre Adı
+key
+
+Açıklama
+Kullanıcıya tanımlı API anahtarıdır. API Anahtarı her kullanıcı için farklı
+tanımlanır. Key değerini sisteme üye olarak alabilirsiniz.
+Web servis çağrılarında “key” değerini HTTP Request Header’a eklemeniz
+gerekmektedir. Key değerini iletmeyenler veya yanlış gönderenler 403
+Forbidden hatası alacaktır.
+
+***Api Anahtarı(key=XXXXXXX) her kullanıcı için farklı tanımlanır. Key değerini sisteme
+üye olarak alabilirsiniz.
+•
+•
+
+Üye ekranında giriş yaptıktan sonra Kullanıcı ismine tıklayıp gelen menüde Profil
+seçeneği seçilir.
+Gelen ekranda API Anahtarı düğmesi tıklanarak key değerine ulaşılır.
+
+Gözlem Parametreleri
+Parametre Adı
+aggregationTypes
+
+Açıklama
+Birden fazla seri seçilmesi durumunda, seri sayısı kadar parametre alır,
+bunlar “-“ karakteri ile ayrılır.
+Ortalama: avg,
+En düşük: min,
+En yüksek: max
+Başlangıç: first,
+Bitiş: last,
+Kümülatif: sum
+Bu parametre kullanıcı tarafından girilmediği takdirde ilgili seri için
+orijinal gözlemin parametresi uygulanır.
+
+2
+
+Formül Parametreleri
+Parametre Adı
+formulas
+
+Açıklama
+Birden fazla seri seçilmesi durumunda, seri sayısı kadar parametre alır,
+bunlar “-“ karakteri ile ayrılır.
+Düzey: 0
+Yüzde Değişim: 1
+Fark: 2
+Yıllık Yüzde Değişim: 3
+Yıllık Fark: 4
+Bir Önceki Yılın Sonuna Göre Yüzde Değişim: 5
+Bir Önceki Yılın Sonuna Göre Fark: 6
+Hareketli Ortalama: 7
+Hareketli Toplam: 8
+Bu parametre kullanıcı tarafından girilmediği takdirde ilgili seri için
+düzey parametresi uygulanır.
+
+Frekans Parametreleri
+Parametre Adı
+frequency
+
+Açıklama
+Bu parametre tek değer alır.
+Günlük: 1
+İşgünü: 2
+Haftalık: 3
+Ayda 2 Kez: 4
+Aylık: 5
+3 Aylık: 6
+6 Aylık: 7
+Yıllık: 8
+Bu parametre kullanıcı tarafından girilmediği takdirde serilerin ortak
+frekansı alınır.
+Serilerin ortak frekansından(örn: yıllık) daha yüksek frekanslı(örn: aylık)
+bir değer girerse, serilerin ortak frekansı dikkate alınır.(örn: yıllık)
+
+3
+
+Series
+
+Seri
+Kodları
+
+Tarih
+
+Biçim
+
+Gözlem
+
+Frekans
+
+Parametreleri
+
+Parametreleri
+
+Parametreleri
+
+Parametreleri
+
+csv
+
+Ortalama: avg,
+
+Günlük: 1
+
+Düzey: 0
+
+xml
+
+En düşük: min,
+
+İşgünü: 2
+
+Yüzde Değişim: 1
+
+json
+
+En yüksek: max
+
+Haftalık: 3
+
+Fark: 2
+
+Başlangıç: first,
+
+Ayda 2 Kez: 4
+
+Yıllık Yüzde Değişim: 3
+
+Bitiş: last,
+
+Aylık: 5
+
+Yıllık Fark: 4
+
+Kümülatif: sum
+
+3 Aylık: 6
+
+Bir Önceki Yılın Sonuna
+Göre Yüzde Değişim: 5
+
+Startdate:Başlangıç
+Tarihi
+Enddate: Bitiş Tarihi
+
+Formül Parametreleri
+
+6 Aylık: 7
+Yıllık: 8
+
+Bir Önceki Yılın Sonuna
+Göre Fark: 6
+Hareketli Ortalama: 7
+Hareketli Toplam: 8
+
+2. En Sık Kullanılan Serilerden Örnek Bağlantılar
+2.1. Düzey Verisi (Ham Veri) Çeken Örnekler
+Category: Exchange Rates
+Data group: Exchange Rates(*)
+
+Konu Başlığı: Kurlar
+Veri Grubu: Kurlar-Döviz Kurları(*)
+Seri: (USD) ABD Doları (Döviz Alış)- TP.DK.USD.A,
+Seri: (EUR) Euro (Döviz Alış)- TP.DK.EUR.A,
+Seri: (CHF) İsviçre Frangı (Döviz Alış)- TP.DK.CHF.A,
+Seri: (GBP) İngiliz Sterlini (Döviz Alış)- TP.DK.GBP.A,
+Seri: (JPY) Japon Yeni (Döviz Alış)- TP.DK.JPY.A
+
+4
+
+Yukarıdaki serilerin başlangıç tarihi: 01-10-2017 ve bitiş tarihi:01-11-2017 arası XML veri
+tipindeki düzey (ham) veri çekimi için URL yapısı:
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.A-TP.DK.EUR.A-TP.DK.CHF.ATP.DK.GBP.A-TP.DK.JPY.A&startDate=01-10-2017&endDate=01-11-2017&type=xml
+2.2. Frekans Dönüşümlü Örnekler
+Frekans, formül ve gözlem değerleri kullanılarak örnekler oluşturulmuştur:
+Konu Başlığı: Kurlar
+Veri Grubu: Kurlar-Döviz Kurları(**)
+Örnek 1:
+Seri: (USD) ABD Doları (Döviz Alış)- TP.DK.USD.A.YTL serisi başlangıç tarihi: 01-02-2005
+ve bitiş tarihi:01-02-2017 aralığında biçim parametresi XML, gözlem değeri ortalama, formülü
+yüzde değişim ve frekansı yıllık olarak hesaplanmıştır.
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.A.YTL&startDate=01-022005&endDate=01-02-2017&type=xml&aggregationTypes=avg&formulas=1&frequency=8
+Örnek 2:
+Seri: (USD) ABD Doları (Döviz Satış)- TP.DK.USD.S.YTL serisi başlangıç tarihi: 01-02-2005
+ve bitiş tarihi: 01-02-2017 aralığında biçim parametresi XML, gözlem değeri ortalama, formülü
+yüzde değişim ve frekansı yıllık olarak hesaplanmıştır.
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL&startDate=01-022005&endDate=01-02-2017&type=xml&aggregationTypes=avg&formulas=1&frequency=8
+Örnek 3:
+Seri: (EUR) Euro (Döviz Alış)- TP.DK.EUR.A.YTL serisi başlangıç tarihi: 01-02-2005 ve bitiş
+tarihi: 01-02-2017 aralığında biçim parametresi XML, gözlem değeri ortalama, formülü yüzde
+değişim ve frekansı aylık olarak hesaplanmıştır.
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.EUR.A.YTL&startDate=01-022005&endDate=01-02-2017&type=xml&aggregationTypes=avg&formulas=1&frequency=5
+Örnek 4:
+
+5
+
+Seri: (EUR) Euro (Döviz Satış)- TP.DK.EUR.S.YTL serisi başlangıç tarihi: 01-02-2005 ve
+bitiş tarihi: 01-02-2017 aralığında biçim parametresi XML, gözlem değeri ortalama, formülü
+yüzde değişim ve frekansı yıllık olarak hesaplanmıştır.
+https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.EUR.S.YTL&startDate=01-022005&endDate=01-02-2017&type=xml&aggregationTypes=avg&formulas=1&frequency=8
+
+6
+
+3. Bir Veri Grubunun Tüm Seri Verileri Sunan Servis
+
+Veri grubu kodu parametresine göre tüm bağlı serilerin verisini sunan bir servistir.
+Veri Grubu Parametresi
+Parametre Adı
+datagroup
+
+Açıklama
+veri grubu kodu
+
+Örnek:
+https://evds2.tcmb.gov.tr/service/evds/datagroup=bie_yssk&startDate=01-06-2017&endDate=07-092017&type=csv
+4. EVDS Metaveri web servisleri
+
+4.1.Konu Başlığı Servisi
+Tüm konu başlıklarını sunan bir servistir. Bu servisi temsilen
+“https://evds2.tcmb.gov.tr/service/evds/” tanımından sonra “categories” eklenmelidir.
+Örnek:
+https://evds2.tcmb.gov.tr/service/evds/categories/type=xml
+
+Sonuç Detayları
+Alan Adı
+Konu Başlığı Kodu,
+Konu Başlığı Adı
+Konu Başlığı Adı (İngilizce)
+
+Alan Kodu
+CATEGORY_ID
+TOPIC_TITLE_TR
+TOPIC_TITLE_ENG
+
+4.2.Veri Grubu Servisi
+İlgili Konu başlığı bazında ya da tek bir veri grubunun metaveri bilgilerini listeleyen bir
+servistir.
+Bu servisi temsilen “https://evds2.tcmb.gov.tr/service/evds/” tanımından sonra
+“datagroups” eklenmelidir.
+
+7
+
+Durum Parametresi
+Parametre Adı
+
+Açıklama
+Veri grubu listelemesi aşağıdaki filtrelemeye göre yapılır:
+mode=0 Tüm konu başlıkları altındaki tüm veri gruplarını getirir.
+mode=1 Bir veri grubu seçimine göre ilgili veri grubu bilgilerini getirir.
+mode=2 Bir konu başlığı seçimine göre ilgili konu başlığına ait tüm veri grubu
+bilgilerini getirir.
+
+mode
+
+Kod Parametresi
+Parametre Adı
+
+Açıklama
+mode=1 için;
+code=veri grubu kodu
+
+code
+
+mode=2 için;
+code=konu başlığı kodu
+
+Örnekler:
+https://evds2.tcmb.gov.tr/service/evds/datagroups/mode=1&code=bie_yssk&type=json
+https://evds2.tcmb.gov.tr/service/evds/datagroups/mode=2&code=2&type=xml
+
+Sonuç Detayları
+Alan Kodu
+
+Alan Adı
+
+DATAGROUP_CODE
+DATAGROUP_NAME
+DATAGROUP_NAME_ENG
+START_DATE
+END_DATE
+FREQUENCY
+FREQUENCY_STR
+DATASOURCE
+DATASOURCE_ENG
+METADATA_LINK
+METADATA_LINK_ENG
+REV_POL_LINK
+REV_POL_LINK_ENG
+APP_CHA_LINK
+APP_CHA_LINK_ENG
+NOTE
+NOTE_ENG
+
+Veri Grubu Kodu
+Veri Grubu Adı
+Veri Grubu Adı (İngilizce)
+Veri Başlangıç Tarihi
+Veri Bitiş Tarihi
+Orjinal Frekans Kodu
+Orjinal Frekans Açıklaması
+Veri Kaynağı
+Veri Kaynağı (İngilizce)
+Metadata Linki
+Metadata Linki (İngilizce)
+Revizyon Politikası Linki
+Revizyon Politikası Linki (İngilizce)
+UYG. DEĞ. LİNK
+UYG. DEĞ. LİNK. İNG.
+Bilgi Notu
+Bilgi Notu (İngilizce)
+8
+
+4.3.Seri Listesi Servisi
+Seri listesini veri grubu ya da seri kodu bazında sunan bir servistir. Bu servisi temsilen
+“https://evds2.tcmb.gov.tr/service/evds/” tanımından sonra “serieList” eklenmelidir.
+Kod Parametresi
+Parametre Adı
+
+Açıklama
+
+code
+
+code=veri grubu kodu veya seri kodu
+
+Örnekler:
+https://evds2.tcmb.gov.tr/service/evds/serieList/type=xml&code=TP.DK.USD.A
+https://evds2.tcmb.gov.tr/service/evds/serieList/type=csv&code=bie_yssk
+
+Sonuç Detayları
+Alan Kodu
+
+Alan Adı
+
+SERIE_CODE
+DATAGROUP_CODE
+SERIE_NAME
+SERIE_NAME_ENG
+FREQUENCY_STR
+DEFAULT_AGG_METHOD_STR
+DEFAULT_AGG_METHOD
+TAG
+TAG_ENG
+DATASOURCE
+DATASOURCE_ENG
+METADATA_LINK
+METADATA_LINK_ENG
+REV_POL_LINK
+REV_POL_LINK_ENG
+APP_CHA_LINK
+APP_CHA_LINK_ENG
+START_DATE
+END_DATE
+
+Seri Kodu
+Veri Grubu Kodu
+Seri Adı
+Seri Adı (İngilizce)
+Orjinal Frekans Açıklaması
+Varsayılan Dönüşüm Yöntemi Açıklaması
+Varsayılan Dönüşüm Yöntemi
+Etiketler
+Etiketler (İngilizce)
+Veri Kaynağı
+Veri Kaynağı (İngilizce)
+Metadata Linki
+Metadata Linki (İngilizce)
+Revizyon Politikası Linki
+Revizyon Politikası Linki (İngilizce)
+UYG. DEĞ. LİNK
+UYG. DEĞ. LİNK. İNG.
+Veri Başlangıç Tarihi
+Veri Bitiş Tarihi
+
+9
+
+5. Excel’in İçinden Web Servis Kullanımı
+Bu dokümanda kullanıcılar için EVDS-Elektronik Veri Dağıtım Sistemi’nde seri kodu, zaman aralığı ve
+biçim kodu (XML, JSON, CSV) parametreleri verilerek sistemdeki verileri Excel’e aktarımı ile ilgili kullanım
+bilgileri verilmektedir.
+5.1.
+Excel 2019 Versiyonu Kullanımı
+Excel 2019’te yeni bir çalışma sayfası açılır.
+
+Data sayfasında “From Web” seçilir. Advanced seçimi yapılır. Aşağıdaki resimde görüşleceği üzere URL
+adresi girilir, HTTP Request Header alanına “key” ve uygulamadan alınan Api Key Değeri girilir. Tamam
+butonuna basılır.
+
+10
+
+11
+
+12
+
+13
+
+
