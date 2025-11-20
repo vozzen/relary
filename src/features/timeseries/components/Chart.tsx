@@ -18,6 +18,7 @@ import './Chart.css'
  * Renders user series and remote series with shared X axis.
  * Only displays selected series (F0601).
  * Filters data by date range based on user input (F0602).
+ * Each series has its own Y axis (F0604).
  */
 export const Chart: FC = () => {
   const state = useAppState()
@@ -58,12 +59,34 @@ export const Chart: FC = () => {
               tick={{ fontSize: 11, fill: '#94a3b8' }}
               stroke="#64748b"
             />
-            <YAxis
-              tick={{ fontSize: 11, fill: '#94a3b8' }}
-              stroke="#64748b"
-              width={50}
-              allowDecimals={false}
-            />
+            {/* Y axis for user series (F0604) */}
+            {hasData && (
+              <YAxis
+                yAxisId="user"
+                orientation="left"
+                tick={{ fontSize: 11, fill: '#22c55e' }}
+                stroke="#22c55e"
+                width={50}
+                allowDecimals={false}
+              />
+            )}
+            {/* Y axes for remote series - alternate left/right (F0604) */}
+            {remoteKeys.map((k, i) => {
+              const axisIndex = hasData ? i + 1 : i
+              const orientation = axisIndex % 2 === 0 ? 'left' : 'right'
+              const color = remoteColor(i)
+              return (
+                <YAxis
+                  key={k}
+                  yAxisId={k}
+                  orientation={orientation}
+                  tick={{ fontSize: 11, fill: color }}
+                  stroke={color}
+                  width={50}
+                  allowDecimals={false}
+                />
+              )
+            })}
             <Tooltip
               contentStyle={{ background: '#1e293b', border: '1px solid #334155', fontSize: 12 }}
             />
@@ -72,6 +95,7 @@ export const Chart: FC = () => {
               <Line
                 type="monotone"
                 dataKey="user"
+                yAxisId="user"
                 stroke="#22c55e"
                 strokeWidth={2}
                 dot={{ r: 2 }}
@@ -84,6 +108,7 @@ export const Chart: FC = () => {
                 key={k}
                 type="monotone"
                 dataKey={k}
+                yAxisId={k}
                 strokeWidth={2}
                 stroke={remoteColor(i)}
                 dot={false}

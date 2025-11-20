@@ -60,3 +60,5 @@ For the interval user provided, other time series data should be shown on same c
     - If no data entered, default range should be from 01.2006 to today.
 - 🟢 F0603:
     - Accept D.M.YYYY or D-M-YYYY as user data format too
+- 🟢 F0604:
+    - Each series should have its own Y axis as their magnitute can vary a lot

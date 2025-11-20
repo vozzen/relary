@@ -8,6 +8,7 @@
 - F0601: Series loading and selection
 - F0602: Dynamic date range filtering
 - F0603: Extended date format support
+- F0604: Multiple Y axes for series
 
 **In Progress**:
 - None
@@ -16,6 +17,21 @@
 - None
 
 **Details**:
+
+**F0604: Multiple Y Axes for Series**
+- Implemented separate Y axis for each series (user + remote)
+- Each Y axis is color-coded to match its corresponding line
+- Y axes alternate between left and right orientation for better layout
+- User series gets its own Y axis on the left
+- Each Line component now references its specific yAxisId
+- Allows proper visualization of series with vastly different magnitudes
+- All 45 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/features/timeseries/components/Chart.tsx (updated - added multiple Y axes)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0603: Extended Date Format Support**
 - Extended isValidTimeseriesDate to accept D.M.YYYY and D-M-YYYY formats
