@@ -2,7 +2,43 @@
 
 ## Current Sprint
 **Focus**: Phase 5: A library for fetching raw series data
-**Next Feature**: F0500
+**Next Feature**: F0501
+### 2025-11-20 - Session 10
+**Completed**:
+- F0500: EVDS API client library
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+- Created comprehensive TypeScript types for EVDS API (AggregationType, FormulaType, FrequencyType, etc.)
+- Implemented EVDSClient class with full API coverage:
+  - getSeries() - fetch time series data
+  - getDataGroupData() - fetch all series in a data group
+  - getCategories() - fetch category metadata
+  - getDataGroups() - fetch data group metadata
+  - getSeriesList() - fetch series metadata
+- Automatic date formatting (Date objects to DD-MM-YYYY)
+- API key authentication via HTTP headers
+- Comprehensive unit tests with 100% coverage
+- Full documentation in README.md
+
+**Files Created/Modified**:
+- src/shared/evds/types.ts
+- src/shared/evds/client.ts
+- src/shared/evds/index.ts
+- src/shared/evds/README.md
+- src/shared/evds/client.test.ts
+- docs/FEATURES.md
+- docs/PROGRESS.md
+
+**Next Feature**: F0501
+
+**Next Steps**:
+1. Implement F0501 - Service to fetch configured series and save to JSON files
 ### 2025-11-19 - Session 9
 **Completed**:
 - F013: Responsive design
