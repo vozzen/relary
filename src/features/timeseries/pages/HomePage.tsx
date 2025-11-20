@@ -4,7 +4,6 @@ import { Placeholder } from '../../../shared/components/Placeholder'
 import { ErrorMessage } from '../../../shared/components/ErrorMessage'
 import { parseTimeseriesInput, interpolateMonthlyTimeseries, getSeriesFriendlyName } from '../../../shared/utils'
 import { useAppDispatch, useAppState, actions } from '../../../app/store'
-import { loadRemoteTimeseries } from '../api/service'
 import { loadSeriesData } from '../api/seriesLoader'
 import './HomePage.css'
 import { Chart } from '../components/Chart'
@@ -24,10 +23,6 @@ export const HomePage: FC = () => {
   // Load series data on mount
   useEffect(() => {
     loadSeriesData(dispatch)
-    loadRemoteTimeseries(dispatch, 'example').catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error('Failed to load remote timeseries:', err)
-    })
   }, [dispatch])
 
   const handleChange = useCallback(
@@ -64,10 +59,7 @@ export const HomePage: FC = () => {
 
   const handleRetry = useCallback(() => {
     actions.setError(dispatch, null)
-    loadRemoteTimeseries(dispatch, 'example').catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error('Failed to load remote timeseries:', err)
-    })
+    loadSeriesData(dispatch)
   }, [dispatch])
 
   return (
