@@ -1,8 +1,34 @@
 # Development Progress Log
 
 ## Current Sprint
-**Focus**: All phases completed
-**Status**: ✅ Complete
+**Focus**: Phase 6 features
+**Status**: 🔄 In Progress
+### 2025-11-21 - Session 12
+**Completed**:
+- F0608: Chart interval always ends at current month
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0608: Chart Interval Always Ends at Current Month**
+- Updated calculateChartDateRange to always set maxDate to current month (first day)
+- minDate logic remains unchanged (earliest user data or default 01.2006)
+- Updated function documentation to reflect new behavior
+- Updated test cases to verify maxDate is always current month
+- All 53 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/shared/utils/index.ts (updated - calculateChartDateRange maxDate logic)
+- src/shared/utils/index.test.ts (updated - test expectations for maxDate)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
+
 ### 2025-11-20 - Session 11
 **Completed**:
 - F0601: Series loading and selection

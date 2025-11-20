@@ -265,7 +265,7 @@ describe('buildTimeseriesChartData', () => {
 })
 
 describe('calculateChartDateRange', () => {
-  it('should return user data range when user has valid data', () => {
+  it('should return user data range when user has valid data (F0608)', () => {
     const userSeries = [
       { date: '01.2024', value: 100 },
       { date: '06.2024', value: 200 },
@@ -273,8 +273,11 @@ describe('calculateChartDateRange', () => {
     
     const { minDate, maxDate } = calculateChartDateRange(userSeries)
     
+    // minDate comes from user data, maxDate is always current month (F0608)
     expect(minDate).toBe(Date.UTC(2024, 0, 1))
-    expect(maxDate).toBe(Date.UTC(2024, 5, 1))
+    const now = new Date()
+    const expectedMaxDate = Date.UTC(now.getFullYear(), now.getMonth(), 1)
+    expect(maxDate).toBe(expectedMaxDate)
   })
 
   it('should return default range (01.2006 to today) when no user data', () => {
@@ -285,13 +288,16 @@ describe('calculateChartDateRange', () => {
     expect(maxDate).toBeGreaterThan(Date.UTC(2025, 0, 1))
   })
 
-  it('should handle single data point', () => {
+  it('should handle single data point (F0608)', () => {
     const userSeries = [{ date: '03.2024', value: 150 }]
     
     const { minDate, maxDate } = calculateChartDateRange(userSeries)
     
+    // minDate from user data, maxDate is always current month (F0608)
     expect(minDate).toBe(Date.UTC(2024, 2, 1))
-    expect(maxDate).toBe(Date.UTC(2024, 2, 1))
+    const now = new Date()
+    const expectedMaxDate = Date.UTC(now.getFullYear(), now.getMonth(), 1)
+    expect(maxDate).toBe(expectedMaxDate)
   })
 
   it('should fallback to default when user data has invalid dates', () => {

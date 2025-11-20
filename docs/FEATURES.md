@@ -69,3 +69,9 @@ For the interval user provided, other time series data should be shown on same c
 - 🟢 F0607:
     - Chart should show only 2 decimal digits
     - Series should be selected directly clicking on the labels on chart instead of a separate set of checkboxes. Let chart to fill that gap of removed checkbox group
+- 🟢 F0608:
+    - Make chart's display interval end is always current month. Keep interval beginning logic same.
+- 🔴 F0609:
+    - Derived series should be in chart just like user data series on page load even no user data entered yet.
+- 🔴 F0610:
+    - Let user to save currently entered user data to browser local storage by providing a name. Also let use to list saved data sets' names and load one of them which should immediatly replace currently entered data.

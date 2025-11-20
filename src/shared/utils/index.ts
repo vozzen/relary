@@ -233,18 +233,22 @@ export function getSeriesFriendlyName(code: string): string {
 }
 
 /**
- * Calculate date range for chart display based on user data.
- * If user has valid data, returns the range of user data.
- * Otherwise, returns default range from 01.2006 to today.
+ * Calculate date range for chart display based on user data (F0608).
+ * If user has valid data, returns from earliest user data to current month.
+ * Otherwise, returns default range from 01.2006 to current month.
+ * End date is always set to the first day of the current month.
  */
 export function calculateChartDateRange(userSeries: { date: string; value: number }[]): {
 	minDate: number
 	maxDate: number
 } {
+	// Always set maxDate to first day of current month (F0608)
+	const now = new Date()
+	const maxDate = Date.UTC(now.getFullYear(), now.getMonth(), 1)
+	
 	if (userSeries.length === 0) {
-		// Default range: 01.2006 to today
+		// Default range: 01.2006 to current month
 		const minDate = Date.UTC(2006, 0, 1) // January 1, 2006
-		const maxDate = Date.now()
 		return { minDate, maxDate }
 	}
 
@@ -256,12 +260,11 @@ export function calculateChartDateRange(userSeries: { date: string; value: numbe
 	if (timestamps.length === 0) {
 		// Fallback to default if no valid dates
 		const minDate = Date.UTC(2006, 0, 1)
-		const maxDate = Date.now()
 		return { minDate, maxDate }
 	}
 
 	const minDate = Math.min(...timestamps)
-	const maxDate = Math.max(...timestamps)
+	// maxDate is always current month regardless of user data (F0608)
 	return { minDate, maxDate }
 }
 
