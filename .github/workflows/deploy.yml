@@ -37,6 +37,18 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Fetch latest series data from gh-pages
+        run: |
+          git fetch origin gh-pages 2>/dev/null || true
+          if git ls-remote --heads origin gh-pages | grep gh-pages; then
+            git checkout origin/gh-pages -- data/series.json 2>/dev/null || echo "No series.json in gh-pages yet"
+            mkdir -p dist/data
+            if [ -f data/series.json ]; then
+              cp data/series.json dist/data/series.json
+              echo "Copied series.json to dist/data/"
+            fi
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
