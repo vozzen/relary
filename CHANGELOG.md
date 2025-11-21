@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/vozzen/relary/compare/v0.5.0...v0.6.0) (2025-11-21)
+
+
+### Features
+
+* **F0703:** automated series data fetching to GitHub Pages ([1a00bc3](https://github.com/vozzen/relary/commit/1a00bc34fdafd57ab6d43f25b8898cc535bda1d1)), closes [#pages](https://github.com/vozzen/relary/issues/pages)
+
 # [0.5.0](https://github.com/vozzen/relary/compare/v0.4.3...v0.5.0) (2025-11-21)
 
 
