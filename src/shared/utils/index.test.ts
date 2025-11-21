@@ -399,7 +399,7 @@ describe('generateDerivedSeries', () => {
     expect(Object.keys(derived)).toHaveLength(0)
   })
 
-  it('should show exchange rates directly when no user data (F0609)', () => {
+  it('should create empty derived series when no user data (F0609)', () => {
     const remoteSeries = {
       'TP.DK.USD.A.YTL': [
         { date: '01.2024', value: 20 },
@@ -412,12 +412,10 @@ describe('generateDerivedSeries', () => {
     
     const derived = generateDerivedSeries([], remoteSeries)
     
-    // Should create derived series showing exchange rates
+    // Should create empty derived series (visible in legend but no data)
     expect(Object.keys(derived)).toEqual(['Gelir(USD)', 'Gelir(EUR)'])
-    expect(derived['Gelir(USD)']).toHaveLength(2)
-    expect(derived['Gelir(USD)'][0]).toEqual({ date: '01.2024', value: 20 })
-    expect(derived['Gelir(USD)'][1]).toEqual({ date: '02.2024', value: 25 })
-    expect(derived['Gelir(EUR)'][0]).toEqual({ date: '01.2024', value: 30 })
+    expect(derived['Gelir(USD)']).toEqual([])
+    expect(derived['Gelir(EUR)']).toEqual([])
   })
 
   it('should only include dates that exist in user data', () => {

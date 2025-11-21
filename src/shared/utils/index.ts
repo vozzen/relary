@@ -217,7 +217,7 @@ function calculateDerivedPoints(
  * Generate derived series for TP.DK.* codes (F0606, F0609, F0610).
  * For each TP.DK.* series, creates a "Gelir(<name>)" series.
  * If user data exists, values = userValue / tpDkValue for matching months.
- * If no user data, shows the TP.DK.* series itself as "Gelir(<name>)" (F0609).
+ * If no user data, creates empty placeholder series (F0609 - visible in legend but no data).
  */
 export function generateDerivedSeries(
 	userSeries: { date: string; value: number }[],
@@ -232,8 +232,8 @@ export function generateDerivedSeries(
 		const derivedKey = `Gelir(${friendlyName})`
 		
 		if (userSeries.length === 0) {
-			// No user data: show the exchange rate series itself (F0609)
-			derived[derivedKey] = series
+			// No user data: create empty series so it appears in legend (F0609)
+			derived[derivedKey] = []
 		} else {
 			// User data exists: calculate ratio series (F0606)
 			const userMap = createTimeseriesMap(userSeries)

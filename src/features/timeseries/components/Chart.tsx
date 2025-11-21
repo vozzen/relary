@@ -23,6 +23,7 @@ const formatTooltipValue = (value: number) => {
 /**
  * Get default selection state for a series (F0615).
  * Only Gelir(₺), Gelir(USD), and Alım gücü are enabled by default.
+ * All other series including raw USD, EUR, Gelir(EUR), and Enflasyon are disabled.
  */
 const getDefaultSelection = (seriesKey: string): boolean => {
   const defaultEnabled = ['user', 'Gelir(USD)', 'Alım gücü']
@@ -81,8 +82,8 @@ export const Chart: FC = () => {
   const allRemoteSeries = { 
     ...filteredRemoteSeries, 
     ...derivedSeries,
-    ...(inflationSeries || {}),
-    ...(purchasingPowerSeries || {})
+    ...(inflationSeries ?? {}),
+    ...(purchasingPowerSeries ?? {})
   }
   
   // Always include Alım gücü in the series list, even if it has no data (F0615 Issue 2)
