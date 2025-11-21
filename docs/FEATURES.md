@@ -102,3 +102,5 @@ For the interval user provided, other time series data should be shown on same c
     - Create a github action that is triggered on weekdays at 09:15, 12:15, 15:15, 18:15.
     - It should execute `npm run fetch-series`. If successful, `/data/series.json` file should be checked it in a branch other than main(such as  gh-pages) so that it is accessible by this app later.
     - App should read this file on page load instead of directly accessing the file `/data/series.json` in repo.
+- 🟢 F0704:
+    - fetch-series process should add a timestamp to root object in series.json file with key "timestamp". Value should be a ISO-8601 timestamp with UTC offset representing the creation time of the file.

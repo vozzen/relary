@@ -15,8 +15,9 @@ export interface SeriesData {
 }
 
 /**
- * Combined series file structure
+ * Combined series file structure (F0704)
  */
 export interface CombinedSeriesData {
+  timestamp: string
   series: SeriesData[]
 }

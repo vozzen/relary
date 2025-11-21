@@ -6,6 +6,7 @@
 ### 2025-11-22 - Session 14
 **Completed**:
 - F0703: Automated series data fetching and GitHub Pages deployment
+- F0704: Add timestamp to series.json
 
 **In Progress**:
 - None
@@ -14,6 +15,19 @@
 - None
 
 **Details**:
+
+**F0704: Add Timestamp to Series Data**
+- Updated CombinedSeries interface to include timestamp field
+- Modified saveCombinedFile to add ISO-8601 timestamp when creating series.json
+- Updated CombinedSeriesData TypeScript type to include timestamp
+- Timestamp represents file creation time in UTC
+- Allows app to display data freshness to users
+
+**Files Created/Modified**:
+- tools/fetch-series.ts (updated - add timestamp to combined file)
+- src/shared/types/series.ts (updated - add timestamp to interface)
+- docs/FEATURES.md (updated - marked F0704 complete)
+- docs/PROGRESS.md (updated)
 
 **F0703: Automated Series Data Fetching**
 - Created `.github/workflows/fetch-series.yml` workflow

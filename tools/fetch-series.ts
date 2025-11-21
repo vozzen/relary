@@ -40,6 +40,7 @@ interface SeriesData {
  * Combined series structure
  */
 interface CombinedSeries {
+  timestamp: string;
   series: SeriesData[];
 }
 
@@ -216,16 +217,17 @@ function saveSeriesFile(outputDir: string, seriesCode: string, items: TimeSeries
 }
 
 /**
- * Save combined series file
+ * Save combined series file with timestamp (F0704)
  */
 function saveCombinedFile(outputDir: string, allSeries: SeriesData[]): void {
   const combined: CombinedSeries = {
+    timestamp: new Date().toISOString(),
     series: allSeries,
   };
 
   const filePath = path.join(outputDir, 'series.json');
   fs.writeFileSync(filePath, JSON.stringify(combined, null, 2), 'utf-8');
-  console.log(`Saved series.json`);
+  console.log(`Saved series.json with timestamp: ${combined.timestamp}`);
 }
 
 /**
