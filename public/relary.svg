@@ -1,0 +1,9 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer 1</title>
+  <ellipse fill="#fff" cx="128.90907" cy="128" id="svg_1" rx="112" ry="112" stroke-width="18" stroke="#000000"/>
+  <text fill="#000000" stroke-width="0" x="85.29611" y="122.24268" id="svg_2" font-size="56" font-family="'JetBrains Mono'" text-anchor="start" xml:space="preserve" font-weight="bold" stroke="#ff5656" transform="matrix(5.127 0 0 3.87225 -378.649 -266.088)">₺</text>
+  <path d="m-15.79909,168.27161l59.61188,-23.13194l59.61188,11.56597l59.61188,-34.69792l59.61188,11.56598l47.6895,-28.91493" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" id="svg_7" opacity="0.2" stroke="#000000" transform="rotate(-24.9598 127.269 136.465)"/>
+ </g>
+
+</svg>

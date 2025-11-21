@@ -18,6 +18,7 @@ export const Header: FC<HeaderProps> = ({ actions }) => {
     <header role="banner" className="app-header">
       <div className="app-header__brand">
         <Link to="/" aria-label="Ana Sayfa" className="app-header__title">
+          <img src="/relary.svg" alt="Relary logo" className="app-header__logo" />
           {APP_NAME}
         </Link>
       </div>
