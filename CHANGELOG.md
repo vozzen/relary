@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/vozzen/relary/compare/v0.3.0...v0.3.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* set Vite base path to root for GitHub Pages deployment ([a7512d5](https://github.com/vozzen/relary/commit/a7512d523e5b43a9c2f73e180030da6f48619511))
+
 # [0.3.0](https://github.com/vozzen/relary/compare/v0.2.0...v0.3.0) (2025-11-21)
 
 
