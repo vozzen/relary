@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/vozzen/relary/compare/v0.8.0...v0.9.0) (2025-11-21)
+
+
+### Features
+
+* **seo:** add comprehensive SEO meta tags and files ([66d7c12](https://github.com/vozzen/relary/commit/66d7c12fbb6cced6eb38c3170c7c017809dcb582))
+
 # [0.8.0](https://github.com/vozzen/relary/compare/v0.7.0...v0.8.0) (2025-11-21)
 
 
