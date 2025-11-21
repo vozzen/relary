@@ -44,11 +44,13 @@
 
 /* Mobile responsive adjustments */
 @media (max-width: 480px) {
-  .home-page { gap:1rem; padding:0.5rem; }
-  .controls-container { gap:1rem; }
+  .home-page { gap:1rem; padding:0.5rem; overflow-x:hidden; }
+  .controls-container { gap:1rem; width:100%; }
+  .chart-section { width:100%; overflow-x:hidden; }
   .chart-placeholder { min-height:180px; font-size:0.75rem; border-width:1px; }
   .section-header { font-size:0.8rem; margin-bottom:0.5rem; }
-  .timeseries-editor { min-height:100px; padding:0.5rem; font-size:0.65rem; }
+  .editor-section, .storage-section { width:100%; min-width:0; }
+  .timeseries-editor { min-height:100px; padding:0.5rem; font-size:0.65rem; width:100%; box-sizing:border-box; }
   .editor-help { font-size:0.6rem; }
   .dataset-name-input { font-size:0.7rem; }
   .save-button { font-size:0.7rem; padding:0.4rem 0.8rem; }
