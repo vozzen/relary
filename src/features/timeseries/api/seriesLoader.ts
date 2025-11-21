@@ -5,7 +5,7 @@ import { actions } from '../../../app/store'
 /**
  * GitHub Pages URL for series data (F0703)
  */
-const SERIES_DATA_URL = 'https://vozzen.github.io/relary/data/series.json'
+const SERIES_DATA_URL = 'https://relary.sen.kim/data/series.json'
 
 /**
  * Fallback to local data in development or if fetch fails
