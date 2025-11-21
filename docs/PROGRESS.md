@@ -13,12 +13,32 @@
 - F0613: Purchasing power series calculation
 - F0614: Sort series labels in chart legend
 - F0615: Default series selection on load
+- F0700: Compact side-by-side layout
 
 **In Progress**:
 - None
 
 **Blockers**:
 - None
+
+**Details**:
+
+**F0700: Compact Side-by-Side Layout**
+- Restructured HomePage to display controls side-by-side using CSS Grid
+- Chart section now spans full width (95vw) for better space utilization
+- Data entry and storage sections in 2-column grid layout
+- Removed toggle button - save/load panel always visible
+- Added section headers: "Veri Girişi" and "Kaydet/Yükle"
+- Reduced textarea min-height for more compact display
+- Responsive: Stacks to single column on tablets (< 768px)
+- All 63 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/features/timeseries/pages/HomePage.tsx (updated - side-by-side layout)
+- src/features/timeseries/pages/HomePage.css (updated - grid layout, compact styling)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **Details**:
 

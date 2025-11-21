@@ -21,7 +21,6 @@ export const HomePage: FC = () => {
   const [valid, setValid] = useState<boolean | null>(null)
   const [savedDatasets, setSavedDatasets] = useState<string[]>([])
   const [datasetName, setDatasetName] = useState('')
-  const [showSaveLoad, setShowSaveLoad] = useState(false)
 
   // Load series data on mount and refresh saved datasets list
   useEffect(() => {
@@ -120,79 +119,69 @@ export const HomePage: FC = () => {
       <div className="chart-section">
         <Chart />
       </div>
-      <div className="editor-section">
-        <label htmlFor="timeseries-editor">Veri Girişi</label>
-        {(() => {
-          let variant = ''
-          if (valid !== null) {
-            variant = valid ? 'is-valid' : 'is-invalid'
-          }
-          const className = `timeseries-editor ${variant}`.trim()
-          return (
-            <textarea
-              id="timeseries-editor"
-              className={className}
-              placeholder={'Örnek:\n01.2024 120\n15.02.2024 130\n03-2024 140'}
-              value={raw}
-              onChange={handleChange}
-              aria-invalid={valid === false}
-            />
-          )
-        })()}
-        <small className="editor-help">
-          Formatlar: DD.MM.YYYY | MM.YYYY | MM-YYYY — Her satır: tarih değer
-        </small>
+      <div className="controls-container">
+        <div className="editor-section">
+          <h3 className="section-header">Veri Girişi</h3>
+          {(() => {
+            let variant = ''
+            if (valid !== null) {
+              variant = valid ? 'is-valid' : 'is-invalid'
+            }
+            const className = `timeseries-editor ${variant}`.trim()
+            return (
+              <textarea
+                id="timeseries-editor"
+                className={className}
+                placeholder={'Örnek:\n01.2024 120\n15.02.2024 130\n03-2024 140'}
+                value={raw}
+                onChange={handleChange}
+                aria-invalid={valid === false}
+              />
+            )
+          })()}
+          <small className="editor-help">
+            Formatlar: DD.MM.YYYY | MM.YYYY | MM-YYYY
+          </small>
+        </div>
         
-        <div className="dataset-controls">
-          <button 
-            type="button" 
-            onClick={() => setShowSaveLoad(!showSaveLoad)}
-            className="toggle-saveload"
-          >
-            {showSaveLoad ? 'Gizle' : 'Kaydet/Yükle'}
-          </button>
+        <div className="storage-section">
+          <h3 className="section-header">Kaydet/Yükle</h3>
+          <div className="save-section">
+            <input
+              type="text"
+              placeholder="Veri seti adı"
+              value={datasetName}
+              onChange={(e) => setDatasetName(e.target.value)}
+              className="dataset-name-input"
+            />
+            <button type="button" onClick={handleSave} className="save-button">
+              Kaydet
+            </button>
+          </div>
           
-          {showSaveLoad && (
-            <div className="saveload-panel">
-              <div className="save-section">
-                <input
-                  type="text"
-                  placeholder="Veri seti adı"
-                  value={datasetName}
-                  onChange={(e) => setDatasetName(e.target.value)}
-                  className="dataset-name-input"
-                />
-                <button type="button" onClick={handleSave} className="save-button">
-                  Kaydet
-                </button>
-              </div>
-              
-              {savedDatasets.length > 0 && (
-                <div className="load-section">
-                  <h4>Kaydedilmiş Veriler:</h4>
-                  <ul className="dataset-list">
-                    {savedDatasets.map(name => (
-                      <li key={name} className="dataset-item">
-                        <button 
-                          type="button" 
-                          onClick={() => handleLoad(name)}
-                          className="load-button"
-                        >
-                          {name}
-                        </button>
-                        <button 
-                          type="button" 
-                          onClick={() => handleDelete(name)}
-                          className="delete-button"
-                          aria-label={`${name} sil`}
-                        >
-                          ×
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+          {savedDatasets.length > 0 && (
+            <div className="load-section">
+              <ul className="dataset-list">
+                {savedDatasets.map(name => (
+                  <li key={name} className="dataset-item">
+                    <button 
+                      type="button" 
+                      onClick={() => handleLoad(name)}
+                      className="load-button"
+                    >
+                      {name}
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => handleDelete(name)}
+                      className="delete-button"
+                      aria-label={`${name} sil`}
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

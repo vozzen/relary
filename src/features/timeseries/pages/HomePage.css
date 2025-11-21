@@ -1,25 +1,27 @@
- .home-page { display:flex; flex-direction:column; align-items:center; gap:2rem; padding:1rem 0 2rem; }
-.chart-section { width:100%; display:flex; justify-content:center; }
-.chart-placeholder { width:80vw; max-width:80vw; min-height:240px; border:2px dashed #334155; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#94a3b8; background:#0f172a; font-size:0.9rem; letter-spacing:0.5px; }
-.editor-section { width:80vw; max-width:80vw; display:flex; flex-direction:column; align-items:stretch; }
-.editor-section label { font-size:0.8rem; font-weight:600; margin-bottom:0.35rem; text-align:left; color:#cbd5e1; }
-.timeseries-editor { width:100%; min-height:160px; padding:0.75rem; font-family:monospace; font-size:0.75rem; line-height:1.3; border:2px solid #334155; border-radius:6px; background:#1e293b; color:#f1f5f9; resize:vertical; outline:none; }
+ .home-page { display:flex; flex-direction:column; align-items:center; gap:1.5rem; padding:1rem 0 2rem; }
+.chart-section { width:95vw; max-width:95vw; display:flex; justify-content:center; }
+.chart-placeholder { width:100%; min-height:240px; border:2px dashed #334155; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#94a3b8; background:#0f172a; font-size:0.9rem; letter-spacing:0.5px; }
+
+/* Side-by-side controls layout (F0700) */
+.controls-container { width:95vw; max-width:95vw; display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+.section-header { margin:0 0 0.75rem 0; font-size:0.85rem; color:#cbd5e1; font-weight:600; }
+
+/* Data entry section */
+.editor-section { display:flex; flex-direction:column; }
+.timeseries-editor { width:100%; min-height:140px; padding:0.75rem; font-family:monospace; font-size:0.75rem; line-height:1.3; border:2px solid #334155; border-radius:6px; background:#1e293b; color:#f1f5f9; resize:vertical; outline:none; }
 .timeseries-editor:focus { border-color:#64748b; }
 .timeseries-editor.is-valid { border-color:#22c55e; box-shadow:0 0 0 2px rgba(34,197,94,0.25); }
 .timeseries-editor.is-invalid { border-color:#ef4444; box-shadow:0 0 0 2px rgba(239,68,68,0.25); }
-.editor-help { margin-top:0.5rem; font-size:0.65rem; color:#64748b; text-align:left; }
+.editor-help { margin-top:0.5rem; font-size:0.65rem; color:#64748b; }
 
-/* Dataset controls (F0611) */
-.dataset-controls { margin-top:1rem; width:100%; }
-.toggle-saveload { padding:0.5rem 1rem; background:#334155; color:#f1f5f9; border:none; border-radius:6px; cursor:pointer; font-size:0.8rem; font-weight:500; transition:background 0.2s; }
-.toggle-saveload:hover { background:#475569; }
-.saveload-panel { margin-top:1rem; padding:1rem; background:#1e293b; border:1px solid #334155; border-radius:6px; }
+/* Storage section (F0700) */
+.storage-section { display:flex; flex-direction:column; }
 .save-section { display:flex; gap:0.5rem; margin-bottom:1rem; }
-.dataset-name-input { flex:1; padding:0.5rem; background:#0f172a; color:#f1f5f9; border:1px solid #334155; border-radius:4px; font-size:0.8rem; outline:none; }
+.dataset-name-input { flex:1; padding:0.5rem; background:#1e293b; color:#f1f5f9; border:1px solid #334155; border-radius:4px; font-size:0.75rem; outline:none; }
 .dataset-name-input:focus { border-color:#64748b; }
-.save-button { padding:0.5rem 1rem; background:#22c55e; color:#0f172a; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem; font-weight:600; transition:background 0.2s; }
+.save-button { padding:0.5rem 1rem; background:#22c55e; color:#0f172a; border:none; border-radius:4px; cursor:pointer; font-size:0.75rem; font-weight:600; transition:background 0.2s; }
 .save-button:hover { background:#16a34a; }
-.load-section h4 { margin:0 0 0.75rem 0; font-size:0.85rem; color:#cbd5e1; font-weight:600; }
+.load-section { flex:1; }
 .dataset-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem; }
 .dataset-item { display:flex; gap:0.5rem; }
 .load-button { flex:1; padding:0.5rem; background:#334155; color:#f1f5f9; border:none; border-radius:4px; cursor:pointer; font-size:0.75rem; text-align:left; transition:background 0.2s; }
@@ -29,20 +31,21 @@
 
 /* Tablet responsive adjustments */
 @media (max-width: 768px) {
-  .home-page { gap:1.5rem; padding:0.75rem 0 1.5rem; }
-  .chart-section { width:90vw; }
-  .chart-placeholder { width:90vw; max-width:90vw; min-height:200px; font-size:0.85rem; }
-  .editor-section { width:90vw; max-width:90vw; }
-  .timeseries-editor { min-height:140px; font-size:0.7rem; }
+  .home-page { gap:1.25rem; padding:0.75rem 0 1.5rem; }
+  .controls-container { grid-template-columns:1fr; gap:1.5rem; }
+  .chart-placeholder { min-height:200px; font-size:0.85rem; }
+  .timeseries-editor { min-height:120px; font-size:0.7rem; }
 }
 
 /* Mobile responsive adjustments */
 @media (max-width: 480px) {
   .home-page { gap:1rem; padding:0.5rem 0 1rem; }
-  .chart-section { width:95vw; }
-  .chart-placeholder { width:95vw; max-width:95vw; min-height:180px; font-size:0.75rem; border-width:1px; }
-  .editor-section { width:95vw; max-width:95vw; }
-  .editor-section label { font-size:0.75rem; }
-  .timeseries-editor { min-height:120px; padding:0.5rem; font-size:0.65rem; }
+  .controls-container { gap:1rem; }
+  .chart-placeholder { min-height:180px; font-size:0.75rem; border-width:1px; }
+  .section-header { font-size:0.8rem; margin-bottom:0.5rem; }
+  .timeseries-editor { min-height:100px; padding:0.5rem; font-size:0.65rem; }
   .editor-help { font-size:0.6rem; }
+  .dataset-name-input { font-size:0.7rem; }
+  .save-button { font-size:0.7rem; padding:0.4rem 0.8rem; }
+  .load-button { font-size:0.7rem; padding:0.4rem; }
 }
