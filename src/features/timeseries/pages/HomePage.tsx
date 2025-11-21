@@ -49,16 +49,9 @@ export const HomePage: FC = () => {
         // Remove duplicates
         const uniqueCodes = Array.from(new Set(allCodes))
         actions.setAvailableSeries(dispatch, uniqueCodes)
-        
-        // Auto-select new derived series
-        for (const code of derivedCodes) {
-          if (state.timeseries.selectedSeries[code] === undefined) {
-            actions.setSeriesSelection(dispatch, code, true)
-          }
-        }
       }
     },
-    [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries, state.timeseries.selectedSeries]
+    [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries]
   )
 
   const handleRetry = useCallback(() => {
@@ -103,17 +96,11 @@ export const HomePage: FC = () => {
         const allCodes = [...state.timeseries.availableSeries, ...derivedCodes]
         const uniqueCodes = Array.from(new Set(allCodes))
         actions.setAvailableSeries(dispatch, uniqueCodes)
-        
-        for (const code of derivedCodes) {
-          if (state.timeseries.selectedSeries[code] === undefined) {
-            actions.setSeriesSelection(dispatch, code, true)
-          }
-        }
       }
     } else {
       alert(`"${name}" yüklenemedi`)
     }
-  }, [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries, state.timeseries.selectedSeries])
+  }, [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries])
 
   const handleDelete = useCallback((name: string) => {
     if (confirm(`"${name}" silinsin mi?`)) {

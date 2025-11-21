@@ -30,6 +30,16 @@ const getDefaultSelection = (seriesKey: string): boolean => {
 }
 
 /**
+ * Get friendly name for sorting purposes (F0614).
+ */
+const getSeriesKeyForSorting = (key: string): string => {
+  // Map raw series codes to their friendly names for sorting
+  if (key === 'TP.DK.USD.A.YTL') return 'USD'
+  if (key === 'TP.DK.EUR.A.YTL') return 'EUR'
+  return key
+}
+
+/**
  * Timeseries chart using Recharts (F010/F011).
  * Renders user series and remote series with shared X axis.
  * Only displays selected series (F0601).
@@ -75,11 +85,17 @@ export const Chart: FC = () => {
     ...(purchasingPowerSeries || {})
   }
   
+  // Always include Alım gücü in the series list, even if it has no data (F0615 Issue 2)
+  const allRemoteSeriesWithPower = {
+    ...allRemoteSeries,
+    ...(!purchasingPowerSeries && { 'Alım gücü': [] })
+  }
+  
   // Calculate date range based on user data (F0602)
   const { minDate, maxDate } = calculateChartDateRange(userSeries)
   
   // Build chart data with ALL series (don't filter here, use hide prop on Line instead)
-  const allData = buildTimeseriesChartData(userSeries, allRemoteSeries)
+  const allData = buildTimeseriesChartData(userSeries, allRemoteSeriesWithPower)
   
   // Filter data to only show the calculated date range (F0602)
   const data = allData.filter((row) => {
@@ -89,10 +105,12 @@ export const Chart: FC = () => {
   const hasData = data.length > 0
   
   // Sort series keys in specific order (F0614)
-  const remoteKeys = Object.keys(allRemoteSeries).sort((a, b) => {
+  const remoteKeys = Object.keys(allRemoteSeriesWithPower).sort((a, b) => {
     const order = ['Gelir(USD)', 'Gelir(EUR)', 'USD', 'EUR', 'Enflasyon', 'Alım gücü']
-    const indexA = order.indexOf(a)
-    const indexB = order.indexOf(b)
+    const sortKeyA = getSeriesKeyForSorting(a)
+    const sortKeyB = getSeriesKeyForSorting(b)
+    const indexA = order.indexOf(sortKeyA)
+    const indexB = order.indexOf(sortKeyB)
     
     // If both are in the order list, sort by their position
     if (indexA !== -1 && indexB !== -1) {
