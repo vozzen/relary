@@ -21,6 +21,15 @@ const formatTooltipValue = (value: number) => {
 }
 
 /**
+ * Get default selection state for a series (F0615).
+ * Only Gelir(₺), Gelir(USD), and Alım gücü are enabled by default.
+ */
+const getDefaultSelection = (seriesKey: string): boolean => {
+  const defaultEnabled = ['user', 'Gelir(USD)', 'Alım gücü']
+  return defaultEnabled.includes(seriesKey)
+}
+
+/**
  * Timeseries chart using Recharts (F010/F011).
  * Renders user series and remote series with shared X axis.
  * Only displays selected series (F0601).
@@ -37,8 +46,8 @@ export const Chart: FC = () => {
   const handleLegendClick = (data: any) => {
     const dataKey = typeof data.dataKey === 'string' ? data.dataKey : String(data.dataKey)
     if (dataKey) {
-      // Get current value - if undefined, it means it's currently selected (default behavior)
-      const currentValue = selectedSeries[dataKey] ?? true
+      // Get current value - if undefined, use default selection (F0615)
+      const currentValue = selectedSeries[dataKey] ?? getDefaultSelection(dataKey)
       actions.setSeriesSelection(dispatch, dataKey, !currentValue)
     }
   }
@@ -117,12 +126,12 @@ export const Chart: FC = () => {
                 axisLine={false}
                 width={0}
                 allowDecimals={false}
-                hide={!(selectedSeries['user'] ?? true)}
+                hide={!(selectedSeries['user'] ?? getDefaultSelection('user'))}
               />
             )}
             {/* Y axes for remote series - alternate left/right (F0604) */}
             {remoteKeys.map((k, i) => {
-              const isSelected = selectedSeries[k] ?? true
+              const isSelected = selectedSeries[k] ?? getDefaultSelection(k)
               const axisIndex = hasData ? i + 1 : i
               const orientation = axisIndex % 2 === 0 ? 'left' : 'right'
               return (
@@ -156,11 +165,11 @@ export const Chart: FC = () => {
                 dot={{ r: 2 }}
                 isAnimationActive={false}
                 name="Gelir(₺)"
-                hide={!(selectedSeries['user'] ?? true)}
+                hide={!(selectedSeries['user'] ?? getDefaultSelection('user'))}
               />
             )}
             {remoteKeys.map((k, i) => {
-              const isSelected = selectedSeries[k] ?? true
+              const isSelected = selectedSeries[k] ?? getDefaultSelection(k)
               return (
                 <Line
                   key={k}

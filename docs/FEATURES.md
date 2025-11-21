@@ -86,5 +86,5 @@ For the interval user provided, other time series data should be shown on same c
     - Create another series with friendly name "Alım gücü". Update its data whenever user data changes by dividing user data by first user data value and multiplying with 100; then divide this series by "Enflasyon" series and multiply with 100.
 - 🟢 F0614:
     - Sort series labels as: Gelir - Gelir(USD) - Gelir (EUR) - USD - EUR - Enflasyon - Alım Gücü
-- 🟡 F0615:
+- 🟢 F0615:
     - On load, only Gelir, Gelir(USD), Alım Gücü series should be enabled

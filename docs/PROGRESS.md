@@ -12,6 +12,7 @@
 - F0612: Inflation series normalization
 - F0613: Purchasing power series calculation
 - F0614: Sort series labels in chart legend
+- F0615: Default series selection on load
 
 **In Progress**:
 - None
@@ -20,6 +21,20 @@
 - None
 
 **Details**:
+
+**F0615: Default Series Selection on Load**
+- Created getDefaultSelection helper function to determine default visibility
+- Only Gelir(₺), Gelir(USD), and Alım gücü are enabled by default
+- All other series (EUR, Gelir(EUR), Enflasyon) are disabled by default
+- Replaced all `?? true` fallbacks with `?? getDefaultSelection(key)` calls
+- Updated YAxis hide props and Line hide props throughout Chart component
+- All 63 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/features/timeseries/components/Chart.tsx (updated - default selection logic)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0614: Sort Series Labels in Chart Legend**
 - Implemented custom sorting for series labels in chart legend
