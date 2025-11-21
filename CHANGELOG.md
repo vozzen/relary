@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/vozzen/relary/compare/v0.3.1...v0.4.0) (2025-11-21)
+
+
+### Features
+
+* **F0702:** add application version to footer ([870a63d](https://github.com/vozzen/relary/commit/870a63d33e8b6ff7825d9b1cc463caae6280eb64))
+
 ## [0.3.1](https://github.com/vozzen/relary/compare/v0.3.0...v0.3.1) (2025-11-21)
 
 
