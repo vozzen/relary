@@ -59,22 +59,12 @@ export const HomePage: FC = () => {
   }, [dispatch])
 
   const handleSave = useCallback(() => {
-    if (!datasetName.trim()) {
-      alert('Lütfen bir isim girin')
+    if (!datasetName.trim() || !raw.trim()) {
       return
     }
-    if (!raw.trim()) {
-      alert('Kaydedilecek veri yok')
-      return
-    }
-    try {
-      saveDataset(datasetName.trim(), raw)
-      setSavedDatasets(listDatasets())
-      setDatasetName('')
-      alert(`"${datasetName.trim()}" kaydedildi`)
-    } catch (err) {
-      alert(`Kaydetme hatası: ${err instanceof Error ? err.message : String(err)}`)
-    }
+    saveDataset(datasetName.trim(), raw)
+    setSavedDatasets(listDatasets())
+    setDatasetName('')
   }, [datasetName, raw])
 
   const handleLoad = useCallback((name: string) => {
@@ -96,16 +86,12 @@ export const HomePage: FC = () => {
         const uniqueCodes = Array.from(new Set(allCodes))
         actions.setAvailableSeries(dispatch, uniqueCodes)
       }
-    } else {
-      alert(`"${name}" yüklenemedi`)
     }
   }, [dispatch, state.timeseries.remoteSeries, state.timeseries.availableSeries])
 
   const handleDelete = useCallback((name: string) => {
-    if (confirm(`"${name}" silinsin mi?`)) {
-      deleteDataset(name)
-      setSavedDatasets(listDatasets())
-    }
+    deleteDataset(name)
+    setSavedDatasets(listDatasets())
   }, [])
 
   return (
