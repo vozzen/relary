@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/vozzen/relary/compare/v0.4.0...v0.4.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* **workflow:** deploy after release completes ([6cfee95](https://github.com/vozzen/relary/commit/6cfee956ce5af37445815398fff7ff5bbaa88286))
+
 # [0.4.0](https://github.com/vozzen/relary/compare/v0.3.1...v0.4.0) (2025-11-21)
 
 
