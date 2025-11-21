@@ -88,3 +88,9 @@ For the interval user provided, other time series data should be shown on same c
     - Sort series labels as: Gelir - Gelir(USD) - Gelir (EUR) - USD - EUR - Enflasyon - Alım Gücü
 - 🟢 F0615:
     - On load, only Gelir, Gelir(USD), Alım Gücü series should be enabled
+
+### Phase 7: Polishing
+- 🔴 F0700:
+    - Move user data entry and data storage management sections side-by-side and fill new space with graph.
+    - Remove Kaydet/Yukle and Gizle buttons with a header and make for always visible
+    - Merge two sections in a compact view
