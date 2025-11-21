@@ -1,0 +1,58 @@
+name: Fetch Series Data
+
+on:
+  schedule:
+    # Run at 09:15, 12:15, 15:15, 18:15 on weekdays (Monday-Friday)
+    # Times are in UTC (Turkey is UTC+3)
+    - cron: '15 6,9,12,15 * * 1-5'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch series data
+        env:
+          EVDS_API_KEY: ${{ secrets.EVDS_API_KEY }}
+        run: npm run fetch-series
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages-branch
+
+      - name: Copy series data to gh-pages
+        run: |
+          mkdir -p gh-pages-branch/data
+          cp data/series.json gh-pages-branch/data/series.json
+
+      - name: Commit and push to gh-pages
+        run: |
+          cd gh-pages-branch
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/series.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update series data $(date -u +"%Y-%m-%d %H:%M UTC")"
+            git push
+          fi

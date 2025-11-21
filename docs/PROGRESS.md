@@ -3,6 +3,36 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-22 - Session 14
+**Completed**:
+- F0703: Automated series data fetching and GitHub Pages deployment
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0703: Automated Series Data Fetching**
+- Created `.github/workflows/fetch-series.yml` workflow
+- Scheduled to run 4 times daily on weekdays (09:15, 12:15, 15:15, 18:15 UTC+3)
+- Workflow fetches fresh data using `npm run fetch-series`
+- Commits updated series.json to gh-pages branch
+- Updated seriesLoader to fetch from GitHub Pages URL
+- Implemented fallback to local data for development/offline use
+- App now loads live data from https://vozzen.github.io/relary/data/series.json
+- Made loadSeriesData async with proper error handling
+- Improved code splitting (series data now in separate chunk)
+
+**Files Created/Modified**:
+- .github/workflows/fetch-series.yml (created - scheduled data fetching workflow)
+- src/features/timeseries/api/seriesLoader.ts (updated - fetch from GitHub Pages with fallback)
+- src/features/timeseries/pages/HomePage.tsx (updated - handle async data loading)
+- docs/FEATURES.md (updated - marked F0703 complete)
+- docs/PROGRESS.md (updated)
+
 ### 2025-11-21 - Session 13
 **Completed**:
 - F0701: Semantic versioning with GitHub Actions

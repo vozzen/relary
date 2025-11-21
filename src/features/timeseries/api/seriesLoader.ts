@@ -1,7 +1,19 @@
 import type { Dispatch } from 'react'
 import type { TimeseriesAction, TimeseriesPoint, CombinedSeriesData } from '../../../shared/types'
 import { actions } from '../../../app/store'
-import seriesData from '../../../../data/series.json'
+
+/**
+ * GitHub Pages URL for series data (F0703)
+ */
+const SERIES_DATA_URL = 'https://vozzen.github.io/relary/data/series.json'
+
+/**
+ * Fallback to local data in development or if fetch fails
+ */
+const loadLocalData = async (): Promise<CombinedSeriesData> => {
+  const module = await import('../../../../data/series.json')
+  return module.default as CombinedSeriesData
+}
 
 /**
  * Converts series data point from file format to internal format
@@ -16,13 +28,27 @@ function convertDataPoint(item: { date: string; value: string }): TimeseriesPoin
 }
 
 /**
- * Load series data from imported JSON file and populate store
+ * Load series data from GitHub Pages or fallback to local file (F0703)
  */
-export function loadSeriesData(dispatch: Dispatch<TimeseriesAction>): void {
+export async function loadSeriesData(dispatch: Dispatch<TimeseriesAction>): Promise<void> {
   try {
     actions.setStatus(dispatch, 'loading')
 
-    const data = seriesData as CombinedSeriesData
+    let data: CombinedSeriesData
+
+    // Try to fetch from GitHub Pages first
+    try {
+      const response = await fetch(SERIES_DATA_URL)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      data = await response.json()
+    } catch (fetchError) {
+      // Fallback to local data if fetch fails
+      console.warn('Failed to fetch from GitHub Pages, using local data:', fetchError)
+      data = await loadLocalData()
+    }
+
     const codes: string[] = []
 
     // Load each series into remoteSeries

@@ -98,3 +98,7 @@ For the interval user provided, other time series data should be shown on same c
     - Enable automatic semantic commit based semantic versioning and release notes using github actions
 - 🟢 F0702:
     - Add the application version(version in package.json) as the last statement in footer.
+- 🟢 F0703:
+    - Create a github action that is triggered on weekdays at 09:15, 12:15, 15:15, 18:15.
+    - It should execute `npm run fetch-series`. If successful, `/data/series.json` file should be checked it in a branch other than main(such as  gh-pages) so that it is accessible by this app later.
+    - App should read this file on page load instead of directly accessing the file `/data/series.json` in repo.

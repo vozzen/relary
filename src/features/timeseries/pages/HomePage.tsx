@@ -24,7 +24,7 @@ export const HomePage: FC = () => {
 
   // Load series data on mount and refresh saved datasets list
   useEffect(() => {
-    loadSeriesData(dispatch)
+    loadSeriesData(dispatch).catch(console.error)
     setSavedDatasets(listDatasets())
   }, [dispatch])
 
