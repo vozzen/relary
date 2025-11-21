@@ -1,3 +1,10 @@
+## [0.4.2](https://github.com/vozzen/relary/compare/v0.4.1...v0.4.2) (2025-11-21)
+
+
+### Bug Fixes
+
+* **mobile:** prevent chart and controls overlap on mobile ([ffb8aeb](https://github.com/vozzen/relary/commit/ffb8aeb568d4874328105600d8321268461864cc))
+
 ## [0.4.1](https://github.com/vozzen/relary/compare/v0.4.0...v0.4.1) (2025-11-21)
 
 
