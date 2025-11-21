@@ -1,3 +1,10 @@
+## [0.6.5](https://github.com/vozzen/relary/compare/v0.6.4...v0.6.5) (2025-11-21)
+
+
+### Bug Fixes
+
+* **workflow:** configure git user before creating gh-pages branch ([9319139](https://github.com/vozzen/relary/commit/93191396c2815bb3668b5a03a60b6b0ac80ccbcc)), closes [#pages](https://github.com/vozzen/relary/issues/pages) [#pages](https://github.com/vozzen/relary/issues/pages)
+
 ## [0.6.4](https://github.com/vozzen/relary/compare/v0.6.3...v0.6.4) (2025-11-21)
 
 
