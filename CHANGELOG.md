@@ -1,3 +1,10 @@
+## [0.6.4](https://github.com/vozzen/relary/compare/v0.6.3...v0.6.4) (2025-11-21)
+
+
+### Bug Fixes
+
+* **workflow:** create gh-pages branch if it doesn't exist ([fa5628a](https://github.com/vozzen/relary/commit/fa5628ae5f326ab224f0bc0d579a17692f359dd7)), closes [#pages](https://github.com/vozzen/relary/issues/pages) [#pages](https://github.com/vozzen/relary/issues/pages) [#pages](https://github.com/vozzen/relary/issues/pages)
+
 ## [0.6.3](https://github.com/vozzen/relary/compare/v0.6.2...v0.6.3) (2025-11-21)
 
 
