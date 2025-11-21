@@ -1,3 +1,10 @@
+## [0.6.7](https://github.com/vozzen/relary/compare/v0.6.6...v0.6.7) (2025-11-21)
+
+
+### Bug Fixes
+
+* use correct url for series data ([a755a8e](https://github.com/vozzen/relary/commit/a755a8e21592db4b4e9b0b7a2bdbf950492de311))
+
 ## [0.6.6](https://github.com/vozzen/relary/compare/v0.6.5...v0.6.6) (2025-11-21)
 
 
