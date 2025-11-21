@@ -1,3 +1,10 @@
+## [0.4.3](https://github.com/vozzen/relary/compare/v0.4.2...v0.4.3) (2025-11-21)
+
+
+### Bug Fixes
+
+* **mobile:** prevent chart legend and labels from being cut off ([c3eaa8f](https://github.com/vozzen/relary/commit/c3eaa8fc8e046e2a06295e2cb1f04dfc52f2c5b6))
+
 ## [0.4.2](https://github.com/vozzen/relary/compare/v0.4.1...v0.4.2) (2025-11-21)
 
 
