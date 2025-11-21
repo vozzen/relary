@@ -52,28 +52,26 @@ export function parseTimeseriesInput(input: string): {
 
 /**
  * Normalize a timeseries date string into a UTC timestamp (ms).
- * - DD.MM.YYYY | D.M.YYYY -> day, month, year
+ * All dates are normalized to the 1st day of the month for consistency with backend data.
+ * - DD.MM.YYYY | D.M.YYYY -> first day of month
  * - MM.YYYY | M.YYYY -> first day of month
  * - MM-YYYY | M-YYYY -> first day of month
- * - D-M-YYYY -> day, month, year
+ * - D-M-YYYY -> first day of month
  */
 export function normalizeTimeseriesDate(raw: string): number {
 	if (!isValidTimeseriesDate(raw)) return Number.NaN
-	let day = 1
 	let month: number
 	let year: number
 	
 	// Check if it contains day.month.year pattern (D.M.YYYY or DD.MM.YYYY)
 	if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(raw)) {
-		const [d, m, y] = raw.split('.')
-		day = Number(d)
+		const [, m, y] = raw.split('.')
 		month = Number(m)
 		year = Number(y)
 	}
 	// Check if it contains day-month-year pattern (D-M-YYYY)
 	else if (/^\d{1,2}-\d{1,2}-\d{4}$/.test(raw)) {
-		const [d, m, y] = raw.split('-')
-		day = Number(d)
+		const [, m, y] = raw.split('-')
 		month = Number(m)
 		year = Number(y)
 	}
@@ -89,7 +87,7 @@ export function normalizeTimeseriesDate(raw: string): number {
 		month = Number(m)
 		year = Number(y)
 	}
-	return Date.UTC(year, month - 1, day)
+	return Date.UTC(year, month - 1, 1)
 }
 
 /**
@@ -159,7 +157,12 @@ export function interpolateMonthlyTimeseries(
 	
 	for (let i = 0; i < sorted.length; i++) {
 		const current = sorted[i]
-		result.push(current)
+		// Normalize date to MM.YYYY format
+		const currentTs = normalizeTimeseriesDate(current.date)
+		const currentDate = new Date(currentTs)
+		const year = currentDate.getUTCFullYear()
+		const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
+		result.push({ date: `${month}.${year}`, value: current.value })
 		
 		if (i < sorted.length - 1) {
 			const next = sorted[i + 1]
