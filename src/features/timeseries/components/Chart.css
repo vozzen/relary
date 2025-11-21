@@ -1,17 +1,17 @@
-.timeseries-chart-container { position:relative; width:80vw; max-width:80vw; min-height:400px; margin:0 auto; }
-.chart-wrapper { width:100%; height:400px; background:#0f172a; border:2px solid #334155; border-radius:8px; overflow:hidden; }
+.timeseries-chart-container { position:relative; width:80vw; max-width:80vw; min-height:450px; margin:0 auto; }
+.chart-wrapper { width:100%; height:450px; background:#0f172a; border:2px solid #334155; border-radius:8px; overflow:visible; }
 .chart-empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:#94a3b8; pointer-events:none; }
 
 /* Tablet responsive adjustments */
 @media (max-width: 768px) {
-  .timeseries-chart-container { width:100%; max-width:100%; min-height:300px; }
-  .chart-wrapper { height:300px; }
+  .timeseries-chart-container { width:100%; max-width:100%; min-height:350px; }
+  .chart-wrapper { height:350px; }
   .chart-empty { font-size:0.7rem; }
 }
 
 /* Mobile responsive adjustments */
 @media (max-width: 480px) {
-  .timeseries-chart-container { width:100%; max-width:100%; min-height:250px; }
-  .chart-wrapper { height:250px; border-width:1px; }
+  .timeseries-chart-container { width:100%; max-width:100%; min-height:320px; }
+  .chart-wrapper { height:320px; border-width:1px; }
   .chart-empty { font-size:0.65rem; }
 }

@@ -128,8 +128,8 @@ export const Chart: FC = () => {
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
       <div className="chart-wrapper">
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data} margin={{ left: 8, right: 24, top: 10, bottom: 10 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data} margin={{ left: 8, right: 24, top: 10, bottom: 30 }}>
             <CartesianGrid stroke="#334155" strokeDasharray="4 4" />
             <XAxis
               dataKey="dateLabel"
