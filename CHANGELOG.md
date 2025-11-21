@@ -1,3 +1,10 @@
+## [0.6.3](https://github.com/vozzen/relary/compare/v0.6.2...v0.6.3) (2025-11-21)
+
+
+### Bug Fixes
+
+* **workflow:** read environment variables from repository variables ([a4e467d](https://github.com/vozzen/relary/commit/a4e467dfcd104f5b1ccf9a97048664005bdf5041))
+
 ## [0.6.2](https://github.com/vozzen/relary/compare/v0.6.1...v0.6.2) (2025-11-21)
 
 
