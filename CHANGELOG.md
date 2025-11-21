@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/vozzen/relary/compare/v0.6.0...v0.6.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* correct logging ([ca6bbab](https://github.com/vozzen/relary/commit/ca6bbab185a2fe60e57cac2713fa42d46c7aa8d6))
+
 # [0.6.0](https://github.com/vozzen/relary/compare/v0.5.0...v0.6.0) (2025-11-21)
 
 
