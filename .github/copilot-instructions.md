@@ -5,7 +5,10 @@
 ### 1. Feature-Driven Development
 - Always check `docs/PROGRESS.md` first
 - Implement ONE feature at a time
+- Create a branch named `feature/FXXX-description` for each feature
+- Commit changes with semantic messages
 - Update tracking files after each feature
+- Prompt user for merging to main branch
 
 ### 2. File Reading Protocol
 Before implementing any feature:
