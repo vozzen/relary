@@ -1,3 +1,10 @@
+## [0.6.6](https://github.com/vozzen/relary/compare/v0.6.5...v0.6.6) (2025-11-21)
+
+
+### Bug Fixes
+
+* **deploy:** include series.json from gh-pages in deployment ([0cfeecf](https://github.com/vozzen/relary/commit/0cfeecf2d33d3acb4f53cca92acfd6a15a330168)), closes [#pages](https://github.com/vozzen/relary/issues/pages) [#pages](https://github.com/vozzen/relary/issues/pages)
+
 ## [0.6.5](https://github.com/vozzen/relary/compare/v0.6.4...v0.6.5) (2025-11-21)
 
 
