@@ -31,6 +31,9 @@ jobs:
       - name: Fetch series data
         env:
           EVDS_API_KEY: ${{ secrets.EVDS_API_KEY }}
+          EVDS_SERIES_CODES: ${{ secrets.EVDS_SERIES_CODES }}
+          EVDS_OUTPUT_DIR: ${{ secrets.EVDS_OUTPUT_DIR }}
+          EVDS_START_DATE: ${{ secrets.EVDS_START_DATE }}
         run: npm run fetch-series
 
       - name: Checkout gh-pages branch
