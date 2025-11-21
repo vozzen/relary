@@ -238,7 +238,7 @@ async function main() {
 
     // Load configuration
     const config = loadConfig();
-    console.log(`API Key: ${config.apiKey.substring(0, 8)}...`);
+    console.log(`API Key: ${config.apiKey.substring(0, 1)}.......`);
     console.log(`Series codes: ${config.seriesCodes.join(', ')}`);
     console.log(`Start date: ${config.startDate.toISOString().split('T')[0]}`);
     console.log(`Output directory: ${config.outputDir}\n`);
