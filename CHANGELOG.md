@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/vozzen/relary/compare/v0.7.0...v0.8.0) (2025-11-21)
+
+
+### Features
+
+* **F0704:** add timestamp to series.json ([dcc8541](https://github.com/vozzen/relary/commit/dcc854171ff0feaa035dfa363d86b42e4dacabf8))
+
 # [0.7.0](https://github.com/vozzen/relary/compare/v0.6.7...v0.7.0) (2025-11-21)
 
 
