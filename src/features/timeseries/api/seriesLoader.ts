@@ -35,10 +35,8 @@ export function loadSeriesData(dispatch: Dispatch<TimeseriesAction>): void {
     // Set available series codes
     actions.setAvailableSeries(dispatch, codes)
 
-    // Initialize all series as selected by default
-    for (const code of codes) {
-      actions.setSeriesSelection(dispatch, code, true)
-    }
+    // Don't initialize selection state - let Chart component use getDefaultSelection
+    // This ensures F0615 requirements are met (only Gelir(₺), Gelir(USD), Alım gücü enabled)
 
     actions.setStatus(dispatch, 'idle')
   } catch (error) {
