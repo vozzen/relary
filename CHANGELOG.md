@@ -1,3 +1,10 @@
+## [0.6.2](https://github.com/vozzen/relary/compare/v0.6.1...v0.6.2) (2025-11-21)
+
+
+### Bug Fixes
+
+* inject env vars for gh actions ([5a848fa](https://github.com/vozzen/relary/commit/5a848fada388e71e0c0f99910e685d2f027c1398))
+
 ## [0.6.1](https://github.com/vozzen/relary/compare/v0.6.0...v0.6.1) (2025-11-21)
 
 
