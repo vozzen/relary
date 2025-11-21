@@ -38,8 +38,11 @@ jobs:
 
       - name: Setup gh-pages branch
         run: |
-          git fetch origin gh-pages:gh-pages 2>/dev/null || git checkout --orphan gh-pages || true
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if gh-pages branch exists on remote
+          if git ls-remote --heads origin gh-pages | grep gh-pages; then
             echo "gh-pages branch exists"
           else
             echo "Creating gh-pages branch"
