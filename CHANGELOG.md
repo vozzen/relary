@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/vozzen/relary/compare/v0.4.3...v0.5.0) (2025-11-21)
+
+
+### Features
+
+* **header:** add relary logo next to title ([cb7f963](https://github.com/vozzen/relary/commit/cb7f963f3fb3b68bc88356824d44015516db6665))
+
 ## [0.4.3](https://github.com/vozzen/relary/compare/v0.4.2...v0.4.3) (2025-11-21)
 
 
