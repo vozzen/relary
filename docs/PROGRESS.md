@@ -11,6 +11,7 @@
 - F0611: Save/load datasets to local storage
 - F0612: Inflation series normalization
 - F0613: Purchasing power series calculation
+- F0614: Sort series labels in chart legend
 
 **In Progress**:
 - None
@@ -19,6 +20,19 @@
 - None
 
 **Details**:
+
+**F0614: Sort Series Labels in Chart Legend**
+- Implemented custom sorting for series labels in chart legend
+- Order: Gelir(₺) - Gelir(USD) - Gelir(EUR) - USD - EUR - Enflasyon - Alım gücü
+- Applied sorting to remoteKeys array used for rendering YAxis and Line components
+- Preserves original order for any series not in the predefined list
+- All 63 tests passing successfully
+- Build verified successful
+
+**Files Created/Modified**:
+- src/features/timeseries/components/Chart.tsx (updated - added sorting logic)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
 
 **F0613: Purchasing Power Series Calculation**
 - Created generatePurchasingPowerSeries function to calculate "Alım gücü" series

@@ -78,7 +78,24 @@ export const Chart: FC = () => {
     return ts >= minDate && ts <= maxDate
   })
   const hasData = data.length > 0
-  const remoteKeys = Object.keys(allRemoteSeries)
+  
+  // Sort series keys in specific order (F0614)
+  const remoteKeys = Object.keys(allRemoteSeries).sort((a, b) => {
+    const order = ['Gelir(USD)', 'Gelir(EUR)', 'USD', 'EUR', 'Enflasyon', 'Alım gücü']
+    const indexA = order.indexOf(a)
+    const indexB = order.indexOf(b)
+    
+    // If both are in the order list, sort by their position
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB
+    }
+    // If only A is in the list, it comes first
+    if (indexA !== -1) return -1
+    // If only B is in the list, it comes first
+    if (indexB !== -1) return 1
+    // Otherwise maintain original order
+    return 0
+  })
 
   return (
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
