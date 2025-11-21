@@ -96,3 +96,5 @@ For the interval user provided, other time series data should be shown on same c
     - Merge two sections in a compact view
 - 🟢 F0701:
     - Enable automatic semantic commit based semantic versioning and release notes using github actions
+- 🟢 F0702:
+    - Add the application version(version in package.json) as the last statement in footer.

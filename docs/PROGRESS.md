@@ -6,6 +6,7 @@
 ### 2025-11-21 - Session 13
 **Completed**:
 - F0701: Semantic versioning with GitHub Actions
+- F0702: Application version in footer
 
 **In Progress**:
 - None
@@ -38,6 +39,23 @@
 - .releaserc.json (created - semantic-release configuration)
 - package.json (updated - added semantic-release dependencies)
 - docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
+
+**F0702: Application Version in Footer**
+- Added `__APP_VERSION__` global constant definition in vite.config.ts
+- Injected package.json version at build time via Vite's define option
+- Updated Footer component to display version number
+- Created TypeScript declaration file for global constant
+- Styled version text with subtle appearance
+- Fixed link styling in footer for better accessibility
+- Version displayed as "v0.3.1" format at bottom of footer
+
+**Files Created/Modified**:
+- vite.config.ts (updated - added define block for version)
+- src/vite-env.d.ts (created - TypeScript declarations)
+- src/shared/components/Footer.tsx (updated - display version)
+- src/shared/components/Footer.css (updated - version styling)
+- docs/FEATURES.md (updated - marked F0702 complete)
 - docs/PROGRESS.md (updated)
 
 ### 2025-11-21 - Session 12
