@@ -1,8 +1,45 @@
 # Development Progress Log
 
 ## Current Sprint
-**Focus**: Phase 6 features
+**Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-21 - Session 13
+**Completed**:
+- F0701: Semantic versioning with GitHub Actions
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0701: Semantic Versioning with GitHub Actions**
+- Created `.github/workflows/release.yml` workflow for automatic releases on main branch
+- Configured semantic-release with conventional commits parser
+- Added plugins:
+  - @semantic-release/commit-analyzer: Parse commit messages
+  - @semantic-release/release-notes-generator: Generate release notes
+  - @semantic-release/changelog: Create/update CHANGELOG.md
+  - @semantic-release/npm: Update package.json version
+  - @semantic-release/github: Create GitHub releases
+  - @semantic-release/git: Commit version bumps and changelog
+- Created `.releaserc.json` configuration file
+- Updated package.json with semantic-release dependencies
+- Workflow triggers on push to main branch
+- Automatically determines version bump (major/minor/patch) from commit messages
+- Generates release notes from conventional commits
+- Creates Git tags and GitHub releases
+- Commit format: feat (minor), fix (patch), BREAKING CHANGE (major)
+
+**Files Created/Modified**:
+- .github/workflows/release.yml (created - GitHub Actions workflow)
+- .releaserc.json (created - semantic-release configuration)
+- package.json (updated - added semantic-release dependencies)
+- docs/FEATURES.md (updated)
+- docs/PROGRESS.md (updated)
+
 ### 2025-11-21 - Session 12
 **Completed**:
 - F0608: Chart interval always ends at current month

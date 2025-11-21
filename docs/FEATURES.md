@@ -94,3 +94,5 @@ For the interval user provided, other time series data should be shown on same c
     - Move user data entry and data storage management sections side-by-side and fill new space with graph.
     - Remove Kaydet/Yukle and Gizle buttons with a header and make for always visible
     - Merge two sections in a compact view
+- 🟢 F0701:
+    - Enable automatic semantic commit based semantic versioning and release notes using github actions
