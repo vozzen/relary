@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/vozzen/relary/compare/v0.6.7...v0.7.0) (2025-11-21)
+
+
+### Features
+
+* **deploy:** trigger deployment after series data updates ([15ad112](https://github.com/vozzen/relary/commit/15ad112c68b6c893cb491f5a92a63475b270e6d3))
+
 ## [0.6.7](https://github.com/vozzen/relary/compare/v0.6.6...v0.6.7) (2025-11-21)
 
 
