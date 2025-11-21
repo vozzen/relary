@@ -22,8 +22,6 @@ export const Header: FC<HeaderProps> = ({ actions }) => {
         </Link>
       </div>
       <nav aria-label="Ana gezinme" className="app-header__nav">
-        {/* Future nav items (charts, settings) will go here */}
-        <span className="app-header__placeholder">Navigasyon</span>
       </nav>
       <div className="app-header__actions">{actions}</div>
     </header>

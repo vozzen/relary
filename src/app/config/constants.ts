@@ -1,4 +1,4 @@
-export const APP_NAME = 'Relative Salary'
+export const APP_NAME = 'Rölatif Maaş'
 export const APP_LOCALE = 'tr-TR'
 
 // Base URL for API requests (can be overridden by Vite env variables)
