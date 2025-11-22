@@ -1,3 +1,10 @@
+## [0.9.2](https://github.com/vozzen/relary/compare/v0.9.1...v0.9.2) (2025-11-22)
+
+
+### Bug Fixes
+
+* **BUG-001:** update outdated tests to match date normalization behavior ([57f6c31](https://github.com/vozzen/relary/commit/57f6c3168d57593ffd0ed281e854251ac46c71e3))
+
 ## [0.9.1](https://github.com/vozzen/relary/compare/v0.9.0...v0.9.1) (2025-11-22)
 
 
