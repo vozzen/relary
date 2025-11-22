@@ -25,7 +25,7 @@ interface FetcherConfig {
  */
 interface TimeSeriesItem {
   date: string;
-  value: string;
+  value: string | null;
 }
 
 /**
@@ -42,6 +42,31 @@ interface SeriesData {
 interface CombinedSeries {
   timestamp: string;
   series: SeriesData[];
+}
+
+/**
+ * Converts API value to string, filtering out NaN values
+ */
+function convertValueToString(value: number | null | undefined): string | null {
+  // If value is null or undefined, return null
+  if (value === null || value === undefined) {
+    return null;
+  }
+  
+  // If value is NaN, return null instead of "NaN"
+  if (Number.isNaN(value)) {
+    return null;
+  }
+  
+  // Convert valid number to string
+  return String(value);
+}
+
+/**
+ * Filter out items with null values
+ */
+function filterNullValues(items: TimeSeriesItem[]): Array<{ date: string; value: string }> {
+  return items.filter((item): item is { date: string; value: string } => item.value !== null);
 }
 
 /**
@@ -126,7 +151,7 @@ async function fetchMultiSeriesMonthly(
       const firstDay = new Date(item.date.getFullYear(), item.date.getMonth(), 1);
       return {
         date: formatDate(firstDay),
-        value: String(item.value),
+        value: convertValueToString(item.value),
       };
     });
     seriesMap.set(seriesData.code, items);
@@ -159,7 +184,7 @@ async function fetchMultiSeriesToday(
       if (seriesData.items.length > 0) {
         // Get the first (and likely only) item for today
         const value = seriesData.items[0].value;
-        todayValues.set(seriesData.code, String(value));
+        todayValues.set(seriesData.code, convertValueToString(value));
       } else {
         todayValues.set(seriesData.code, null);
       }
@@ -181,7 +206,7 @@ async function fetchMultiSeriesToday(
 /**
  * Update current month's value with today's value
  */
-function updateCurrentMonthValue(items: TimeSeriesItem[], todayValue: string): TimeSeriesItem[] {
+function updateCurrentMonthValue(items: TimeSeriesItem[], todayValue: string | null): TimeSeriesItem[] {
   const firstDayOfMonth = formatDate(getFirstDayOfCurrentMonth());
   
   const existingIndex = items.findIndex(item => item.date === firstDayOfMonth);
@@ -204,16 +229,19 @@ function updateCurrentMonthValue(items: TimeSeriesItem[], todayValue: string): T
  * Save series data to individual file
  */
 function saveSeriesFile(outputDir: string, seriesCode: string, items: TimeSeriesItem[]): void {
+  // Filter out items with null values before saving
+  const validItems = filterNullValues(items);
+  
   const seriesData: SeriesData = {
     code: seriesCode,
-    items,
+    items: validItems,
   };
 
   const fileName = `${seriesCode}.json`;
   const filePath = path.join(outputDir, fileName);
   
   fs.writeFileSync(filePath, JSON.stringify(seriesData, null, 2), 'utf-8');
-  console.log(`Saved ${fileName}`);
+  console.log(`Saved ${fileName} with ${validItems.length} valid data points`);
 }
 
 /**
@@ -277,10 +305,11 @@ async function main() {
         // Save individual series file
         saveSeriesFile(config.outputDir, seriesCode, items);
 
-        // Add to combined series
+        // Add to combined series (filter out null values)
+        const validItems = filterNullValues(items);
         allSeries.push({
           code: seriesCode,
-          items,
+          items: validItems,
         });
       }
 
