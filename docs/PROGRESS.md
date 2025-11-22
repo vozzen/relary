@@ -3,6 +3,16 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-22 - Session 17
+**Completed**:
+- BUG-002: Fixed inflation and purchasing power series not displaying when user data predates 2003
+
+**In Progress**:
+- Awaiting review of fix/BUG-002-inflation-before-2003 branch
+
+**Blockers**:
+- None
+
 ### 2025-11-22 - Session 16
 **Completed**:
 - BUG-001: Fixed outdated tests for date normalization
@@ -24,6 +34,28 @@
 - None
 
 **Details**:
+
+**BUG-002: Inflation and Purchasing Power Series Not Displaying Before 2003**
+- Issue: When user data includes entries before 2003 (when inflation data begins), the Enflasyon and Alım gücü series were not displayed at all, even for periods after 2003 where inflation data exists
+- Root Cause: `generateInflationSeries` function tried to find inflation value at earliest user date to use as base for normalization. If that date was before 2003, no inflation data existed, causing the function to return null
+- Impact: 
+  - No "Enflasyon" line and label shown on chart even though data exists after 2003
+  - "Alım gücü" label shown but no corresponding line as it depends on inflation data
+- Solution: 
+  - Modified `generateInflationSeries` to use the first valid (non-NaN, non-zero) inflation data point as the base when user data predates available inflation data
+  - This allows the inflation series to be generated and normalized starting from the first available inflation data (2003.01.01)
+  - Purchasing power series now correctly calculates for all dates where inflation data is available
+- Testing: Added two new test cases to verify fix:
+  - `should handle user data before 2003 with inflation data available after (BUG-002)` - Tests scenario with mixed pre/post 2003 user data
+  - `should handle user data entirely before inflation data availability (BUG-002)` - Tests scenario with all user data before 2003
+- All 72 tests passing
+
+**Files Modified**:
+- src/shared/utils/index.ts (updated - `generateInflationSeries` function)
+- src/shared/utils/index.test.ts (added - 2 new test cases for BUG-002)
+
+**Branch**: fix/BUG-002-inflation-before-2003
+**Commit**: d6e7528
 
 **BUG-001: Outdated Tests for Date Normalization**
 - Issue: Three tests failing in src/shared/utils/index.test.ts

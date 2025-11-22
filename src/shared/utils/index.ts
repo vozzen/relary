@@ -252,8 +252,11 @@ export function generateDerivedSeries(
 
 /**
  * Generate inflation series from TP.FG.J0 (F0612).
- * Normalizes inflation to 100 at the earliest user data date.
+ * Normalizes inflation to 100 at the earliest user data date or first valid inflation data.
  * If no user data, returns the raw TP.FG.J0 series unchanged.
+ * 
+ * BUG-002 Fix: When user data predates available inflation data (e.g., before 2003),
+ * use the first valid inflation data point as the base instead of returning null.
  */
 export function generateInflationSeries(
 	userSeries: { date: string; value: number }[],
@@ -278,9 +281,22 @@ export function generateInflationSeries(
 	
 	// Find TP.FG.J0 value at earliest user date
 	const tpFgJ0Map = createTimeseriesMap(tpFgJ0)
-	const baseValue = tpFgJ0Map.get(earliestUserDate)?.value
+	let baseValue = tpFgJ0Map.get(earliestUserDate)?.value
 	
-	if (!baseValue || baseValue === 0) return null
+	// BUG-002: If no valid inflation data at earliest user date (e.g., user data before 2003),
+	// use the first valid (non-NaN, non-zero) inflation data point as base
+	if (!baseValue || baseValue === 0 || Number.isNaN(baseValue)) {
+		// Find first valid inflation value
+		const firstValidPoint = tpFgJ0.find(point => 
+			point.value && 
+			!Number.isNaN(point.value) && 
+			point.value !== 0
+		)
+		
+		if (!firstValidPoint) return null
+		
+		baseValue = firstValidPoint.value
+	}
 	
 	// Normalize inflation series: (value / baseValue) * 100
 	const inflationSeries = tpFgJ0.map(point => ({

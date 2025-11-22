@@ -516,6 +516,59 @@ describe('generateInflationSeries', () => {
     
     expect(inflation).toBeNull()
   })
+
+  it('should handle user data before 2003 with inflation data available after (BUG-002)', () => {
+    const userSeries = [
+      { date: '01.2001', value: 1000 },
+      { date: '01.2010', value: 2000 },
+    ]
+    const remoteSeries = {
+      'TP.FG.J0': [
+        { date: '01.2001', value: Number.NaN },
+        { date: '02.2001', value: Number.NaN },
+        { date: '01.2003', value: 94.77 },
+        { date: '02.2003', value: 96.23 },
+        { date: '01.2010', value: 146.94 },
+      ],
+    }
+    
+    const result = generateInflationSeries(userSeries, remoteSeries)
+    
+    // Should return inflation series even if first user data is before inflation data
+    expect(result).not.toBeNull()
+    expect(result!['Enflasyon']).toBeDefined()
+    expect(result!['Enflasyon'].length).toBeGreaterThan(0)
+    // Should use first valid inflation value (94.77) as base
+    const firstValidPoint = result!['Enflasyon'].find(p => !Number.isNaN(p.value) && p.value > 0)
+    expect(firstValidPoint).toBeDefined()
+    expect(firstValidPoint!.value).toBe(100) // First valid value normalized to 100
+  })
+
+  it('should handle user data entirely before inflation data availability (BUG-002)', () => {
+    const userSeries = [
+      { date: '01.2000', value: 1000 },
+      { date: '01.2001', value: 1200 },
+    ]
+    const remoteSeries = {
+      'TP.FG.J0': [
+        { date: '01.2000', value: Number.NaN },
+        { date: '01.2001', value: Number.NaN },
+        { date: '01.2003', value: 94.77 },
+        { date: '02.2003', value: 96.23 },
+        { date: '01.2010', value: 146.94 },
+      ],
+    }
+    
+    const result = generateInflationSeries(userSeries, remoteSeries)
+    
+    // Should use first available valid inflation data point as base
+    expect(result).not.toBeNull()
+    expect(result!['Enflasyon']).toBeDefined()
+    const firstValidPoint = result!['Enflasyon'].find(p => !Number.isNaN(p.value) && p.value > 0)
+    expect(firstValidPoint).toBeDefined()
+    expect(firstValidPoint!.date).toBe('01.2003')
+    expect(firstValidPoint!.value).toBe(100) // First valid value normalized to 100
+  })
 })
 
 describe('generatePurchasingPowerSeries', () => {
