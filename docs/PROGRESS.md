@@ -3,6 +3,45 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-22 - Session 16
+**Completed**:
+- BUG-001: Fixed outdated tests for date normalization
+
+**In Progress**:
+- Awaiting review of fix/BUG-001-outdated-tests branch
+
+**Blockers**:
+- None
+
+### 2025-11-22 - Session 15
+**Completed**:
+- Data Quality: Fixed NaN values in series data (TP.FG.J0 issue)
+
+**In Progress**:
+- Awaiting review of fix/nan-values-in-series branch
+
+**Blockers**:
+- None
+
+**Details**:
+
+**BUG-001: Outdated Tests for Date Normalization**
+- Issue: Three tests failing in src/shared/utils/index.test.ts
+- Root Cause: Tests expected day component to be preserved, but implementation normalizes all dates to 1st of month
+- Implementation is correct (as documented in code comments): all dates normalized to 1st day of month for consistency with backend data
+- Solution: Updated test expectations to match current implementation
+- Fixed tests:
+  - `should normalize DD.MM.YYYY to timestamp` - changed expected date from 15 to 1
+  - `should normalize D.M.YYYY to timestamp (F0603)` - changed expected date from 5 to 1
+  - `should normalize D-M-YYYY to timestamp (F0603)` - changed expected date from 9 to 1
+- All 70 tests now passing
+
+**Files Modified**:
+- src/shared/utils/index.test.ts (updated - 3 test expectations)
+
+**Branch**: fix/BUG-001-outdated-tests
+**Commit**: 57f6c31
+
 ### 2025-11-22 - Session 15
 **Completed**:
 - Data Quality: Fixed NaN values in series data (TP.FG.J0 issue)
