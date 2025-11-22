@@ -3,6 +3,49 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-22 - Session 15
+**Completed**:
+- Data Quality: Fixed NaN values in series data (TP.FG.J0 issue)
+
+**In Progress**:
+- Awaiting review of fix/nan-values-in-series branch
+
+**Blockers**:
+- None
+
+**Details**:
+
+**Data Quality Fix: NaN Values in Series**
+- Issue: TP.FG.J0 series showing "NaN" for current month and pre-2003 dates
+- Root Cause: EVDS API returns NaN for missing data, String(NaN) produces "NaN" string
+- Solution: Convert NaN to null during API response processing, filter null values before saving
+- Created comprehensive test suite (7 tests, all passing)
+- Changes implemented on branch: fix/nan-values-in-series
+- Awaiting user review before merging to main
+
+**Technical Details**:
+- Added `convertValueToString(value: number | null | undefined): string | null`
+  - Explicitly checks Number.isNaN() and returns null for NaN values
+  - Returns null for undefined/null values
+  - Converts valid numbers to strings
+- Added `filterNullValues(items: TimeSeriesItem[]): TimeSeriesItem[]`
+  - Removes entries where value is null
+  - Ensures only valid data points are saved to JSON files
+- Updated `TimeSeriesItem` interface:
+  - Changed value from `string` to `string | null`
+- Updated all fetch functions:
+  - `fetchMultiSeriesMonthly` uses convertValueToString for all values
+  - `fetchMultiSeriesToday` uses convertValueToString for all values
+  - `saveSeriesFile` filters null values before writing JSON
+  - Combined series data filters null values before saving
+
+**Files Created/Modified**:
+- tools/fetch-series.test.ts (created - 7 tests for NaN handling)
+- tools/fetch-series.ts (updated - NaN→null conversion and filtering)
+
+**Branch**: fix/nan-values-in-series
+**Commit**: 9c5085f
+
 ### 2025-11-22 - Session 14
 **Completed**:
 - F0703: Automated series data fetching and GitHub Pages deployment
