@@ -69,7 +69,8 @@ If user reports a bug:
 4. Ensure all tests pass.
 5. Commit with format: fix(BUGID): <description>.
 6. Update PROGRESS.md with next Bug ID and a description of the bug in relevant sections.
-7. Prompt user for merging to main branch.
+7. Prompt user for merging to main branch and push.
+8. When user confirms, ensure main branch is updated with latest changes from origin. Merge branch into main by squashing and push. Then delete the branch.
 ```
 
 ## Auto-Progress Mode
