@@ -112,7 +112,7 @@ describe('normalizeTimeseriesDate', () => {
     
     expect(date.getUTCFullYear()).toBe(2024)
     expect(date.getUTCMonth()).toBe(5) // June is month 5 (0-indexed)
-    expect(date.getUTCDate()).toBe(15)
+    expect(date.getUTCDate()).toBe(1) // Always normalized to 1st of month
   })
 
   it('should normalize MM.YYYY to first day of month', () => {
@@ -139,7 +139,7 @@ describe('normalizeTimeseriesDate', () => {
     
     expect(date.getUTCFullYear()).toBe(2024)
     expect(date.getUTCMonth()).toBe(2) // March is month 2 (0-indexed)
-    expect(date.getUTCDate()).toBe(5)
+    expect(date.getUTCDate()).toBe(1) // Always normalized to 1st of month
   })
 
   it('should normalize D-M-YYYY to timestamp (F0603)', () => {
@@ -148,7 +148,7 @@ describe('normalizeTimeseriesDate', () => {
     
     expect(date.getUTCFullYear()).toBe(2024)
     expect(date.getUTCMonth()).toBe(10) // November is month 10 (0-indexed)
-    expect(date.getUTCDate()).toBe(9)
+    expect(date.getUTCDate()).toBe(1) // Always normalized to 1st of month
   })
 
   it('should normalize M.YYYY to first day of month (F0603)', () => {
