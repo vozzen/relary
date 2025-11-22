@@ -1,3 +1,10 @@
+## [0.9.1](https://github.com/vozzen/relary/compare/v0.9.0...v0.9.1) (2025-11-22)
+
+
+### Bug Fixes
+
+* **data:** convert NaN values to null in series data ([9c5085f](https://github.com/vozzen/relary/commit/9c5085f53ada6f0c39b8865ceff485b7a70fbbb4))
+
 # [0.9.0](https://github.com/vozzen/relary/compare/v0.8.0...v0.9.0) (2025-11-21)
 
 
