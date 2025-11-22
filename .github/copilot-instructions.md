@@ -62,12 +62,14 @@ Before marking a feature complete:
 ### 8. Bug Fixing
 If user reports a bug:
 ```
-1. Create branch: fix/[BUGID-]description
+0. Read BUGS.md to get next Bug ID if user didn't provide one
+1. Create branch: fix/BUGID-description. 
 2. Create a test reproducing the bug and ensure it fails
 3. Fix the bug. Consider FEATURES.md if related to a feature.
-4. Ensure all tests pass
-5. Commit with format: fix(BUGID): description
-6. Update PROGRESS.md if necessary
+4. Ensure all tests pass.
+5. Commit with format: fix(BUGID): <description>.
+6. Update PROGRESS.md with next Bug ID and a description of the bug in relevant sections.
+7. Prompt user for merging to main branch.
 ```
 
 ## Auto-Progress Mode
