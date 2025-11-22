@@ -1,3 +1,10 @@
+## [0.9.3](https://github.com/vozzen/relary/compare/v0.9.2...v0.9.3) (2025-11-22)
+
+
+### Bug Fixes
+
+* **BUG-002:** handle inflation data when user data predates 2003 ([0ae83af](https://github.com/vozzen/relary/commit/0ae83af610abf26e64d867a573f3f952b87883e9))
+
 ## [0.9.2](https://github.com/vozzen/relary/compare/v0.9.1...v0.9.2) (2025-11-22)
 
 
