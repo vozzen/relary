@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/vozzen/relary/compare/v0.9.3...v0.10.0) (2025-11-24)
+
+
+### Features
+
+* **F0705:** display dates on X axis at 45-degree angle ([bfc94db](https://github.com/vozzen/relary/commit/bfc94db19d7e9c686ce4f123b05144e9e6b86f17))
+
 ## [0.9.3](https://github.com/vozzen/relary/compare/v0.9.2...v0.9.3) (2025-11-22)
 
 
