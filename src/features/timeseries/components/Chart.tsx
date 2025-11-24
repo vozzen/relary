@@ -129,12 +129,15 @@ export const Chart: FC = () => {
     <figure className="timeseries-chart-container" aria-label="Zaman serisi grafiği">
       <div className="chart-wrapper">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ left: 8, right: 24, top: 10, bottom: 30 }}>
+          <LineChart data={data} margin={{ left: 8, right: 24, top: 10, bottom: 5 }}>
             <CartesianGrid stroke="#334155" strokeDasharray="4 4" />
             <XAxis
               dataKey="dateLabel"
               tick={{ fontSize: 11, fill: '#94a3b8' }}
               stroke="#64748b"
+              angle={-45}
+              textAnchor="end"
+              height={60}
             />
             {/* Y axis for user series (F0604) */}
             {hasData && (
@@ -168,6 +171,7 @@ export const Chart: FC = () => {
             })}
             <Tooltip
               contentStyle={{ background: '#1e293b', border: '1px solid #334155', fontSize: 12 }}
+              labelStyle={{ color: '#e2e8f0' }}
               formatter={formatTooltipValue}
             />
             <Legend 

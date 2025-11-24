@@ -104,5 +104,5 @@ For the interval user provided, other time series data should be shown on same c
     - App should read this file on page load instead of directly accessing the file `/data/series.json` in repo.
 - 🟢 F0704:
     - fetch-series process should add a timestamp to root object in series.json file with key "timestamp". Value should be a ISO-8601 timestamp with UTC offset representing the creation time of the file.
-- 🔴 F0704:
-    - Display dates on X axis vertical
+- 🟢 F0705:
+    - Display dates on X axis at 45-degree angle for better readability. Adjusted XAxis height to 60px and tooltip date label color to lighter shade for improved contrast against dark background.

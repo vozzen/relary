@@ -3,6 +3,24 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-24 - Session 18
+**Completed**:
+- F0705: Display dates on X axis vertical
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0705: Display Dates on X Axis Vertical**
+- Modified the XAxis component in Chart.tsx to rotate date labels by -90 degrees
+- Added `angle={-90}` and `textAnchor="end"` props to XAxis component
+- Increased bottom margin from 30 to 60 pixels to accommodate vertical labels
+- This improves readability when there are many data points on the chart
+
 ### 2025-11-22 - Session 17
 **Completed**:
 - BUG-002: Fixed inflation and purchasing power series not displaying when user data predates 2003
