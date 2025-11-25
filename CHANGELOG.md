@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/vozzen/relary/compare/v0.10.0...v0.10.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* correct typo in footer ([50aadc2](https://github.com/vozzen/relary/commit/50aadc23d54a320d2c842336e5e3aa83fd303198))
+
 # [0.10.0](https://github.com/vozzen/relary/compare/v0.9.3...v0.10.0) (2025-11-24)
 
 
