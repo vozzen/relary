@@ -3,6 +3,29 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-28 - Session 20
+**Completed**:
+- Started F0707: Initial Playwright tests added
+
+**In Progress**:
+- F0707: Expand E2E coverage for legend order and axis angle
+
+**Blockers**:
+- None
+
+**Details**:
+- Added Playwright E2E tests covering:
+  - User data entry → chart update and default legends (Gelir(₺), Gelir(USD), Alım gücü)
+  - Local storage save/load workflow
+  - Error handling UI (soft assertion with network abort)
+- Next: add tests for label sort order (F0614) and X axis angle (F0705)
+
+**Files Created/Modified**:
+- e2e/timeseries-entry.spec.ts (created)
+- e2e/error-handling.spec.ts (created)
+- e2e/storage.spec.ts (created)
+- docs/FEATURES.md (updated - F0707 set to 🟡)
+
 ### 2025-11-28 - Session 19
 **Completed**:
 - F0706: Playwright E2E basic test
