@@ -9,6 +9,7 @@
 - Commit changes with semantic messages
 - Update tracking files after each feature
 - Prompt user for merging to main branch
+- Use context7 MCP for fetching documentation and sample code regarding libraries and technologies used
 
 ### 2. File Reading Protocol
 Before implementing any feature:
