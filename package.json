@@ -11,7 +11,10 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "fetch-series": "tsx tools/fetch-series.ts"
+    "fetch-series": "tsx tools/fetch-series.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:install": "npx playwright install --with-deps"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -44,6 +47,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.3",
     "vite": "^7.2.2",
-    "vitest": "^4.0.10"
+    "vitest": "^4.0.10",
+    "@playwright/test": "^1.48.2"
   }
 }

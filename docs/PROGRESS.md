@@ -3,6 +3,25 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2025-11-28 - Session 19
+**Completed**:
+- F0706: Playwright E2E basic test
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0706: Playwright E2E**
+- Added Playwright with preview-based test runner (`playwright.config.ts`)
+- Created `e2e/basic.spec.ts` asserting header and footer texts
+- Added npm scripts: `test:e2e`, `test:e2e:ui`, `test:e2e:install`
+- Updated Vitest config to exclude `e2e/**` and `node_modules/**` from unit tests
+- Build and unit tests verified successful
+
 ### 2025-11-24 - Session 18
 **Completed**:
 - F0705: Display dates on X axis vertical

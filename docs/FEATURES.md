@@ -106,3 +106,7 @@ For the interval user provided, other time series data should be shown on same c
     - fetch-series process should add a timestamp to root object in series.json file with key "timestamp". Value should be a ISO-8601 timestamp with UTC offset representing the creation time of the file.
 - 🟢 F0705:
     - Display dates on X axis at 45-degree angle for better readability. Adjusted XAxis height to 60px and tooltip date label color to lighter shade for improved contrast against dark background.
+
+- 🟢 F0706:
+    - Integrate playwright to the project.
+    - Add one tests for a simple flow.
