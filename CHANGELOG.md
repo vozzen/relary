@@ -1,3 +1,10 @@
+# [0.11.0](https://github.com/vozzen/relary/compare/v0.10.1...v0.11.0) (2025-11-28)
+
+
+### Features
+
+* **F0707:** add robust Playwright E2E tests and mark feature in progress ([bfa9ede](https://github.com/vozzen/relary/commit/bfa9ede1d7cd697abf92135c4dbe2608471b1d55))
+
 ## [0.10.1](https://github.com/vozzen/relary/compare/v0.10.0...v0.10.1) (2025-11-25)
 
 
