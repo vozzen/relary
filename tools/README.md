@@ -19,7 +19,7 @@ This tool fetches configured time series data from EVDS with monthly aggregation
 
 ## Prerequisites
 
-1. **EVDS API Key**: Get your API key from [EVDS](https://evds2.tcmb.gov.tr/)
+1. **EVDS API Key**: Get your API key from [EVDS](https://evds3.tcmb.gov.tr/)
    - Create an account and log in
    - Go to Profile → API Anahtarı
 
@@ -167,7 +167,7 @@ Here are some commonly used EVDS series codes:
 ### Interest Rates
 - `TP.TCMB.CEVR01.D01` - TCMB Average Interest Rate
 
-To find more series codes, visit [EVDS](https://evds2.tcmb.gov.tr/) and browse the data categories.
+To find more series codes, visit [EVDS](https://evds3.tcmb.gov.tr/) and browse the data categories.
 
 ## Error Handling
 

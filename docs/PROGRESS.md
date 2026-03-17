@@ -3,6 +3,36 @@
 ## Current Sprint
 **Focus**: Phase 7 polishing
 **Status**: 🔄 In Progress
+### 2026-03-17 - Session 21
+**Completed**:
+- F0708: EVDS 3 API migration
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**F0708: EVDS 3 API Migration**
+- Updated default base URL from `evds2.tcmb.gov.tr/service/evds` to `evds3.tcmb.gov.tr/igmevdsms-dis`
+- Added automatic chunked fetching in `EVDSClient.getSeries` to handle the new 150-observation-per-request API limit
+- Chunking splits date ranges based on frequency type (monthly, daily, etc.) and merges results transparently
+- API key header authentication was already compliant — no change needed
+- Updated `.env.example`, `README.md`, and `EVDSClientConfig` JSDoc to reference new EVDS 3 URLs
+- Added 6 new unit tests for chunking behavior (single request, multi-chunk, non-overlapping ranges, edge cases, error propagation)
+- Updated 5 existing tests to use narrower date ranges compatible with chunking logic
+- All 14 unit tests passing
+
+**Files Created/Modified**:
+- src/shared/evds/client.ts (updated - new URL, chunking logic)
+- src/shared/evds/client.test.ts (updated - narrowed date ranges, 6 new chunking tests)
+- src/shared/evds/README.md (updated - EVDS 3 URL)
+- .env.example (updated - EVDS 3 URL)
+- docs/FEATURES.md (updated - F0708 added)
+- docs/PROGRESS.md (updated - session 21 added)
+
 ### 2025-11-28 - Session 20
 **Completed**:
 - Started F0707: Initial Playwright tests added

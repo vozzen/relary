@@ -13,11 +13,12 @@ This module provides a typed wrapper around the TCMB EVDS Web Services API, maki
 - ✅ Support for all EVDS API endpoints
 - ✅ Automatic API key authentication via HTTP headers
 - ✅ Support for multiple series, aggregation types, and formulas
+- ✅ Automatic chunked fetching for date ranges exceeding 150-observation API limit
 - ✅ Metadata endpoints (categories, data groups, series lists)
 
 ## Getting an API Key
 
-1. Visit [EVDS](https://evds2.tcmb.gov.tr/)
+1. Visit [EVDS](https://evds3.tcmb.gov.tr/)
 2. Create an account and log in
 3. Click on your username and select "Profil"
 4. Click "API Anahtarı" to get your API key
@@ -202,5 +203,5 @@ The API returns data in the following format:
 
 ## References
 
-- [EVDS Web Service Documentation](https://evds2.tcmb.gov.tr/)
+- [EVDS Web Service Documentation](https://evds3.tcmb.gov.tr/)
 - Based on: `EVDS_Web_Servis_Kullanim_Kilavuzu.txt`

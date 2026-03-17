@@ -9,7 +9,7 @@ import type {
   SeriesRequest,
   SeriesResponse,
 } from './types';
-import { ResponseType } from './types';
+import { FrequencyType, ResponseType } from './types';
 
 /**
  * Configuration for EVDS Client
@@ -17,7 +17,7 @@ import { ResponseType } from './types';
 export interface EVDSClientConfig {
   /** API key for authentication (obtained from EVDS profile) */
   apiKey: string;
-  /** Base URL for EVDS API (default: https://evds2.tcmb.gov.tr/service/evds) */
+  /** Base URL for EVDS API (default: https://evds3.tcmb.gov.tr/igmevdsms-dis) */
   baseUrl?: string;
 }
 
@@ -47,7 +47,7 @@ export class EVDSClient {
 
   constructor(config: EVDSClientConfig) {
     this.apiKey = config.apiKey;
-    this.baseUrl = config.baseUrl || 'https://evds2.tcmb.gov.tr/service/evds';
+    this.baseUrl = config.baseUrl || 'https://evds3.tcmb.gov.tr/igmevdsms-dis';
   }
 
   /**
@@ -74,6 +74,93 @@ export class EVDSClient {
   }
 
   /**
+   * Maximum number of observations per API request (EVDS 3 limit)
+   */
+  private static readonly MAX_OBSERVATIONS = 150;
+
+  /**
+   * Converts a date parameter to a Date object for calculation
+   */
+  private toDate(date: Date | string): Date {
+    if (date instanceof Date) {
+      return date;
+    }
+    // Parse DD-MM-YYYY format
+    const [day, month, year] = date.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  /**
+   * Estimates the number of observations between two dates for a given frequency.
+   * Uses conservative estimates to avoid exceeding the 150-observation API limit.
+   */
+  private estimateObservations(start: Date, end: Date, frequency?: FrequencyType): number {
+    const diffMs = end.getTime() - start.getTime();
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    switch (frequency) {
+      case FrequencyType.ANNUAL:
+        return Math.ceil(diffDays / 365) + 1;
+      case FrequencyType.SEMI_ANNUAL:
+        return Math.ceil(diffDays / 182) + 1;
+      case FrequencyType.QUARTERLY:
+        return Math.ceil(diffDays / 90) + 1;
+      case FrequencyType.MONTHLY:
+        return (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
+      case FrequencyType.TWICE_A_MONTH:
+        return Math.ceil(diffDays / 15) + 1;
+      case FrequencyType.WEEKLY:
+        return Math.ceil(diffDays / 7) + 1;
+      case FrequencyType.BUSINESS_DAY:
+        return Math.ceil(diffDays * 5 / 7) + 1;
+      case FrequencyType.DAILY:
+      default:
+        // Default to daily (most granular) for safety
+        return diffDays + 1;
+    }
+  }
+
+  /**
+   * Calculates the end date for a chunk given a start date, max observations, and frequency.
+   */
+  private chunkEndDate(start: Date, maxObs: number, frequency?: FrequencyType): Date {
+    switch (frequency) {
+      case FrequencyType.ANNUAL:
+        return new Date(start.getFullYear() + maxObs - 1, start.getMonth(), start.getDate());
+      case FrequencyType.SEMI_ANNUAL:
+        return new Date(start.getFullYear(), start.getMonth() + (maxObs - 1) * 6, start.getDate());
+      case FrequencyType.QUARTERLY:
+        return new Date(start.getFullYear(), start.getMonth() + (maxObs - 1) * 3, start.getDate());
+      case FrequencyType.MONTHLY:
+        return new Date(start.getFullYear(), start.getMonth() + maxObs - 1, start.getDate());
+      case FrequencyType.TWICE_A_MONTH: {
+        const days = (maxObs - 1) * 15;
+        return new Date(start.getTime() + days * 24 * 60 * 60 * 1000);
+      }
+      case FrequencyType.WEEKLY: {
+        const days = (maxObs - 1) * 7;
+        return new Date(start.getTime() + days * 24 * 60 * 60 * 1000);
+      }
+      case FrequencyType.BUSINESS_DAY: {
+        const calendarDays = Math.ceil((maxObs - 1) * 7 / 5);
+        return new Date(start.getTime() + calendarDays * 24 * 60 * 60 * 1000);
+      }
+      case FrequencyType.DAILY:
+      default: {
+        const days = maxObs - 1;
+        return new Date(start.getTime() + days * 24 * 60 * 60 * 1000);
+      }
+    }
+  }
+
+  /**
+   * Returns the next day after a given date (for non-overlapping chunk boundaries)
+   */
+  private nextDay(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+  }
+
+  /**
    * Makes an HTTP request to EVDS API with proper authentication
    */
   private async request<T>(params: Record<string, string>): Promise<T> {
@@ -97,21 +184,47 @@ export class EVDSClient {
   }
 
   /**
-   * Fetches series data from EVDS
-   * 
-   * @param request - Series request parameters
-   * @returns Series data response
-   * 
-   * @example
-   * ```typescript
-   * const data = await client.getSeries({
-   *   series: 'TP.DK.USD.A',
-   *   startDate: new Date('2024-01-01'),
-   *   endDate: new Date('2024-12-31')
-   * });
-   * ```
+   * Fetches series data from EVDS, automatically splitting into chunked
+   * requests when the date range exceeds the 150-observation API limit.
    */
   private async getSeries(request: SeriesRequest): Promise<SeriesResponse> {
+    const start = this.toDate(request.startDate);
+    const end = this.toDate(request.endDate);
+    const estimatedObs = this.estimateObservations(start, end, request.frequency);
+
+    if (estimatedObs <= EVDSClient.MAX_OBSERVATIONS) {
+      return this.getSeriesChunk(request);
+    }
+
+    // Split into chunks
+    const allItems: SeriesResponse['items'] = [];
+    let chunkStart = start;
+
+    while (chunkStart <= end) {
+      const chunkEnd = this.chunkEndDate(chunkStart, EVDSClient.MAX_OBSERVATIONS, request.frequency);
+      const effectiveEnd = chunkEnd < end ? chunkEnd : end;
+
+      const chunkResponse = await this.getSeriesChunk({
+        ...request,
+        startDate: chunkStart,
+        endDate: effectiveEnd,
+      });
+
+      allItems.push(...chunkResponse.items);
+
+      if (effectiveEnd >= end) {
+        break;
+      }
+      chunkStart = this.nextDay(effectiveEnd);
+    }
+
+    return { items: allItems };
+  }
+
+  /**
+   * Fetches a single chunk of series data from EVDS (no chunking).
+   */
+  private async getSeriesChunk(request: SeriesRequest): Promise<SeriesResponse> {
     const params: Record<string, string> = {
       series: this.joinParameter(request.series),
       startDate: this.formatDate(request.startDate),
