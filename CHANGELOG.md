@@ -1,3 +1,10 @@
+# [0.12.0](https://github.com/vozzen/relary/compare/v0.11.0...v0.12.0) (2026-03-17)
+
+
+### Features
+
+* **F0708:** migrate EVDS client from v2 to v3 API (#F0708) ([813bb14](https://github.com/vozzen/relary/commit/813bb14e2823f900b88e7fa9c221a0e1190da38a)), closes [#F0708](https://github.com/vozzen/relary/issues/F0708)
+
 # [0.11.0](https://github.com/vozzen/relary/compare/v0.10.1...v0.11.0) (2025-11-28)
 
 
