@@ -110,7 +110,7 @@ For the interval user provided, other time series data should be shown on same c
 - 🟢 F0706:
     - Integrate playwright to the project.
     - Add one tests for a simple flow.
-- 🟡 F0707:
+- � F0707:
     - Review the features in FEATURES.md and add playwright tests testing those features.
 - 🟢F0708:
     - Migrate EVDS client from v2 to v3 API.
