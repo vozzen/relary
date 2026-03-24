@@ -11,16 +11,17 @@ test('entering user data updates chart and shows default legends with correct or
   await expect(editor).toHaveAttribute('id', 'timeseries-editor')
 
   // Legend labels should include defaults enabled: Gelir(₺), Gelir(USD), Alım gücü
-  const gelirLabel = page.locator('text=Gelir(₺)')
-  const gelirUsdLabel = page.locator('text=Gelir(USD)')
-  const alimGucuLabel = page.locator('text=Alım gücü')
+  const legend = page.locator('.recharts-legend-wrapper')
+  const gelirLabel = legend.locator('text=Gelir(₺)')
+  const gelirUsdLabel = legend.locator('text=Gelir(USD)')
+  const alimGucuLabel = legend.getByText('Alım gücü', { exact: true })
   await expect(gelirLabel).toBeVisible()
   await expect(gelirUsdLabel).toBeVisible()
   await expect(alimGucuLabel).toBeVisible()
 
   // Legend order must be: Gelir(₺) - Gelir(USD) - Gelir(EUR) - USD - EUR - Enflasyon - Alım Gücü
-  const legend = page.locator('.recharts-legend-wrapper .recharts-default-legend')
-  const legendItems = legend.locator('li')
+  const legendList = legend.locator('.recharts-default-legend')
+  const legendItems = legendList.locator('li')
   const legendCount = await legendItems.count()
   expect(legendCount).toBeGreaterThanOrEqual(3)
   const texts = [] as string[]

@@ -1,0 +1,18 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <!-- App icon -->
+  <ellipse cx="200" cy="315" rx="80" ry="80" fill="#fff" stroke="#334155" stroke-width="8"/>
+  <text x="200" y="345" font-size="96" font-family="serif" font-weight="bold" fill="#000" text-anchor="middle">₺</text>
+  <!-- Title -->
+  <text x="340" y="270" font-size="56" font-family="system-ui, sans-serif" font-weight="bold" fill="#f1f5f9">Relative Salary</text>
+  <!-- Subtitle -->
+  <text x="340" y="330" font-size="28" font-family="system-ui, sans-serif" fill="#94a3b8">Maaş Alım Gücü Hesaplama</text>
+  <!-- Description -->
+  <text x="340" y="390" font-size="20" font-family="system-ui, sans-serif" fill="#64748b">Enflasyon, döviz kurları ve alım gücü değişimlerini görselleştirin</text>
+  <!-- Chart line decoration -->
+  <polyline points="100,500 250,480 400,460 550,430 700,450 850,410 1000,380 1100,360" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <polyline points="100,510 250,495 400,500 550,485 700,470 850,480 1000,460 1100,440" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <!-- URL -->
+  <text x="1080" y="560" font-size="16" font-family="system-ui, sans-serif" fill="#475569" text-anchor="end">relary.sen.kim</text>
+</svg>

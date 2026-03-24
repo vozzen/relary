@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/relary.svg" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- SEO Meta Tags -->
@@ -12,13 +13,16 @@
     <meta name="author" content="Relary" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://relary.sen.kim/" />
+    <link rel="alternate" hreflang="tr" href="https://relary.sen.kim/" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://relary.sen.kim/" />
     <meta property="og:title" content="Relative Salary - Maaş Alım Gücü Hesaplama" />
     <meta property="og:description" content="Maaşınızın enflasyon ve döviz kurları karşısındaki reel değerini hesaplayın ve görselleştirin." />
-    <meta property="og:image" content="https://relary.sen.kim/relary.svg" />
+    <meta property="og:image" content="https://relary.sen.kim/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="tr_TR" />
     
     <!-- Twitter -->
@@ -26,13 +30,39 @@
     <meta name="twitter:url" content="https://relary.sen.kim/" />
     <meta name="twitter:title" content="Relative Salary - Maaş Alım Gücü Hesaplama" />
     <meta name="twitter:description" content="Maaşınızın enflasyon ve döviz kurları karşısındaki reel değerini hesaplayın." />
-    <meta name="twitter:image" content="https://relary.sen.kim/relary.svg" />
+    <meta name="twitter:image" content="https://relary.sen.kim/og-image.png" />
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#1e293b" />
+
+    <!-- JSON-LD Structured Data (F0800) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Relative Salary",
+      "url": "https://relary.sen.kim/",
+      "description": "Türkiye'deki maaşınızın reel değerini hesaplayın. Enflasyon, döviz kurları ve alım gücü değişimlerini görselleştirerek geçmiş yıllara göre maaşınızın gerçek değerini öğrenin.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "inLanguage": "tr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TRY"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="padding:2rem;max-width:600px;margin:0 auto;font-family:system-ui,sans-serif;color:#f1f5f9;background:#0f172a;min-height:100vh">
+        <h1>Relative Salary – Maaş Alım Gücü Hesaplama</h1>
+        <p>Bu uygulama, Türkiye’deki maaşınızın enflasyon ve döviz kurları karşısındaki reel değerini hesaplar ve görselleştirir.</p>
+        <p>Uygulamayı kullanabilmek için lütfen tarayıcınızda JavaScript’i etkinleştirin.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

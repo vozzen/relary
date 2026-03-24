@@ -119,37 +119,37 @@ For the interval user provided, other time series data should be shown on same c
     - API key header authentication already compliant, no change needed.
 
 ### Phase 8: SEO & Discoverability
-- 🔴 F0800: Add JSON-LD structured data
+- 🟢 F0800: Add JSON-LD structured data
     - Add a `<script type="application/ld+json">` block to `index.html` with `WebApplication` schema.
     - Include name, description, url, applicationCategory ("FinanceApplication"), operatingSystem ("All"), offers (Free).
     - Helps Google display rich results and understand the app's purpose.
-- 🔴 F0801: Replace OG image with raster format
+- � F0801: Replace OG image with raster format
     - Current `og:image` and `twitter:image` point to `relary.svg`. Most social platforms (Facebook, LinkedIn, WhatsApp) cannot render SVGs.
     - Create a 1200×630px PNG preview image (`public/og-image.png`) and update meta tags in `index.html`.
-- 🔴 F0802: Add `<h1>` heading to HomePage
+- � F0802: Add `<h1>` heading to HomePage
     - The main keyword ("Maaş Alım Gücü Hesaplama" or similar) only appears in `<title>`, not in the rendered HTML.
     - Add a visible or visually-hidden `<h1>` to `HomePage.tsx` to improve on-page SEO signal.
-- 🔴 F0803: Add `<noscript>` fallback content
+- � F0803: Add `<noscript>` fallback content
     - The HTML body is just `<div id="root"></div>`. Crawlers that don't execute JS see no content.
     - Add a `<noscript>` block inside `<body>` with descriptive Turkish text explaining what the app does.
-- 🔴 F0804: Add `hreflang` tag
+- � F0804: Add `hreflang` tag
     - Add `<link rel="alternate" hreflang="tr" href="https://relary.sen.kim/" />` to `index.html`.
     - Helps Google serve the page to Turkish-speaking users in search results.
-- 🔴 F0805: Add Web App Manifest
+- � F0805: Add Web App Manifest
     - Create `public/manifest.json` with app name, short_name, description, icons, theme_color, background_color, display.
     - Link from `index.html` via `<link rel="manifest" href="/manifest.json" />`.
     - Improves mobile discoverability and enables "Add to Home Screen".
-- 🔴 F0806: Update sitemap.xml and automate lastmod
+- � F0806: Update sitemap.xml and automate lastmod
     - Current `lastmod` is hardcoded to `2025-11-22`.
     - Update to current date and add a build script or Vite plugin to set `lastmod` automatically on each build.
-- 🔴 F0807: Add 404 catch-all route
+- � F0807: Add 404 catch-all route
     - No catch-all route exists. Add a `*` route rendering a `NotFound` component with navigation back to home.
     - Helps crawlers and users when they land on non-existent paths.
-- 🔴 F0808: Add descriptive content / FAQ section
+- � F0808: Add descriptive content / FAQ section
     - Search engines rank pages with substantive text higher.
     - Add a collapsible "Nasıl Çalışır?" (How it works) section below the main app content in `HomePage.tsx`.
     - Explain salary purchasing power calculations, data sources (TCMB EVDS), and tool usage in Turkish.
-- 🔴 F0809: Add build-time prerendering
+- � F0809: Add build-time prerendering
     - Highest-impact technical SEO change. React SPA renders empty `<div id="root"></div>` — crawlers see no content.
     - Use `vite-plugin-prerender` or similar to generate static HTML at build time.
     - Since the app has a single route, setup is straightforward.

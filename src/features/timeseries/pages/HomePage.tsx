@@ -96,6 +96,7 @@ export const HomePage: FC = () => {
 
   return (
     <section className="home-page">
+      <h1 className="visually-hidden">Maaş Alım Gücü Hesaplama</h1>
       {state.timeseries.error && (
         <ErrorMessage
           message={`Uzak veri yüklenemedi: ${state.timeseries.error}`}
@@ -172,6 +173,19 @@ export const HomePage: FC = () => {
           )}
         </div>
       </div>
+      <details className="faq-section">
+        <summary className="faq-summary">Nasıl Çalışır?</summary>
+        <div className="faq-content">
+          <h3>Maaş Alım Gücü Nedir?</h3>
+          <p>Maaş alım gücü, maaşınızın enflasyon ve döviz kurları karşısındaki gerçek değerini gösterir. Nominal maaşınız artsa bile, enflasyon nedeniyle satın alma gücünüz düşebilir.</p>
+          <h3>Nasıl Hesaplanır?</h3>
+          <p>Girdiğiniz maaş verilerini TCMB EVDS'den alınan güncel enflasyon (TÜFE) ve döviz kuru verileriyle karşılaştırarak maaşınızın reel değerini hesaplarız. Alım gücü serisi, maaşınızın enflasyona göre normalize edilmiş halini gösterir.</p>
+          <h3>Veri Kaynağı</h3>
+          <p>Enflasyon ve döviz kuru verileri Türkiye Cumhuriyet Merkez Bankası (TCMB) Elektronik Veri Dağıtım Sistemi'nden (EVDS) alınmaktadır.</p>
+          <h3>Gizlilik</h3>
+          <p>Girdiğiniz maaş verileri yalnızca tarayıcınızda işlenir, hiçbir sunucuya gönderilmez. Verilerinizi tarayıcı yerel deposuna kaydedebilirsiniz.</p>
+        </div>
+      </details>
     </section>
   )
 }

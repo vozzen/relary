@@ -1,8 +1,61 @@
 # Development Progress Log
 
 ## Current Sprint
-**Focus**: Phase 7 polishing
-**Status**: 🔄 In Progress
+**Focus**: Phase 8 SEO & Discoverability
+**Status**: ✅ Complete
+### 2026-03-24 - Session 23
+**Completed**:
+- F0800: JSON-LD structured data
+- F0801: OG image raster format (1200×630 PNG)
+- F0802: Visually-hidden `<h1>` heading for SEO
+- F0803: `<noscript>` fallback content
+- F0804: `hreflang` tag for Turkish locale
+- F0805: Web App Manifest (PWA support)
+- F0806: Automated sitemap.xml `lastmod` via Vite plugin
+- F0807: 404 catch-all route with NotFound component
+- F0808: Collapsible FAQ section ("Nasıl Çalışır?")
+- F0809: Build-time prerendering using Playwright
+
+**In Progress**:
+- None
+
+**Blockers**:
+- None
+
+**Details**:
+
+**Phase 8: SEO & Discoverability — All 10 features implemented**
+- Added JSON-LD WebApplication schema to `index.html`
+- Generated 1200×630 PNG OG image from SVG template; updated OG/Twitter meta tags
+- Added visually-hidden `<h1>` to HomePage with main keyword
+- Added `<noscript>` block with descriptive Turkish content for JS-disabled crawlers
+- Added `hreflang="tr"` alternate link tag
+- Created `public/manifest.json` with PWA metadata and linked from HTML
+- Built Vite plugin that auto-updates `sitemap.xml` lastmod date on each build
+- Added `*` catch-all route rendering `NotFound` component with navigation back to home
+- Added collapsible "Nasıl Çalışır?" FAQ section with SEO-friendly content in Turkish
+- Created custom prerender script using Playwright — `npm run build:prerender` captures fully rendered HTML and injects into dist/index.html
+- Fixed E2E test selector for strict mode violation after adding new content
+- All 78 unit tests passing, 22 E2E tests passing
+
+**Files Created**:
+- public/og-image.png, tools/og-image.svg
+- public/manifest.json
+- src/shared/components/NotFound.tsx
+- tools/prerender.ts
+
+**Files Modified**:
+- index.html (JSON-LD, hreflang, noscript, manifest link, OG meta tags)
+- src/features/timeseries/pages/HomePage.tsx (h1, FAQ)
+- src/features/timeseries/pages/HomePage.css (visually-hidden, FAQ styles)
+- src/app/routes/index.tsx (catch-all route)
+- vite.config.ts (sitemap plugin)
+- public/sitemap.xml (updated lastmod)
+- package.json (build:prerender script)
+- e2e/timeseries-entry.spec.ts (fix selector)
+- docs/FEATURES.md (all Phase 8 marked 🟢)
+- docs/PROGRESS.md (session 23)
+
 ### 2026-03-24 - Session 22
 **Completed**:
 - F0707: Expanded Playwright E2E test coverage

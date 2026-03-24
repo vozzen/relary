@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { HomePage } from '../../features/timeseries'
+import { NotFound } from '../../shared/components/NotFound'
 
 export interface AppRoute {
   path: string
@@ -14,5 +15,9 @@ export const routes: AppRoute[] = [
   {
     path: '/',
     element: <HomePage />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]
