@@ -1,3 +1,10 @@
+# [0.14.0](https://github.com/vozzen/relary/compare/v0.13.0...v0.14.0) (2026-03-24)
+
+
+### Features
+
+* **F0800-F0809:** Phase 8 SEO & Discoverability ([e36cc62](https://github.com/vozzen/relary/commit/e36cc6227944fc53a479af508fc400609871cea8))
+
 # [0.13.0](https://github.com/vozzen/relary/compare/v0.12.0...v0.13.0) (2026-03-24)
 
 
