@@ -112,7 +112,7 @@ For the interval user provided, other time series data should be shown on same c
     - Add one tests for a simple flow.
 - 🟡 F0707:
     - Review the features in FEATURES.md and add playwright tests testing those features.
-- � F0708:
+- 🟢F0708:
     - Migrate EVDS client from v2 to v3 API.
     - Update base URL from https://evds2.tcmb.gov.tr/service/evds to https://evds3.tcmb.gov.tr/igmevdsms-dis.
     - Add automatic chunked fetching to handle 150-observation-per-request API limit.
