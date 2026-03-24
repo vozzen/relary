@@ -1,3 +1,11 @@
+# [0.13.0](https://github.com/vozzen/relary/compare/v0.12.0...v0.13.0) (2026-03-24)
+
+
+### Features
+
+* add SEO enhancements and discoverability features ([fadd496](https://github.com/vozzen/relary/commit/fadd496c82f0f186ed882abeffbb9ba41d76e7ea))
+* **F0707:** expand E2E test coverage for chart, date formats, and layout ([bc0ec0e](https://github.com/vozzen/relary/commit/bc0ec0ef80ce8e2833e71f03fb7d220b74b5c535))
+
 # [0.12.0](https://github.com/vozzen/relary/compare/v0.11.0...v0.12.0) (2026-03-17)
 
 
