@@ -24,13 +24,14 @@ Before implementing any feature:
 For each feature:
 ```
 1. Update FEATURES.md: Change status to 🟡
-2. Implement the feature completely
-3. Ensure it builds successfully
-4. Test the feature works
-5. Update FEATURES.md: Change status to 🟢
-6. Update PROGRESS.md: Add completion entry
-7. Commit with proper format
-8. Move to next feature
+2. Implement the feature completely.
+3. Add new unit and e2e tests if applicable.
+4. Ensure it builds successfully
+5. Test the feature works as intended.
+6. Update FEATURES.md: Change status to 🟢
+7. Update PROGRESS.md: Add completion entry
+8. Commit with proper format
+9. Move to next feature
 ```
 
 ### 4. Commit Format
@@ -42,15 +43,24 @@ docs(F002): update routing documentation
 ```
 
 ### 5. Code Standards
-- Use functional components with hooks
+- Use functional components with hooks (class components only for ErrorBoundary)
 - Implement error boundaries
-- Add PropTypes or TypeScript types
+- Use TypeScript types/interfaces (not PropTypes)
 - Include JSDoc comments for complex functions
-- Follow ESLint rules
+- Follow ESLint rules (flat config)
+- All user-facing text must be in Turkish
+- Use native `fetch` for HTTP calls (not Axios)
+- Use Context + `useReducer` for state (not Redux)
+- Use plain CSS for styling (not CSS Modules or Tailwind)
+- Reference feature IDs in code comments (e.g., `// F0615: ...`)
 
 ### 6. Testing
+- Use Vitest (not Jest) for unit and component tests
+- Use Playwright for E2E tests (run against production build)
 - Write tests for each feature when applicable
 - Ensure existing tests pass before moving on
+- Run `npm test` for unit tests, `npm run test:e2e` for E2E
+- Place E2E tests in `e2e/` directory, unit tests colocated with source
 
 ### 7. Self-Check Questions
 Before marking a feature complete:
@@ -73,6 +83,22 @@ If user reports a bug:
 7. Prompt user for merging to main branch and push.
 8. When user confirms, ensure main branch is updated with latest changes from origin. Merge branch into main by squashing and push. Then delete the branch.
 ```
+
+### 9. Date & Data Conventions
+- User input dates: `DD.MM.YYYY`, `MM.YYYY`, `MM-YYYY`, `D.M.YYYY`, `D-M-YYYY`
+- All dates are normalized to 1st of month internally (UTC timestamps)
+- EVDS API dates: `DD-MM-YYYY`
+- series.json dates: `YYYY.MM.DD`
+- Timeseries gaps are filled via monthly interpolation
+
+### 10. Key Build Commands
+- `npm run dev` — Vite dev server
+- `npm run build` — TypeScript + Vite production build
+- `npm run build:prerender` — Build + Playwright prerendering for SEO
+- `npm test` — Vitest unit tests
+- `npm run test:e2e` — Playwright E2E tests
+- `npm run fetch-series` — Fetch EVDS data into data/series.json
+- `npm run lint` — ESLint
 
 ## Auto-Progress Mode
 
