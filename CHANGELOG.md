@@ -1,3 +1,10 @@
+# [0.16.0](https://github.com/vozzen/relary/compare/v0.15.0...v0.16.0) (2026-04-01)
+
+
+### Features
+
+* add SKILL.md for developing next features and fixing bugs ([18d5253](https://github.com/vozzen/relary/commit/18d525327ea4e1c59ad70e82879929fe32b2ba06))
+
 # [0.15.0](https://github.com/vozzen/relary/compare/v0.14.0...v0.15.0) (2026-04-01)
 
 
