@@ -1,3 +1,10 @@
+# [0.18.0](https://github.com/vozzen/relary/compare/v0.17.0...v0.18.0) (2026-04-01)
+
+
+### Features
+
+* **F0811:** update save/delete button colors to match theme ([3f47bc3](https://github.com/vozzen/relary/commit/3f47bc3b7b3cf239a8ae7428b20cae2d49c717b5)), closes [#22c55e](https://github.com/vozzen/relary/issues/22c55e) [#3b82f6](https://github.com/vozzen/relary/issues/3b82f6) [#ef4444](https://github.com/vozzen/relary/issues/ef4444) [#b91c1c](https://github.com/vozzen/relary/issues/b91c1c)
+
 # [0.17.0](https://github.com/vozzen/relary/compare/v0.16.0...v0.17.0) (2026-04-01)
 
 
