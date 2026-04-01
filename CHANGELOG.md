@@ -1,3 +1,10 @@
+# [0.17.0](https://github.com/vozzen/relary/compare/v0.16.0...v0.17.0) (2026-04-01)
+
+
+### Features
+
+* **F0810:** refactor Nasıl Çalışır section into glassy modal dialog ([40a46e0](https://github.com/vozzen/relary/commit/40a46e087d1aac6123d1f090fe86f6a56c21f890))
+
 # [0.16.0](https://github.com/vozzen/relary/compare/v0.15.0...v0.16.0) (2026-04-01)
 
 
