@@ -1,3 +1,10 @@
+# [0.19.0](https://github.com/vozzen/relary/compare/v0.18.0...v0.19.0) (2026-04-01)
+
+
+### Features
+
+* **F0812:** add help tooltip question marks to section headers ([ed88cec](https://github.com/vozzen/relary/commit/ed88ceca633be96f920ded1ad0d660ee41b4256d))
+
 # [0.18.0](https://github.com/vozzen/relary/compare/v0.17.0...v0.18.0) (2026-04-01)
 
 
