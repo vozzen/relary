@@ -3,6 +3,30 @@
 ## Current Sprint
 **Focus**: Phase 8 SEO & Discoverability
 **Status**: ✅ Complete
+### 2026-04-01 - Session 24
+**Completed**:
+- F0810: Refactored "Nasıl Çalışır?" from collapsible `<details>` section into a glassy modal dialog
+
+**Details**:
+- Created `HowItWorksModal` component using native `<dialog>` element
+- Semi-transparent glassy panel with backdrop-filter blur
+- Close button (✕) on top-left, closes on backdrop click and Escape key
+- Rounded corners, compact layout, readable text on dark theme
+- Moved trigger link ("Nasıl Çalışır?") to Footer component
+- Removed old FAQ `<details>` section and CSS from HomePage
+- All 22 E2E tests passing, build succeeds
+
+**Files Created**:
+- src/shared/components/HowItWorksModal.tsx
+- src/shared/components/HowItWorksModal.css
+
+**Files Modified**:
+- src/shared/components/Footer.tsx (added modal trigger)
+- src/features/timeseries/pages/HomePage.tsx (removed FAQ section)
+- src/features/timeseries/pages/HomePage.css (removed FAQ styles)
+- docs/FEATURES.md (F0810 → 🟢)
+- docs/PROGRESS.md (session 24)
+
 ### 2026-03-24 - Session 23
 **Completed**:
 - F0800: JSON-LD structured data

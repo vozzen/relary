@@ -1,9 +1,10 @@
 import type { FC } from 'react'
+import { HowItWorksModal } from './HowItWorksModal'
 import './Footer.css'
 
 /**
- * Static application footer (F006, F0702).
- * Displays privacy reassurance text and application version.
+ * Static application footer (F006, F0702, F0810).
+ * Displays privacy reassurance text, "Nasıl Çalışır?" modal link, and app version.
  */
 export const Footer: FC = () => {
   // Get version from package.json via import.meta.env
@@ -15,6 +16,8 @@ export const Footer: FC = () => {
       <p className="app-footer__text">
         Ham veriler (kur, enflasyon vb.) <a className="app-footer__link" href="https://evds3.tcmb.gov.tr/" target="_blank" rel="noopener noreferrer">TCMB EVDS</a>'den alınmıştır.
       </p>
+      {/* F0810: "Nasıl Çalışır?" modal trigger */}
+      <p className="app-footer__text"><HowItWorksModal /></p>
       <p className="app-footer__version">v{version}</p>
     </footer>
   )
