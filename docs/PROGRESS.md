@@ -3,6 +3,21 @@
 ## Current Sprint
 **Focus**: Phase 8 SEO & Discoverability
 **Status**: ✅ Complete
+### 2026-04-01 - Session 25
+**Completed**:
+- F0811: Updated save/delete button colors to match dark slate theme
+
+**Details**:
+- Save button: changed from bright green (#22c55e) to blue (#3b82f6) matching existing link accent
+- Delete button: changed from bright red (#ef4444) to muted dark red (#b91c1c) that blends with dark theme
+- Load button unchanged (already uses theme-consistent slate gray)
+- All 22 E2E tests passing, build succeeds
+
+**Files Modified**:
+- src/features/timeseries/pages/HomePage.css (button color updates)
+- docs/FEATURES.md (F0811 → 🟢)
+- docs/PROGRESS.md (session 25)
+
 ### 2026-04-01 - Session 24
 **Completed**:
 - F0810: Refactored "Nasıl Çalışır?" from collapsible `<details>` section into a glassy modal dialog
