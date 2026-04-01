@@ -1,3 +1,10 @@
+# [0.15.0](https://github.com/vozzen/relary/compare/v0.14.0...v0.15.0) (2026-04-01)
+
+
+### Features
+
+* implement retry logic with exponential backoff for EVDS API requests ([e60e977](https://github.com/vozzen/relary/commit/e60e97723a45b4f2f7293462a1c62086402db71b))
+
 # [0.14.0](https://github.com/vozzen/relary/compare/v0.13.0...v0.14.0) (2026-03-24)
 
 
