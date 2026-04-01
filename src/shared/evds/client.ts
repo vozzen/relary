@@ -161,26 +161,64 @@ export class EVDSClient {
   }
 
   /**
-   * Makes an HTTP request to EVDS API with proper authentication
+   * Maximum number of retry attempts for transient failures
+   */
+  private static readonly MAX_RETRIES = 5;
+
+  /**
+   * Base delay in milliseconds for exponential backoff
+   */
+  private static readonly BASE_DELAY_MS = 1000;
+
+  /**
+   * Makes an HTTP request to EVDS API with proper authentication.
+   * Retries up to 5 times with exponential backoff for transient failures.
    */
   private async request<T>(params: Record<string, string>): Promise<T> {
     const queryString = new URLSearchParams(params).toString();
     const url = `${this.baseUrl}/${queryString}`;
 
-    const response = await fetch(url, {
-      headers: {
-        'key': this.apiKey,
-      },
-    });
+    for (let attempt = 1; attempt <= EVDSClient.MAX_RETRIES; attempt++) {
+      try {
+        const response = await fetch(url, {
+          headers: {
+            'key': this.apiKey,
+          },
+        });
 
-    if (!response.ok) {
-      if (response.status === 403) {
-        throw new Error('EVDS API authentication failed. Please check your API key.');
+        if (response.ok) {
+          return response.json() as Promise<T>;
+        }
+
+        if (response.status === 403) {
+          throw new Error('EVDS API authentication failed. Please check your API key.');
+        }
+
+        const isRetryable = response.status === 429 || response.status >= 500;
+        if (!isRetryable || attempt === EVDSClient.MAX_RETRIES) {
+          throw new Error(`EVDS API request failed: ${response.status} ${response.statusText}`);
+        }
+
+        const delay = EVDSClient.BASE_DELAY_MS * Math.pow(2, attempt - 1);
+        console.warn(
+          `EVDS API request attempt ${attempt}/${EVDSClient.MAX_RETRIES} failed: ${response.status} ${response.statusText}. Retrying in ${delay}ms...`
+        );
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } catch (error) {
+        if (error instanceof TypeError && attempt < EVDSClient.MAX_RETRIES) {
+          // Network-level failure (DNS, connection refused, etc.)
+          const delay = EVDSClient.BASE_DELAY_MS * Math.pow(2, attempt - 1);
+          console.warn(
+            `EVDS API request attempt ${attempt}/${EVDSClient.MAX_RETRIES} failed: ${(error as Error).message}. Retrying in ${delay}ms...`
+          );
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else {
+          throw error;
+        }
       }
-      throw new Error(`EVDS API request failed: ${response.status} ${response.statusText}`);
     }
 
-    return response.json() as Promise<T>;
+    throw new Error('EVDS API request failed after maximum retries');
   }
 
   /**
