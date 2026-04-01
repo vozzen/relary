@@ -155,3 +155,4 @@ For the interval user provided, other time series data should be shown on same c
     - Since the app has a single route, setup is straightforward.
     - Verify `view-source:` of built HTML shows actual page content after prerendering.
 - 🟢 F0810: Refactor the feature F0808: Make "Nasıl Çalışır" section into a modal dialog with transparency. Dialog should be open by a link in footer having text "Nasıl Çalışır?". Dialog should have a "X" button on top left to close. Dialog should also get closed when clicked anywhere on page. Dialog should have rounded corners with simple and compact, having a semi-transparent glassy look. Text should be readable tough.
+- 🔴 F0811: Choose colors that fit better to theme for buttons to save and delete user data. Current red and green colors does not seem to fit into general color schema of the page.
