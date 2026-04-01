@@ -1,3 +1,10 @@
+# [0.20.0](https://github.com/vozzen/relary/compare/v0.19.0...v0.20.0) (2026-04-01)
+
+
+### Features
+
+* **F0813:** rename data entry to Gelir Değişimleri and add hide/show toggle ([e84aa62](https://github.com/vozzen/relary/commit/e84aa62ae90117a884ffa70a3ba94958ef20b375))
+
 # [0.19.0](https://github.com/vozzen/relary/compare/v0.18.0...v0.19.0) (2026-04-01)
 
 
