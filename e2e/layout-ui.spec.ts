@@ -37,7 +37,7 @@ test.describe('Layout and UI features', () => {
     const headers = page.locator('.section-header')
     const count = await headers.count()
     expect(count).toBe(2)
-    await expect(headers.nth(0)).toContainText('Veri Girişi')
+    await expect(headers.nth(0)).toContainText('Gelir Değişimleri')
     await expect(headers.nth(1)).toContainText('Kaydet/Yükle')
   })
 
@@ -76,5 +76,90 @@ test.describe('Layout and UI features', () => {
       // Footer should be near the bottom
       expect(footerBox.y + footerBox.height).toBeGreaterThan(viewportSize.height - 5)
     }
+  })
+
+  test('data visibility toggle hides and restores data (F0813)', async ({ page }) => {
+    const editor = page.locator('#timeseries-editor')
+    const toggleBtn = page.locator('.data-visibility-toggle')
+
+    // Enter some data
+    await editor.fill('01.2024 5000\n06.2024 6000')
+    await expect(editor).toHaveValue('01.2024 5000\n06.2024 6000')
+
+    // Click hide button
+    await toggleBtn.click()
+
+    // Data should be masked with XX.XX.XXXX for dates and XXXXXX for amounts
+    const hiddenValue = await editor.inputValue()
+    expect(hiddenValue).not.toContain('5000')
+    expect(hiddenValue).toContain('XX.XX.XXXX')
+    expect(hiddenValue).toContain('XXXXXX')
+
+    // Textarea should be read-only
+    await expect(editor).toHaveAttribute('readonly', '')
+
+    // Click show button to restore
+    await toggleBtn.click()
+
+    // Original data should be restored
+    await expect(editor).toHaveValue('01.2024 5000\n06.2024 6000')
+    await expect(editor).not.toHaveAttribute('readonly', '')
+  })
+
+  test('saving while data is hidden preserves original data (F0813)', async ({ page }) => {
+    const editor = page.locator('#timeseries-editor')
+    const toggleBtn = page.locator('.data-visibility-toggle')
+    const nameInput = page.locator('.dataset-name-input')
+    const saveBtn = page.locator('.save-button')
+
+    // Enter data and hide it
+    await editor.fill('01.2024 5000\n06.2024 6000')
+    await toggleBtn.click()
+    await expect(editor).toHaveAttribute('readonly', '')
+
+    // Save while hidden
+    await nameInput.fill('hidden-test')
+    await saveBtn.click()
+
+    // Unhide and clear editor
+    await toggleBtn.click()
+    await editor.fill('')
+
+    // Load saved dataset - should have original data, not masked
+    const loadBtn = page.locator('.load-button', { hasText: 'hidden-test' })
+    await loadBtn.click()
+    await expect(editor).toHaveValue('01.2024 5000\n06.2024 6000')
+    await expect(editor).not.toHaveAttribute('readonly', '')
+  })
+
+  test('loading data while hidden stays in hidden mode (F0813)', async ({ page }) => {
+    const editor = page.locator('#timeseries-editor')
+    const toggleBtn = page.locator('.data-visibility-toggle')
+    const nameInput = page.locator('.dataset-name-input')
+    const saveBtn = page.locator('.save-button')
+
+    // Save a dataset first
+    await editor.fill('01.2024 7000\n06.2024 8000')
+    await nameInput.fill('load-hidden-test')
+    await saveBtn.click()
+    await editor.fill('')
+
+    // Enter different data and hide
+    await editor.fill('01.2025 1000')
+    await toggleBtn.click()
+    await expect(editor).toHaveAttribute('readonly', '')
+
+    // Load while hidden - should stay hidden
+    const loadBtn = page.locator('.load-button', { hasText: 'load-hidden-test' })
+    await loadBtn.click()
+    await expect(editor).toHaveAttribute('readonly', '')
+    const hiddenValue = await editor.inputValue()
+    expect(hiddenValue).toContain('XX.XX.XXXX')
+    expect(hiddenValue).not.toContain('7000')
+
+    // Toggle to show - should reveal loaded data
+    await toggleBtn.click()
+    await expect(editor).toHaveValue('01.2024 7000\n06.2024 8000')
+    await expect(editor).not.toHaveAttribute('readonly', '')
   })
 })

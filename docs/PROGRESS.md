@@ -3,6 +3,27 @@
 ## Current Sprint
 **Focus**: Phase 8 SEO & Discoverability
 **Status**: ✅ Complete
+### 2026-04-01 - Session 27
+**Completed**:
+- F0813: Renamed "Veri Girişi" to "Gelir Değişimleri" and added data hide/show toggle
+
+**Details**:
+- Renamed section header from "Veri Girişi" to "Gelir Değişimleri"
+- Added eye icon toggle button next to title for hiding/showing salary data
+- When hidden: textarea becomes read-only, all non-space characters replaced with '*'
+- When shown: original data restored, textarea editable again
+- Uses useRef to preserve original data while hidden
+- Loading a dataset automatically unhides data
+- Added E2E test for the hide/show toggle flow
+- All unit and E2E tests passing (23 E2E, 79 unit), build succeeds
+
+**Files Modified**:
+- src/features/timeseries/pages/HomePage.tsx (renamed title, added hide/show state and toggle)
+- src/features/timeseries/pages/HomePage.css (added toggle button and read-only styles)
+- e2e/layout-ui.spec.ts (updated title text, added F0813 toggle test)
+- docs/FEATURES.md (F0813 → 🟢)
+- docs/PROGRESS.md (session 27)
+
 ### 2026-04-01 - Session 26
 **Completed**:
 - F0812: Added help tooltip question marks to section headers
