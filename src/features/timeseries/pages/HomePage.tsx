@@ -7,6 +7,7 @@ import { loadSeriesData } from '../api/seriesLoader'
 import { saveDataset, loadDataset, listDatasets, deleteDataset } from '../../../shared/utils/storage'
 import './HomePage.css'
 import { Chart } from '../components/Chart'
+import { HelpTooltip } from '../../../shared/components/HelpTooltip'
 
 /**
  * HomePage (F007) layout with chart placeholder and timeseries editor.
@@ -108,7 +109,7 @@ export const HomePage: FC = () => {
       </div>
       <div className="controls-container">
         <div className="editor-section">
-          <h3 className="section-header">Veri Girişi</h3>
+          <h3 className="section-header">Veri Girişi<HelpTooltip text="Gelirinizin değiştiği tarihleri ve yeni miktarı girin. Her ay tekrarlamaya gerek yok — sadece değişiklik tarihlerini yazın. Her girdi yeni bir satırda olmalı. Kabul edilen formatlar: GG.AA.YYYY, AA.YYYY, AA-YYYY" /></h3>
           {(() => {
             let variant = ''
             if (valid !== null) {
@@ -132,7 +133,7 @@ export const HomePage: FC = () => {
         </div>
         
         <div className="storage-section">
-          <h3 className="section-header">Kaydet/Yükle</h3>
+          <h3 className="section-header">Kaydet/Yükle<HelpTooltip text="Verileriniz yalnızca tarayıcınızda saklanır, hiçbir sunucuya gönderilmez." /></h3>
           <div className="save-section">
             <input
               type="text"

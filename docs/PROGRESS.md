@@ -3,6 +3,27 @@
 ## Current Sprint
 **Focus**: Phase 8 SEO & Discoverability
 **Status**: ✅ Complete
+### 2026-04-01 - Session 26
+**Completed**:
+- F0812: Added help tooltip question marks to section headers
+
+**Details**:
+- Created reusable `HelpTooltip` component with hover popup
+- "Veri Girişi" tooltip explains: enter income change dates and amounts, no need to repeat monthly, accepted formats
+- "Kaydet/Yükle" tooltip explains: data saved locally only, nothing sent to server
+- CSS-only show/hide with dark theme styling and responsive positioning
+- All unit and E2E tests passing, build succeeds
+
+**Files Created**:
+- src/shared/components/HelpTooltip.tsx
+- src/shared/components/HelpTooltip.css
+- src/shared/components/HelpTooltip.test.tsx
+
+**Files Modified**:
+- src/features/timeseries/pages/HomePage.tsx (added HelpTooltip to both section headers)
+- docs/FEATURES.md (F0812 → 🟢)
+- docs/PROGRESS.md (session 26)
+
 ### 2026-04-01 - Session 25
 **Completed**:
 - F0811: Updated save/delete button colors to match dark slate theme
